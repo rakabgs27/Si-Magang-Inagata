@@ -14,8 +14,6 @@ class MenuItemSeeder extends Seeder
      */
     public function run()
     {
-        //
-        // MenuItem::factory()->count(10)->create();
         MenuItem::insert(
             [
                 [

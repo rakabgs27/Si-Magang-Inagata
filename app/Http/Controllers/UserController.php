@@ -33,12 +33,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        //index -> menampilkan tabel data
-
-        Category::create([
-            "name" => "Masuk User Page",
-        ]);
-
         // mengambil data
         $users = DB::table('users')
             ->when($request->input('name'), function ($query, $name) {
