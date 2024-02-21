@@ -14,8 +14,6 @@ class MenuGroupSeeder extends Seeder
      */
     public function run()
     {
-        //
-        // MenuGroup::factory()->count(5)->create();
         MenuGroup::insert(
             [
                 [
