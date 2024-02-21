@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Demo</h2>
+            <h2 class="section-title">Test</h2>
 
             <div class="row">
                 <div class="col-12">
