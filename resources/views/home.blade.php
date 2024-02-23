@@ -24,7 +24,7 @@
                     <div class="card-body"></div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="section-body">
 
         </div>

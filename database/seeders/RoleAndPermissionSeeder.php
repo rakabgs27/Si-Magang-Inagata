@@ -16,7 +16,6 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run()
     {
-        //
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -25,6 +24,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'user.management']);
         Permission::create(['name' => 'role.permission.management']);
         Permission::create(['name' => 'menu.management']);
+
         //user
         Permission::create(['name' => 'user.index']);
         Permission::create(['name' => 'user.create']);
@@ -60,19 +60,19 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'assign.user.create']);
         Permission::create(['name' => 'assign.user.edit']);
 
-        //menu group 
+        //menu group
         Permission::create(['name' => 'menu-group.index']);
         Permission::create(['name' => 'menu-group.create']);
         Permission::create(['name' => 'menu-group.edit']);
         Permission::create(['name' => 'menu-group.destroy']);
 
-        //menu item 
+        //menu item
         Permission::create(['name' => 'menu-item.index']);
         Permission::create(['name' => 'menu-item.create']);
         Permission::create(['name' => 'menu-item.edit']);
         Permission::create(['name' => 'menu-item.destroy']);
 
-        // create roles 
+        // create roles
         $roleUser = Role::create(['name' => 'user']);
         $roleUser->givePermissionTo([
             'dashboard',
@@ -80,13 +80,13 @@ class RoleAndPermissionSeeder extends Seeder
             'user.index',
         ]);
 
-        // create Super Admin
-        $role = Role::create(['name' => 'super-admin']);
+        // create manager
+        $role = Role::create(['name' => 'manager']);
         $role->givePermissionTo(Permission::all());
 
-        //assign user id 1 ke super admin
+        //assign user id 1 ke manager
         $user = User::find(1);
-        $user->assignRole('super-admin');
+        $user->assignRole('manager');
         $user = User::find(2);
         $user->assignRole('user');
     }
