@@ -35,7 +35,22 @@ class MenuGroupSeeder extends Seeder
                     'name' => 'Menu Management',
                     'icon' => 'fas fa-bars',
                     'permisison_name' => 'menu.management',
-                ]
+                ],
+                [
+                    'name' => 'Soal Management',
+                    'icon' => 'fas fa-book-open',
+                    'permisison_name' => '',
+                ],
+                [
+                    'name' => 'Jawaban Management',
+                    'icon' => 'fas fa-chalkboard',
+                    'permisison_name' => '',
+                ],
+                [
+                    'name' => 'Pengumuman Management',
+                    'icon' => 'fas fa-award',
+                    'permisison_name' => '',
+                ],
             ]
         );
     }
