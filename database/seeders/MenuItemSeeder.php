@@ -64,6 +64,72 @@ class MenuItemSeeder extends Seeder
                     'permission_name' => 'menu-item.index',
                     'menu_group_id' => 4,
                 ],
+                [
+                    'name' => 'List Soal',
+                    'route' => 'soal-management/list-soal',
+                    'permission_name' => 'list-soal.index',
+                    'menu_group_id' => 5,
+                ],
+                [
+                    'name' => 'Test Soal',
+                    'route' => 'soal-management/test-soal',
+                    'permission_name' => 'test-soal.index',
+                    'menu_group_id' => 5,
+                ],
+                [
+                    'name' => 'List Jawaban',
+                    'route' => 'jawaban-management/list-jawaban',
+                    'permission_name' => 'list-jawaban.index',
+                    'menu_group_id' => 6,
+                ],
+                [
+                    'name' => 'Test Jawaban',
+                    'route' => 'jawaban-management/test-jawaban',
+                    'permission_name' => 'test-jawaban.index',
+                    'menu_group_id' => 6,
+                ],
+                [
+                    'name' => 'List Pengumuman',
+                    'route' => 'pengumuman-management/list-pengumuman',
+                    'permission_name' => 'list-pengumuman.index',
+                    'menu_group_id' => 7,
+                ],
+                [
+                    'name' => 'Hasil Pengumuman',
+                    'route' => 'pengumuman-management/hasil-pengumuman',
+                    'permission_name' => 'hasil-pengumuman.index',
+                    'menu_group_id' => 7,
+                ],
+                [
+                    'name' => 'List Nilai',
+                    'route' => 'nilai-management/list-nilai',
+                    'permission_name' => 'list-nilai.index',
+                    'menu_group_id' => 8,
+                ],
+                [
+                    'name' => 'Hasil Akhir',
+                    'route' => 'nilai-management/hasil-akhir',
+                    'permission_name' => 'hasil-akhir.index',
+                    'menu_group_id' => 8,
+                ],
+                [
+                    'name' => 'List Divisi',
+                    'route' => 'divisi-management/list-divisi',
+                    'permission_name' => 'list-divisi.index',
+                    'menu_group_id' => 9,
+                ],
+                [
+                    'name' => 'List Wawancara',
+                    'route' => 'wawancara-management/list-wawancara',
+                    'permission_name' => 'list-wawancara.index',
+                    'menu_group_id' => 10,
+                ],
+                [
+                    'name' => 'Jadwal Wawancara',
+                    'route' => 'wawancara-management/jadwal-wawancara',
+                    'permission_name' => 'jadwal-wawancara.index',
+                    'menu_group_id' => 10,
+                ],
             ]
         );
     }

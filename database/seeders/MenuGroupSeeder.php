@@ -39,17 +39,32 @@ class MenuGroupSeeder extends Seeder
                 [
                     'name' => 'Soal Management',
                     'icon' => 'fas fa-book-open',
-                    'permisison_name' => '',
+                    'permisison_name' => 'soal.management',
                 ],
                 [
                     'name' => 'Jawaban Management',
                     'icon' => 'fas fa-chalkboard',
-                    'permisison_name' => '',
+                    'permisison_name' => 'jawaban.management',
                 ],
                 [
                     'name' => 'Pengumuman Management',
-                    'icon' => 'fas fa-award',
-                    'permisison_name' => '',
+                    'icon' => 'fas fa-envelope',
+                    'permisison_name' => 'pengumuman.management',
+                ],
+                [
+                    'name' => 'Divisi Management',
+                    'icon' => 'fas fa-user-graduate',
+                    'permisison_name' => 'divisi.management',
+                ],
+                [
+                    'name' => 'Nilai Management',
+                    'icon' => 'fas fa-chart-simple',
+                    'permisison_name' => 'nilai.management',
+                ],
+                [
+                    'name' => 'Wawancara Management',
+                    'icon' => 'fas fa-calendar-days',
+                    'permisison_name' => 'wawancara.management',
                 ],
             ]
         );

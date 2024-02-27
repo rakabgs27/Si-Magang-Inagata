@@ -26,7 +26,10 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'menu.management']);
         Permission::create(['name' => 'soal.management']);
         Permission::create(['name' => 'jawaban.management']);
+        Permission::create(['name' => 'wawancara.management']);
         Permission::create(['name' => 'pengumuman.management']);
+        Permission::create(['name' => 'divisi.management']);
+        Permission::create(['name' => 'nilai.management']);
 
         //user
         Permission::create(['name' => 'user.index']);
@@ -77,12 +80,16 @@ class RoleAndPermissionSeeder extends Seeder
 
         $seeders = [
             'list-soal',
-            'soal-divisi',
             'test-soal',
             'list-jawaban',
             'test-jawaban',
             'list-pengumuman',
             'hasil-pengumuman',
+            'list-nilai',
+            'hasil-akhir',
+            'list-divisi',
+            'list-wawancara',
+            'jadwal-wawancara',
         ];
 
         $actions = ['index', 'create', 'edit', 'destroy'];
