@@ -3,88 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
-use App\Http\Requests\StoreProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $userId = Auth::user()->id;
         $profile = Profile::where('user_id', $userId)->first();
-        // dd($profile);
         return view('profile.index')->with(['profile' => $profile]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('profiles.create');
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreProfileRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreProfileRequest $request)
+    public function store(ProfileRequest $request)
     {
-        //
+        $data = $request->validated();
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('profile', 'public');
+        }
+        Profile::create($data);
+        return redirect()->route('profiles.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
     public function show(Profile $profile)
     {
-        //
+        return view('profiles.show', compact('profile'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Profile $profile)
     {
-        //
+        return view('profiles.edit', compact('profile'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProfileRequest  $request
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateProfileRequest $request, Profile $profile)
+    public function update(ProfileRequest $request, Profile $profile)
     {
-        //
+        $data = $request->validated();
+        if ($request->hasFile('foto')) {
+            if ($profile->foto && Storage::disk('public')->exists($profile->foto)) {
+                Storage::disk('public')->delete($profile->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('profile', 'public');
+        }
+        $profile->update($data);
+        return redirect()->route('profile.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Profile $profile)
     {
-        //
+        Storage::disk('public')->delete($profile->foto);
+        $profile->delete();
+        return redirect()->route('profiles.index');
     }
 }

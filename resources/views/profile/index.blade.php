@@ -21,7 +21,8 @@
                         @endif
                         <div class="card profile-widget">
                             <div class="profile-widget-header">
-                                <label for="foto" class="foto" style="position: relative; display: flex; place-items: flex-end;">
+                                <label for="foto" class="foto"
+                                    style="position: relative; display: flex; place-items: flex-end;">
                                     <img alt="image"
                                         src="{{ $profile && $profile->foto ? Storage::url($profile->foto) : '../assets/img/avatar/avatar-1.png' }}"
                                         class="rounded-circle profile-widget-picture"
@@ -77,13 +78,13 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Nomer Identitas</label>
-                                        <input name="identity_number" type="text"
-                                            class="form-control @error('identity_number', 'updateProfileInformation')
+                                        <label>Email</label>
+                                        <input name="email" type="text"
+                                            class="form-control @error('email', 'updateProfileInformation')
                                     is-invalid
                                     @enderror"
-                                            value="{{ Auth::user()->identity_number }}">
-                                        @error('identity_number', 'updateProfileInformation')
+                                            value="{{ Auth::user()->email }}">
+                                        @error('email', 'updateProfileInformation')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -110,8 +111,8 @@
                                         <label for="current_password">Current Password</label>
                                         <input id="current_password" type="password"
                                             class="form-control @error('current_password', 'updatePassword')
-                            is-invalid
-                        @enderror"
+                                                is-invalid
+                                            @enderror"
                                             data-indicator="pwindicator" name="current_password" tabindex="2">
                                         @error('current_password', 'updatePassword')
                                             <div class="invalid-feedback">
@@ -129,8 +130,8 @@
                                         <label for="password">New Password</label>
                                         <input id="password" type="password"
                                             class="form-control @error('password', 'updatePassword')
-                            is-invalid
-                        @enderror"
+                                                is-invalid
+                                            @enderror"
                                             data-indicator="pwindicator" name="password" tabindex="2">
                                         @error('password', 'updatePassword')
                                             <div class="invalid-feedback">
@@ -146,8 +147,8 @@
                                         <label for="password_confirmation">Password Confirmation</label>
                                         <input id="password_confirmation" type="password"
                                             class="form-control @error('password_confirmation')
-                            is-invalid
-                        @enderror"
+                                                is-invalid
+                                            @enderror"
                                             data-indicator="pwindicator" name="password_confirmation" tabindex="2">
                                         @error('password_confirmation')
                                             <div class="invalid-feedback">
