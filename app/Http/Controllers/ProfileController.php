@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -15,7 +16,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        $userId = Auth::user()->id;
+        $profile = Profile::where('user_id', $userId)->first();
+        // dd($profile);
+        return view('profile.index')->with(['profile' => $profile]);
     }
 
     /**
