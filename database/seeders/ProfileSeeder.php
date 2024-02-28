@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Profile;
 use Illuminate\Database\Seeder;
 
 class ProfileSeeder extends Seeder
@@ -14,6 +14,15 @@ class ProfileSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Profile::create([
+            'deskripsi' => "Halo",
+            'foto' => null,
+            'user_id' => 1,
+        ]);
+        Profile::create([
+            'deskripsi' => "Halo",
+            'foto' => null,
+            'user_id' => 2,
+        ]);
     }
 }
