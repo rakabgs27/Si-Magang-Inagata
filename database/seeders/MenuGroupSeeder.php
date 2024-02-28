@@ -52,18 +52,18 @@ class MenuGroupSeeder extends Seeder
                     'permisison_name' => 'pengumuman.management',
                 ],
                 [
+                    'name' => 'Nilai Management',
+                    'icon' => 'fas fa-certificate',
+                    'permisison_name' => 'nilai.management',
+                ],
+                [
                     'name' => 'Divisi Management',
                     'icon' => 'fas fa-user-graduate',
                     'permisison_name' => 'divisi.management',
                 ],
                 [
-                    'name' => 'Nilai Management',
-                    'icon' => 'fas fa-chart-simple',
-                    'permisison_name' => 'nilai.management',
-                ],
-                [
                     'name' => 'Wawancara Management',
-                    'icon' => 'fas fa-calendar-days',
+                    'icon' => 'fas fa-calendar',
                     'permisison_name' => 'wawancara.management',
                 ],
             ]
