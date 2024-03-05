@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ProfileController;
@@ -37,12 +38,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
     Route::resource('profile', ProfileController::class);
 
-    //user list
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');
         Route::get('demo', DemoController::class)->name('user.demo');
+    });
+
+    Route::prefix('divisi-management')->group(function () {
+        Route::resource('list-divisi', DivisiController::class);
     });
 
     Route::prefix('menu-management')->group(function () {

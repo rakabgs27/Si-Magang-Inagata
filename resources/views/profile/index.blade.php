@@ -27,9 +27,6 @@
                                         src="{{ $profile && $profile->foto ? Storage::url($profile->foto) : '../assets/img/avatar/avatar-1.png' }}"
                                         class="rounded-circle profile-widget-picture"
                                         style="width: 100px; height: 100px; object-fit: cover;">
-                                    {{-- <input type="file" id="foto" name="foto" style="display: none;">
-                                    <i class="fas fa-pencil-alt" style="position: absolute; bottom: 0; right: -20px;"></i> --}}
-
                                 </label>
                                 <div class="col">
                                     <label for="foto" class="p-1 ml-3 font-weight-bold"> Edit Profile Photo</label>
