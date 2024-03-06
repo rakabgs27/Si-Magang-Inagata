@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
+        // Route::resource('user', UserController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');
         Route::get('demo', DemoController::class)->name('user.demo');

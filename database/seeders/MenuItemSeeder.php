@@ -29,6 +29,12 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 2,
                 ],
                 [
+                    'name' => 'List Pendaftar',
+                    'route' => 'user-management/list-pendaftar',
+                    'permission_name' => 'list-pendaftar.index',
+                    'menu_group_id' => 2,
+                ],
+                [
                     'name' => 'Role List',
                     'route' => 'role-and-permission/role',
                     'permission_name' => 'role.index',
