@@ -26,7 +26,6 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->restrictOnDelete();
             $table->foreign('divisi_id')->references('id')->on('divisis')->restrictOnDelete();
-
         });
     }
 

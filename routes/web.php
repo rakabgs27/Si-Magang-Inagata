@@ -5,6 +5,7 @@ use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignUserToRoleController;
 use App\Http\Controllers\RoleAndPermission\ExportPermissionController;
@@ -31,6 +32,8 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('auth/login');
 });
+
+Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', function () {
