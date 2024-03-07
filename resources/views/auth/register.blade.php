@@ -54,8 +54,7 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label for="email">Email</label>
-                                                <input type="email" class="form-control" name="email"
-                                                    value="{{ old('email') }}"
+                                                <input type="email" name="email" value="{{ old('email') }}"
                                                     class="form-control @error('email') is-invalid @enderror"
                                                     placeholder="Masukkan Alamat Email">
                                                 @error('email')
@@ -86,8 +85,9 @@
                                         </div>
                                         <div class="form-group col-6">
                                             <div class="form-group">
-                                                <label for="nama_instansi" class="d-block">Nama Instansi</label>
-                                                <input name="nama_instansi" type="text" class="form-control"
+                                                <label for="nama_instansi">Nama Instansi</label>
+                                                <input name="nama_instansi" type="text"
+                                                    class="form-control @error('nama_instansi') is-invalid @enderror"
                                                     placeholder="Masukkan Nama Instansi">
                                                 @error('nama_instansi')
                                                     <div class="invalid-feedback">
@@ -101,7 +101,8 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label for="nama_jurusan">Nama Jurusan/Prodi</label>
-                                                <input name="nama_jurusan" type="text" class="form-control"
+                                                <input name="nama_jurusan" type="text"
+                                                    class="form-control @error('nama_jurusan') is-invalid @enderror"
                                                     placeholder="Masukkan Nama Jurusan">
                                                 @error('nama_jurusan')
                                                     <div class="invalid-feedback">
@@ -113,7 +114,8 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label for="nim">NIM</label>
-                                                <input name="nim" type="text" class="form-control"
+                                                <input name="nim" type="text"
+                                                    class="form-control @error('nim') is-invalid @enderror"
                                                     placeholder="Masukkan NIM">
                                                 @error('nim')
                                                     <div class="invalid-feedback">
@@ -126,12 +128,13 @@
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <div class="form-group">
-                                                <label>Link Portofolio</label><br>
+                                                <label>Link CV</label>
                                                 <small class="text-muted" style="display: block;">Please provide a
                                                     valid portfolio link.</small>
-                                                <input name="link_porto" type="text" class="form-control"
-                                                    placeholder="Masukkan Link Porto">
-                                                @error('link_porto')
+                                                <input name="link_cv" type="text"
+                                                    class="form-control @error('link_cv') is-invalid @enderror"
+                                                    placeholder="Masukkan Link CV">
+                                                @error('link_cv')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
@@ -140,12 +143,13 @@
                                         </div>
                                         <div class="form-group col-6">
                                             <div class="form-group">
-                                                <label>Link CV</label>
+                                                <label>Link Portofolio</label><br>
                                                 <small class="text-muted" style="display: block;">Please provide a
                                                     valid portfolio link.</small>
-                                                <input name="link_cv" type="text" class="form-control"
-                                                    placeholder="Masukkan Link CV">
-                                                @error('link_cv')
+                                                <input name="link_porto" type="text"
+                                                    class="form-control @error('link_porto') is-invalid @enderror"
+                                                    placeholder="Masukkan Link Porto">
+                                                @error('link_porto')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
