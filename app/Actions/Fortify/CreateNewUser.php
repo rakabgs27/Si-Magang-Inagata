@@ -51,12 +51,11 @@ class CreateNewUser implements CreatesNewUsers
             'divisi_id' => ['required', 'integer'],
             'nama_instansi' => ['required', 'string', 'max:255'],
             'nama_jurusan' => ['required', 'string', 'max:255'],
-            'nim' => ['required', 'integer', 'max:255'],
+            'nim' => ['required', 'string', 'max:255'],
             'link_cv' => ['required', 'string', 'max:255'],
             'link_porto' => ['required', 'string', 'max:255'],
             'nomor_hp' => ['required', 'regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/'],
         ], $messages)->validate();
-
 
          $user = User::create([
             'name' => $input['name'],
@@ -73,7 +72,7 @@ class CreateNewUser implements CreatesNewUsers
             'nim' => $input['nim'],
             'link_cv' => $input['link_cv'],
             'link_porto' => $input['link_porto'],
-            'no_hp' => $input['nomor_hp'],
+            'nomor_hp' => $input['nomor_hp'],
         ]);
 
         return $user;

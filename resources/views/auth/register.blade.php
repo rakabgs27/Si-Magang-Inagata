@@ -158,8 +158,8 @@
                                             <div class="form-group">
                                                 <label>Divisi</label>
                                                 <select
-                                                    class="form-control select2 @error('divisi') is-invalid @enderror"
-                                                    id="divisi" name="divisi" data-placeholder="Pilih Divisi">
+                                                    class="form-control select2 @error('divisi_id') is-invalid @enderror"
+                                                    id="divisi_id" name="divisi_id" data-placeholder="Pilih Divisi">
                                                     <option value=""></option>
                                                     @foreach ($divisi as $divisi2)
                                                         <option value="{{ $divisi2->id }}">
@@ -167,7 +167,7 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                @error('divisi')
+                                                @error('divisi_id')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
