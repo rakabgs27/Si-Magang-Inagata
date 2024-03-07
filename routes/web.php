@@ -4,6 +4,7 @@ use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
+use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
-        // Route::resource('user', UserController::class);
+        Route::resource('list-pendaftar', PendaftarController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');
         Route::get('demo', DemoController::class)->name('user.demo');

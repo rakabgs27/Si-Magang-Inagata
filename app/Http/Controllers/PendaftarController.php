@@ -5,18 +5,42 @@ namespace App\Http\Controllers;
 use App\Models\Pendaftar;
 use App\Http\Requests\StorePendaftarRequest;
 use App\Http\Requests\UpdatePendaftarRequest;
+use Illuminate\Http\Request;
 
 class PendaftarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:list-pendaftar.index')->only('index');
+        $this->middleware('permission:list-pendaftar.create')->only('create', 'store');
+        $this->middleware('permission:list-pendaftar.edit')->only('edit', 'update');
+        $this->middleware('permission:list-pendaftar.destroy')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $namaUserSearch = $request->input('name');
+
+        $listPendaftar = Pendaftar::with('user')
+            ->when($namaUserSearch, function ($query, $namaUserSearch) {
+                return $query->whereHas('user', function ($query) use ($namaUserSearch) {
+                    return $query->where('name', 'like', '%' . $namaUserSearch . '%');
+                });
+            })
+            ->paginate(10);
+
+        return view('users-management.list-pendaftar.index', [
+            'listPendaftar' => $listPendaftar,
+            'namaUserSearch' => $namaUserSearch,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

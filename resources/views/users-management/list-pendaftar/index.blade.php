@@ -3,10 +3,10 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Menu Divisi Management</h1>
+            <h1>Menu User Management</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tabel List Divisi</h2>
+            <h2 class="section-title">Tabel List Pendaftar</h2>
 
             <div class="row">
                 <div class="col-12">
@@ -17,7 +17,7 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4>List Divisi</h4>
+                            <h4>List Pendaftar</h4>
                             <div class="d-flex flex-row-reverse card-header-action">
 
                                 <div class="card-header-actions">
@@ -27,10 +27,10 @@
                                 </div>
                                 <h4></h4>
                                 <form class="card-header-form" id="search" method="GET"
-                                    action="{{ route('list-divisi.index') }}">
+                                    action="{{ route('list-pendaftar.index') }}">
                                     <div class="input-group">
-                                        <input type="text" name="nama_divisi" class="form-control"
-                                            placeholder="Cari Nama Divisi" value="{{ $namaDivisiSearch }}">
+                                        <input type="text" name="name" class="form-control"
+                                            placeholder="Cari Nama Pendaftar" value="{{ $namaUserSearch }}">
                                         <div class="input-group-btn">
                                             <button class="btn btn-primary btn-icon"><i class="fas fa-search"
                                                     type="submit"></i></button>
@@ -46,20 +46,36 @@
                                         <tbody>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama Divisi</th>
+                                                <th>Nama Lengkap</th>
+                                                <th>Email</th>
+                                                <th>Divisi</th>
+                                                <th>Nomor WhatsApp</th>
+                                                <th>Nama Instansi</th>
+                                                <th>Nama Jurusan/Prodi</th>
+                                                <th>NIM</th>
+                                                <th>Link CV</th>
+                                                <th>Link Portofolio</th>
                                                 <th class="text-right">Action</th>
                                             </tr>
-                                            @foreach ($listDivisi as $key => $listItem)
+                                            @foreach ($listPendaftar as $key => $listItem)
                                                 <tr>
-                                                    <td>{{ $listDivisi->firstItem() + $key }}</td>
-                                                    <td>{{ $listItem->nama_divisi }}</td>
+                                                    <td>{{ $listPendaftar->firstItem() + $key }}</td>
+                                                    <td>{{ $listItem->user->name }}</td>
+                                                    <td>{{ $listItem->user->email }}</td>
+                                                    <td>{{ $listItem->divisi->nama_divisi }}</td>
+                                                    <td>{{ $listItem->nomor_hp }}</td>
+                                                    <td>{{ $listItem->nama_instansi }}</td>
+                                                    <td>{{ $listItem->nama_jurusan }}</td>
+                                                    <td>{{ $listItem->nim }}</td>
+                                                    <td>{{ $listItem->link_cv }}</td>
+                                                    <td>{{ $listItem->link_porto }}</td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
-                                                            <a href="{{ route('list-divisi.edit', $listItem->id) }}"
+                                                            <a href="#"
                                                                 class="btn btn-sm btn-info btn-icon "><i
                                                                     class="fas fa-edit"></i>
                                                                 Edit</a>
-                                                            <form action="{{ route('list-divisi.destroy', $listItem->id) }}"
+                                                            <form action="#"
                                                                 method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
                                                                 <input type="hidden" name="_method" value="DELETE">
                                                                 <input type="hidden" name="_token"
@@ -78,7 +94,7 @@
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-center">
-                                        {{ $listDivisi->withQueryString()->links() }}
+                                        {{-- {{ $listDivisi->withQueryString()->links() }} --}}
                                     </div>
                                 </div>
                             </div>
