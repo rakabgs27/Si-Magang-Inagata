@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('divisi_id');
-            $table->integer('nomor_hp');
+            $table->string('nomor_hp');
             $table->string('nama_instansi');
             $table->string('nama_jurusan');
-            $table->integer('nim');
+            $table->string('nim');
             $table->string('link_cv');
             $table->string('link_porto');
             $table->timestamps();

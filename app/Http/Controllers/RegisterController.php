@@ -14,11 +14,11 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $divisis = Divisi::all();
+        $divisi = Divisi::all();
         // dd($divisis);
 
         return view('auth.register', [
-            'divisis' => $divisis,
+            'divisi' => $divisi,
         ]);
     }
 

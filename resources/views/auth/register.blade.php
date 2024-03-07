@@ -5,16 +5,15 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>{{ config('app.name') }} - Register</title>
-
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="../node_modules/selectric/public/selectric.css">
-
+    <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css">
+    @stack('customStyle')
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/components.css">
@@ -31,7 +30,6 @@
                             <img src="../assets/img/stisla-fill.svg" alt="logo" width="100"
                                 class="shadow-light rounded-circle">
                         </div>
-
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h4>Register</h4>
@@ -42,9 +40,8 @@
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <div class="form-group">
-                                                <label for="first_name">Full Name</label>
-                                                <input id="first_name" type="text" name="name"
-                                                    value="{{ old('name') }}"
+                                                <label for="first_name">Nama Lengkap</label>
+                                                <input type="text" name="name" value="{{ old('name') }}"
                                                     class="form-control @error('name') is-invalid @enderror"
                                                     placeholder="Masukkan Nama Lengkap" autofocus>
                                                 @error('name')
@@ -54,11 +51,10 @@
                                                 @enderror
                                             </div>
                                         </div>
-
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label for="email">Email</label>
-                                                <input id="email" type="email" class="form-control" name="email"
+                                                <input type="email" class="form-control" name="email"
                                                     value="{{ old('email') }}"
                                                     class="form-control @error('email') is-invalid @enderror"
                                                     placeholder="Masukkan Alamat Email">
@@ -71,28 +67,29 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-6">
-                                            <div class="form-group">
-                                                <label for="password" class="d-block">Password</label>
-                                                <input id="password" type="password" name="password"
-                                                    class="form-control @error('password') is-invalid @enderror"
-                                                    placeholder="Masukkan Password" data-indicator="pwindicator">
-                                                @error('password')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Nomor WhatsApp</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="fas fa-phone"></i>
                                                     </div>
-                                                @enderror
+                                                </div>
+                                                <input name="nomor_hp" type="text"
+                                                    class="form-control phone-number @error('nomor_hp') is-invalid @enderror">
                                             </div>
+                                            @error('nomor_hp')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-
                                         <div class="form-group col-6">
                                             <div class="form-group">
-                                                <label for="password_confirmation" class="d-block">Password
-                                                    Confirmation</label>
-                                                <input id="password_confirmation" name="password_confirmation"
-                                                    type="password" class="form-control"
-                                                    placeholder="Masukkan Konfirmasi Password">
-                                                @error('password')
+                                                <label for="nama_instansi" class="d-block">Nama Instansi</label>
+                                                <input name="nama_instansi" type="text" class="form-control"
+                                                    placeholder="Masukkan Nama Instansi">
+                                                @error('nama_instansi')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
@@ -100,7 +97,84 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <label for="nama_jurusan">Nama Jurusan/Prodi</label>
+                                                <input name="nama_jurusan" type="text" class="form-control"
+                                                    placeholder="Masukkan Nama Jurusan">
+                                                @error('nama_jurusan')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <label for="nim">NIM</label>
+                                                <input name="nim" type="text" class="form-control"
+                                                    placeholder="Masukkan NIM">
+                                                @error('nim')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <label>Link Portofolio</label><br>
+                                                <small class="text-muted" style="display: block;">Please provide a
+                                                    valid portfolio link.</small>
+                                                <input name="link_porto" type="text" class="form-control"
+                                                    placeholder="Masukkan Link Porto">
+                                                @error('link_porto')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <label>Link CV</label>
+                                                <small class="text-muted" style="display: block;">Please provide a
+                                                    valid portfolio link.</small>
+                                                <input name="link_cv" type="text" class="form-control"
+                                                    placeholder="Masukkan Link CV">
+                                                @error('link_cv')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <label>Divisi</label>
+                                                <select
+                                                    class="form-control select2 @error('divisi') is-invalid @enderror"
+                                                    id="divisi" name="divisi" data-placeholder="Pilih Divisi">
+                                                    <option value=""></option>
+                                                    @foreach ($divisi as $divisi2)
+                                                        <option value="{{ $divisi2->id }}">
+                                                            {{ $divisi2->nama_divisi }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('divisi')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-lg btn-block">
                                             Register
@@ -114,7 +188,6 @@
             </div>
         </section>
     </div>
-
     <!-- General JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -129,15 +202,10 @@
     <script src="../assets/js/stisla.js"></script>
 
     <!-- JS Libraies -->
-    <script src="../node_modules/jquery-pwstrength/jquery.pwstrength.min.js"></script>
-    <script src="../node_modules/selectric/public/jquery.selectric.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Template JS File -->
     <script src="../assets/js/scripts.js"></script>
     <script src="../assets/js/custom.js"></script>
-
-    <!-- Page Specific JS File -->
-    <script src="../assets/js/page/auth-register.js"></script>
 </body>
 
 </html>
