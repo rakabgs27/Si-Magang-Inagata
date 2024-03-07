@@ -25,7 +25,8 @@
             <div class="container mt-5">
                 <div class="row">
                     <div
-                        class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+                        class="col-12 col-sm-10 offset-sm-1 col-md-8
+                        offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                         <div class="login-brand">
                             <img src="../assets/img/stisla-fill.svg" alt="logo" width="100"
                                 class="shadow-light rounded-circle">
@@ -74,8 +75,9 @@
                                                         <i class="fas fa-phone"></i>
                                                     </div>
                                                 </div>
-                                                <input name="nomor_hp" type="text"
-                                                    class="form-control phone-number @error('nomor_hp') is-invalid @enderror">
+                                                <input name="nomor_hp" type="text" value="{{ old('nomor_hp') }}"
+                                                    class="form-control phone-number
+                                                    @error('nomor_hp') is-invalid @enderror">
                                             </div>
                                             @error('nomor_hp')
                                                 <div class="invalid-feedback">
@@ -87,6 +89,7 @@
                                             <div class="form-group">
                                                 <label for="nama_instansi">Nama Instansi</label>
                                                 <input name="nama_instansi" type="text"
+                                                    value="{{ old('nama_instansi') }}"
                                                     class="form-control @error('nama_instansi') is-invalid @enderror"
                                                     placeholder="Masukkan Nama Instansi">
                                                 @error('nama_instansi')
@@ -102,6 +105,7 @@
                                             <div class="form-group">
                                                 <label for="nama_jurusan">Nama Jurusan/Prodi</label>
                                                 <input name="nama_jurusan" type="text"
+                                                    value="{{ old('nama_jurusan') }}"
                                                     class="form-control @error('nama_jurusan') is-invalid @enderror"
                                                     placeholder="Masukkan Nama Jurusan">
                                                 @error('nama_jurusan')
@@ -114,7 +118,7 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label for="nim">NIM</label>
-                                                <input name="nim" type="text"
+                                                <input name="nim" type="text" value="{{ old('nim') }}"
                                                     class="form-control @error('nim') is-invalid @enderror"
                                                     placeholder="Masukkan NIM">
                                                 @error('nim')
@@ -131,7 +135,7 @@
                                                 <label>Link CV</label>
                                                 <small class="text-muted" style="display: block;">Please provide a
                                                     valid portfolio link.</small>
-                                                <input name="link_cv" type="text"
+                                                <input name="link_cv" type="text" value="{{ old('link_cv') }}"
                                                     class="form-control @error('link_cv') is-invalid @enderror"
                                                     placeholder="Masukkan Link CV">
                                                 @error('link_cv')
@@ -147,6 +151,7 @@
                                                 <small class="text-muted" style="display: block;">Please provide a
                                                     valid portfolio link.</small>
                                                 <input name="link_porto" type="text"
+                                                    value="{{ old('link_porto') }}"
                                                     class="form-control @error('link_porto') is-invalid @enderror"
                                                     placeholder="Masukkan Link Porto">
                                                 @error('link_porto')
@@ -162,7 +167,8 @@
                                             <div class="form-group">
                                                 <label>Divisi</label>
                                                 <select
-                                                    class="form-control select2 @error('divisi_id') is-invalid @enderror"
+                                                    class="form-control select2
+                                                    @error('divisi_id') is-invalid @enderror"
                                                     id="divisi_id" name="divisi_id" data-placeholder="Pilih Divisi">
                                                     <option value=""></option>
                                                     @foreach ($divisi as $divisi2)
