@@ -21,9 +21,9 @@
                             <div class="d-flex flex-row-reverse card-header-action">
 
                                 <div class="card-header-actions">
-                                    <a class="btn btn-icon icon-left btn-primary"
+                                    {{-- <a class="btn btn-icon icon-left btn-primary"
                                         href="{{ route('list-divisi.create') }}">Tambah
-                                        Baru Divisi</a>
+                                        Baru Divisi</a> --}}
                                 </div>
                                 <h4></h4>
                                 <form class="card-header-form" id="search" method="GET"
@@ -67,8 +67,8 @@
                                                     <td>{{ $listItem->nama_instansi }}</td>
                                                     <td>{{ $listItem->nama_jurusan }}</td>
                                                     <td>{{ $listItem->nim }}</td>
-                                                    <td>{{ $listItem->link_cv }}</td>
-                                                    <td>{{ $listItem->link_porto }}</td>
+                                                    <td><a href="{{ $listItem->link_cv }}">{{ $listItem->link_cv }}</a></td>
+                                                    <td><a href="{{ $listItem->link_porto }}">{{ $listItem->link_porto }}</a></td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
                                                             <a href="#"
