@@ -15,6 +15,7 @@ use App\Http\Controllers\RoleAndPermission\ImportPermissionController;
 use App\Http\Controllers\RoleAndPermission\ImportRoleController;
 use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
+use App\Http\Controllers\SoalController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('divisi-management')->group(function () {
         Route::resource('list-divisi', DivisiController::class);
+    });
+
+    Route::prefix('soal-management')->group(function () {
+        Route::resource('list-soal', SoalController::class);
     });
 
     Route::prefix('menu-management')->group(function () {

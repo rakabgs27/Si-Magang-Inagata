@@ -114,10 +114,16 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'manager']);
         $role->givePermissionTo(Permission::all());
 
+        // create mentor
+        $role = Role::create(['name' => 'mentor']);
+        $role->givePermissionTo(Permission::all());
+
         //assign user id 1 ke manager
         $user = User::find(1);
         $user->assignRole('manager');
         $user = User::find(2);
         $user->assignRole('user');
+        $user = User::find(3);
+        $user->assignRole('mentor');
     }
 }
