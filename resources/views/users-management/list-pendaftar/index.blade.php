@@ -3,10 +3,10 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Menu User Management</h1>
+            <h1>List Pendaftar </h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tabel List Pendaftar</h2>
+            <h2 class="section-title">User Management</h2>
 
             <div class="row">
                 <div class="col-12">

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             MenuItemSeeder::class,
             ProfileSeeder::class,
             DivisiSeeder::class,
+            DivisiMentorSeeder::class,
         ]);
     }
 }

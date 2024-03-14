@@ -79,6 +79,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'menu-item.destroy']);
 
         $seeders = [
+            'divisi-mentor',
             'list-pendaftar',
             'list-soal',
             'test-soal',

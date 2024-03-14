@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\PendaftarController;
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('list-pendaftar', PendaftarController::class);
+        Route::resource('divisi-mentor', DivisiMentorController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');
         Route::get('demo', DemoController::class)->name('user.demo');
