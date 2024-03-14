@@ -89,7 +89,21 @@ class DivisiMentorController extends Controller
      */
     public function edit(DivisiMentor $divisiMentor)
     {
-        //
+        $users = User::role('mentor')->get();
+
+        $divisis = Divisi::all();
+
+        $selectedDivisiIds = DB::table('divisi_mentors')
+            ->where('user_id', $divisiMentor->user_id)
+            ->pluck('divisi_id')
+            ->toArray();
+
+        return view('users-management.divisi-mentor.edit', [
+            'divisiMentor' => $divisiMentor,
+            'users' => $users,
+            'divisis' => $divisis,
+            'selectedDivisiIds' => $selectedDivisiIds,
+        ]);
     }
 
     /**
@@ -101,8 +115,25 @@ class DivisiMentorController extends Controller
      */
     public function update(UpdateDivisiMentorRequest $request, DivisiMentor $divisiMentor)
     {
-        //
+        $userId = $request->input('users');
+        $divisiIds = $request->input('divisis');
+
+        // Menghapus semua hubungan terdahulu untuk user ini, kecuali yang masih relevan berdasarkan input baru.
+        DivisiMentor::where('user_id', $userId)
+            ->whereNotIn('divisi_id', $divisiIds)
+            ->delete();
+
+        foreach ($divisiIds as $divisiId) {
+            // Memastikan tidak ada duplikasi saat menambahkan hubungan baru.
+            DivisiMentor::firstOrCreate([
+                'user_id' => $userId,
+                'divisi_id' => $divisiId,
+            ]);
+        }
+
+        return redirect()->route('divisi-mentor.index')->with('success', 'Data berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

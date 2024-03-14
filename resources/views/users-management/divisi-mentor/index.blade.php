@@ -25,7 +25,8 @@
                         <div class="card-header">
                             <h4>Divisi Mentor</h4>
                             <div class="card-header-action">
-                                <a class="btn btn-icon icon-left btn-primary" href="{{ route('divisi-mentor.create') }}">Tambah Divisi Mentor</a>
+                                <a class="btn btn-icon icon-left btn-primary"
+                                    href="{{ route('divisi-mentor.create') }}">Tambah Divisi Mentor</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -61,7 +62,7 @@
                                 <table class="table table-bordered table-md">
                                     <tbody>
                                         <tr>
-                                            <th>#</th>
+                                            <th>No</th>
                                             <th>Nama Mentor</th>
                                             <th>Nama Divisi</th>
                                             <th>Created At</th>
@@ -72,19 +73,21 @@
                                                 <td>{{ $divisiMentors->firstItem() + $key }}</td>
                                                 <td>{{ $listItem->user_name }}</td>
                                                 <td>{{ $listItem->nama_divisi }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)->format('d F Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)
+                                                ->format('d F Y') }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
-                                                        <a href="#" class="btn btn-sm btn-info btn-icon "><i
+                                                        <a href="{{ route('divisi-mentor.edit', $listItem->id) }}"
+                                                            class="btn btn-sm btn-info btn-icon "><i
                                                                 class="fas fa-edit"></i>
                                                             Edit</a>
-                                                        <form action="#" method="POST" class="ml-2">
+                                                        {{-- <form action="#" method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}">
                                                             <button class="btn btn-sm btn-danger btn-icon confirm-delete">
                                                                 <i class="fas fa-times"></i> Delete </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>

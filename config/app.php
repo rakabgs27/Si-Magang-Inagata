@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -180,7 +180,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         //spatie
         Spatie\Permission\PermissionServiceProvider::class,
-        
+
 
     ],
 
