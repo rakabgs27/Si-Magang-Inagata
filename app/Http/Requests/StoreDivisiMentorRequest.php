@@ -13,7 +13,7 @@ class StoreDivisiMentorRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class StoreDivisiMentorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'users' => 'required',
+            'divisis' => 'required|array|min:1',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'users.required' => 'Setidaknya satu mentor harus dipilih.',
+            'divisis.required' => 'Setidaknya satu divisi harus dipilih.',
+            'divisis.array' => 'Input divisi harus dalam bentuk array.',
+            'divisis.min' => 'Setidaknya satu divisi harus dipilih.',
         ];
     }
 }

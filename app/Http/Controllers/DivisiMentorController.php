@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\DivisiMentor;
 use App\Http\Requests\StoreDivisiMentorRequest;
 use App\Http\Requests\UpdateDivisiMentorRequest;
+use App\Models\Divisi;
+use App\Models\User;
 use DB;
 
 class DivisiMentorController extends Controller
@@ -36,7 +38,15 @@ class DivisiMentorController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::role('mentor')->get();
+        // dd($users);
+
+        $divisis = Divisi::all();
+
+        return view('users-management.divisi-mentor.create', [
+            'users' => $users,
+            'divisis' => $divisis,
+        ]);
     }
 
     /**
@@ -47,7 +57,17 @@ class DivisiMentorController extends Controller
      */
     public function store(StoreDivisiMentorRequest $request)
     {
-        //
+        $userId = $request->input('users');
+        $divisiIds = $request->input('divisis');
+
+        foreach ($divisiIds as $divisiId) {
+            DivisiMentor::create([
+                'user_id' => $userId,
+                'divisi_id' => $divisiId,
+            ]);
+        }
+
+        return redirect()->route('divisi-mentor.index')->with('success', 'Data berhasil disimpan.');
     }
 
     /**

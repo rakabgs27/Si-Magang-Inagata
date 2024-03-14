@@ -25,7 +25,7 @@
                         <div class="card-header">
                             <h4>Divisi Mentor</h4>
                             <div class="card-header-action">
-                                <a class="btn btn-icon icon-left btn-primary" href="#">Tambah Divisi Mentor</a>
+                                <a class="btn btn-icon icon-left btn-primary" href="{{ route('divisi-mentor.create') }}">Tambah Divisi Mentor</a>
                             </div>
                         </div>
                         <div class="card-body">
