@@ -103,14 +103,13 @@ class DivisiMentorController extends Controller
     {
         $users = User::role('mentor')->get();
 
-
         $divisis = Divisi::all();
 
         $selectedDivisiIds = DB::table('divisi_mentors')
             ->where('user_id', $divisiMentor->id)
             ->pluck('divisi_id')
             ->toArray();
-        // dd($users);
+        // dd($divisiMentor);
 
         return view('users-management.divisi-mentor.edit', [
             'divisiMentor' => $divisiMentor,
