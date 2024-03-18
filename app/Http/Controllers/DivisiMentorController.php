@@ -23,7 +23,7 @@ class DivisiMentorController extends Controller
             $query->where('name', 'mentor');
         })->with(['roles', 'divisiMentor.divisi'])->paginate(10);
 
-        dd($divisiMentor);
+        // dd($divisiMentor);
 
         return view('users-management.divisi-mentor.index', [
             'divisiMentor' => $divisiMentor
@@ -75,7 +75,7 @@ class DivisiMentorController extends Controller
         }
 
         if ($duplicate) {
-            return redirect()->route('divisi-mentor.index')->with('error', 'Beberapa data tidak disimpan karena divisi sudah ada.');
+            return redirect()->route('divisi-mentor.index')->with('error', 'Karena mentor sudah ada divisi');
         }
 
         return redirect()->route('divisi-mentor.index')->with('success', 'Data berhasil disimpan.');
@@ -99,17 +99,18 @@ class DivisiMentorController extends Controller
      * @param  \App\Models\DivisiMentor  $divisiMentor
      * @return \Illuminate\Http\Response
      */
-    public function edit(DivisiMentor $divisiMentor)
+    public function edit(User $divisiMentor)
     {
         $users = User::role('mentor')->get();
+
 
         $divisis = Divisi::all();
 
         $selectedDivisiIds = DB::table('divisi_mentors')
-            ->where('user_id', $divisiMentor->user_id)
+            ->where('user_id', $divisiMentor->id)
             ->pluck('divisi_id')
             ->toArray();
-        // dd($divisiMentor);
+        // dd($users);
 
         return view('users-management.divisi-mentor.edit', [
             'divisiMentor' => $divisiMentor,

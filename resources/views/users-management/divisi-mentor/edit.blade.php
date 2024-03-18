@@ -24,9 +24,9 @@
                             <select id="users" name="users"
                                 class="form-control select2 @error('users') is-invalid @enderror">
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        {{ $divisiMentor->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}
-                                    </option>
+                                    @if ($divisiMentor->id == $user->id)
+                                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                             @error('users')
@@ -35,6 +35,7 @@
                                 </div>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label for="divisis">Pilih Divisi</label>
                             <select id="divisis" name="divisis[]"
