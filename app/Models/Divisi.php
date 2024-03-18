@@ -14,4 +14,9 @@ class Divisi extends Model
     protected $fillable = [
         'nama_divisi'
     ];
+
+    public function divisiMentors()
+    {
+        return $this->hasMany(DivisiMentor::class, 'divisi_id');
+    }
 }

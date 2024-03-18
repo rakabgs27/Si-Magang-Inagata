@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateDivisiMentorRequest;
 use App\Models\Divisi;
 use App\Models\User;
 use DB;
+use Illuminate\Http\Request;
 
 class DivisiMentorController extends Controller
 {
@@ -18,16 +19,14 @@ class DivisiMentorController extends Controller
      */
     public function index()
     {
-        $divisiMentors = DB::table('divisi_mentors')
-            ->join('users', 'divisi_mentors.user_id', '=', 'users.id')
-            ->join('divisis', 'divisi_mentors.divisi_id', '=', 'divisis.id')
-            ->select('divisi_mentors.*', 'users.name as user_name', 'divisis.nama_divisi as nama_divisi')
-            ->paginate(10);
+        $divisiMentor = User::whereHas('roles', function ($query) {
+            $query->where('name', 'mentor');
+        })->with(['roles', 'divisiMentor.divisi'])->paginate(10);
 
-        // dd($divisiMentors);
+        dd($divisiMentor);
 
         return view('users-management.divisi-mentor.index', [
-            'divisiMentors' => $divisiMentors
+            'divisiMentor' => $divisiMentor
         ]);
     }
 
@@ -59,16 +58,29 @@ class DivisiMentorController extends Controller
     {
         $userId = $request->input('users');
         $divisiIds = $request->input('divisis');
+        $duplicate = false;
 
         foreach ($divisiIds as $divisiId) {
-            DivisiMentor::create([
-                'user_id' => $userId,
-                'divisi_id' => $divisiId,
-            ]);
+            // Pengecekan apakah kombinasi user_id dan divisi_id sudah ada
+            $exists = DivisiMentor::where('user_id', $userId)->where('divisi_id', $divisiId)->exists();
+
+            if (!$exists) {
+                DivisiMentor::create([
+                    'user_id' => $userId,
+                    'divisi_id' => $divisiId,
+                ]);
+            } else {
+                $duplicate = true;
+            }
+        }
+
+        if ($duplicate) {
+            return redirect()->route('divisi-mentor.index')->with('error', 'Beberapa data tidak disimpan karena divisi sudah ada.');
         }
 
         return redirect()->route('divisi-mentor.index')->with('success', 'Data berhasil disimpan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -97,6 +109,7 @@ class DivisiMentorController extends Controller
             ->where('user_id', $divisiMentor->user_id)
             ->pluck('divisi_id')
             ->toArray();
+        // dd($divisiMentor);
 
         return view('users-management.divisi-mentor.edit', [
             'divisiMentor' => $divisiMentor,
@@ -118,13 +131,11 @@ class DivisiMentorController extends Controller
         $userId = $request->input('users');
         $divisiIds = $request->input('divisis');
 
-        // Menghapus semua hubungan terdahulu untuk user ini, kecuali yang masih relevan berdasarkan input baru.
         DivisiMentor::where('user_id', $userId)
             ->whereNotIn('divisi_id', $divisiIds)
             ->delete();
 
         foreach ($divisiIds as $divisiId) {
-            // Memastikan tidak ada duplikasi saat menambahkan hubungan baru.
             DivisiMentor::firstOrCreate([
                 'user_id' => $userId,
                 'divisi_id' => $divisiId,

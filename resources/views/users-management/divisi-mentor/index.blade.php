@@ -68,26 +68,20 @@
                                             <th>Created At</th>
                                             <th class="text-right">Action</th>
                                         </tr>
-                                        @foreach ($divisiMentors as $key => $listItem)
+                                        @foreach ($divisiMentor as $key => $listItem)
                                             <tr>
-                                                <td>{{ $divisiMentors->firstItem() + $key }}</td>
-                                                <td>{{ $listItem->user_name }}</td>
-                                                <td>{{ $listItem->nama_divisi }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)
-                                                ->format('d F Y') }}</td>
+                                                <td>{{ $divisiMentor->firstItem() + $key }}</td>
+                                                <td>{{ $listItem->name }}</td>
+                                                <td>
+                                                    {{ $listItem->divisiMentor->pluck('divisi.nama_divisi')->implode(', ') }}
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)->format('d F Y') }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="{{ route('divisi-mentor.edit', $listItem->id) }}"
                                                             class="btn btn-sm btn-info btn-icon "><i
                                                                 class="fas fa-edit"></i>
                                                             Edit</a>
-                                                        {{-- <form action="#" method="POST" class="ml-2">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Delete </button>
-                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -95,14 +89,10 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{ $divisiMentors->withQueryString()->links() }}
+                                    {{ $divisiMentor->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
