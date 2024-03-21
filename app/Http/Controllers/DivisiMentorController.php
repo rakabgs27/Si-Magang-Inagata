@@ -61,7 +61,6 @@ class DivisiMentorController extends Controller
         $duplicate = false;
 
         foreach ($divisiIds as $divisiId) {
-            // Pengecekan apakah kombinasi user_id dan divisi_id sudah ada
             $exists = DivisiMentor::where('user_id', $userId)->where('divisi_id', $divisiId)->exists();
 
             if (!$exists) {
