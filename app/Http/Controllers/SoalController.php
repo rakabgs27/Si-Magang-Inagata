@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
+use App\Models\Divisi;
+use App\Models\DivisiMentor;
+use Auth;
 use Illuminate\Http\Request;
 
 
@@ -33,7 +36,7 @@ class SoalController extends Controller
             return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
         })->paginate(10);
 
-        return view('soal-management.list-soal.index',[
+        return view('soal-management.list-soal.index', [
             'listSoal' => $listSoal,
             'judulSoalSearch' => $judulSoalSearch,
         ]);
@@ -46,7 +49,20 @@ class SoalController extends Controller
      */
     public function create()
     {
-        return view('soal-management.list-soal.create');
+        $user = Auth::user();
+
+        $divisiMentors = DivisiMentor::where('user_id', $user->id)->get();
+
+        $divisiIds = $divisiMentors->pluck('divisi_id');
+
+        $divisis = Divisi::whereIn('id', $divisiIds)->get();
+        // dd($divisis);
+
+        return view('soal-management.list-soal.create', [
+            'user' => $user,
+            'divisiMentors' => $divisiMentors,
+            'divisis' => $divisis,
+        ]);
     }
 
     /**
