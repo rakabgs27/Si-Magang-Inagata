@@ -13,9 +13,11 @@ class Soal extends Model
 
     protected $fillable = [
         'divisi_id',
-        'pendaftar_id',
+        'user_id',
         'judul_soal',
         'file_soal',
+        'deskripsi_soal',
+        'tanggal_upload',
     ];
 
     public function divisi()
@@ -23,8 +25,8 @@ class Soal extends Model
         return $this->belongsTo(Divisi::class);
     }
 
-    public function pendaftar()
+    public function user()
     {
-        return $this->belongsTo(Pendaftar::class);
+        return $this->belongsTo(User::class);
     }
 }

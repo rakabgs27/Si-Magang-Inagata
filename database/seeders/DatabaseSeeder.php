@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             DivisiSeeder::class,
             DivisiMentorSeeder::class,
+            SoalSeeder::class,
         ]);
     }
 }
