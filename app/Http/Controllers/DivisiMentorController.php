@@ -38,8 +38,6 @@ class DivisiMentorController extends Controller
     public function create()
     {
         $users = User::role('mentor')->get();
-        // dd($users);
-
         $divisis = Divisi::all();
 
         return view('users-management.divisi-mentor.create', [
@@ -108,7 +106,6 @@ class DivisiMentorController extends Controller
             ->where('user_id', $divisiMentor->id)
             ->pluck('divisi_id')
             ->toArray();
-        // dd($divisiMentor);
 
         return view('users-management.divisi-mentor.edit', [
             'divisiMentor' => $divisiMentor,
@@ -125,9 +122,9 @@ class DivisiMentorController extends Controller
      * @param  \App\Models\DivisiMentor  $divisiMentor
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDivisiMentorRequest $request, DivisiMentor $divisiMentor)
+    public function update(UpdateDivisiMentorRequest $request, User $divisiMentor)
     {
-        $userId = $request->input('users');
+        $userId = $divisiMentor->id;
         $divisiIds = $request->input('divisis');
 
         DivisiMentor::where('user_id', $userId)

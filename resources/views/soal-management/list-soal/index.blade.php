@@ -26,7 +26,7 @@
                             <h4>List Soal</h4>
                             <div class="card-header-action">
                                 <a class="btn btn-icon icon-left btn-primary"
-                                    href="#">Tambah Soal</a>
+                                    href="{{ route ('list-soal.create')}}">Tambah Soal</a>
                                 <a class="btn btn-icon icon-left btn-primary"
                                     href="#">Assign Soal Pendaftar</a>
                             </div>

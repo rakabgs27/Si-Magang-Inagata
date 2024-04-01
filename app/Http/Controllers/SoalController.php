@@ -46,7 +46,7 @@ class SoalController extends Controller
      */
     public function create()
     {
-        //
+        return view('soal-management.list-soal.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class SoalController extends Controller
      */
     public function store(StoreSoalRequest $request)
     {
-        //
+        dd($request);
     }
 
     /**

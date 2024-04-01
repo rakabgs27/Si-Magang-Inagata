@@ -35,7 +35,6 @@
                                 </div>
                             @enderror
                         </div>
-
                         <div class="form-group">
                             <label for="divisis">Pilih Divisi</label>
                             <select id="divisis" name="divisis[]"
