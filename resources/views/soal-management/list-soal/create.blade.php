@@ -13,7 +13,7 @@
                     <h4>Validasi Tambah Soal</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('list-soal.store') }}" method="post">
+                    <form action="{{ route('list-soal.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
                         @error('user_id')
@@ -119,6 +119,7 @@
             var dropArea = document.getElementById('dropArea');
             var fileInput = document.getElementById('fileInput');
             var fileList = document.querySelector('.file-list');
+
 
             dropArea.addEventListener('click', function() {
                 fileInput.click();

@@ -59,8 +59,6 @@ class SoalController extends Controller
         // dd($divisis);
 
         return view('soal-management.list-soal.create', [
-            'user' => $user,
-            'divisiMentors' => $divisiMentors,
             'divisis' => $divisis,
         ]);
     }
@@ -73,7 +71,13 @@ class SoalController extends Controller
      */
     public function store(StoreSoalRequest $request)
     {
-        dd($request);
+        // dd($request->hasFile('files'));
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            dd($files);
+        } else {
+            dd('bagus');
+        }
     }
 
     /**

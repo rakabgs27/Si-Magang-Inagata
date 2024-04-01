@@ -24,7 +24,7 @@ class StoreSoalRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'files.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/gif,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,audio/mpeg,audio/wav',
         ];
     }
 }
