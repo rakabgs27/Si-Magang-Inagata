@@ -15,15 +15,12 @@
                 <div class="card-body">
                     <form action="{{ route('list-soal.store') }}" method="post">
                         @csrf
-                        <div class="form-group">
-                            <input type="hidden" class="form-control" id="user_id" name="user_id"
-                                value="{{ Auth::id() }}" readonly>
-                            @error('user_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
+                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
+                        @error('user_id')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <div class="form-group">
                             <label for="divisi_id">Pilih Divisi</label>
                             <select id="divisi_id" name="divisi_id[]"
@@ -52,7 +49,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="file_soal">Upload File Soal</label>
+                            <label>Upload File Soal</label>
                             <div id="dropArea" class="drag-drop-area">
                                 <p>Drag files here or click to select files</p>
                             </div>
