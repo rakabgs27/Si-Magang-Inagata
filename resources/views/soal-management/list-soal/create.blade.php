@@ -49,14 +49,6 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Upload File Soal</label>
-                            <div id="dropArea" class="drag-drop-area">
-                                <p>Drag files here or click to select files</p>
-                            </div>
-                            <input type="file" id="fileInput" name="files[]" multiple class="form-control">
-                            <ul class="file-list"></ul>
-                        </div>
-                        <div class="form-group">
                             <label for="deskripsi">Deskripsi Soal</label>
                             <textarea name="deskripsi" id="deskripsi"
                                 class="text-dark form-control summernote
@@ -67,6 +59,14 @@
                                     {{ $message }}
                                 </div>
                             @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Upload File Soal</label>
+                            <div id="dropArea" class="drag-drop-area">
+                                <p>Drag files here or click to select files</p>
+                            </div>
+                            <input type="file" id="fileInput" name="files[]" multiple class="form-control">
+                            <ul class="file-list"></ul>
                         </div>
                         <div class="form-group">
                             <label for="tanggal_upload">Tanggal Upload</label>
