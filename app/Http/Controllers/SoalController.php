@@ -49,9 +49,9 @@ class SoalController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
+        $currentUser = Auth::user();
 
-        $divisiMentors = DivisiMentor::where('user_id', $user->id)->get();
+        $divisiMentors = DivisiMentor::where('user_id', $currentUser->id)->get();
 
         $divisiIds = $divisiMentors->pluck('divisi_id');
 
@@ -60,6 +60,7 @@ class SoalController extends Controller
 
         return view('soal-management.list-soal.create', [
             'divisis' => $divisis,
+            'currentUser' => $currentUser,
         ]);
     }
 
@@ -71,14 +72,31 @@ class SoalController extends Controller
      */
     public function store(StoreSoalRequest $request)
     {
-        // dd($request->hasFile('files'));
+        // Validate the request data
+        $validated = $request->validated();
+
+        // Set the authenticated user ID
+        $validated['user_id'] = auth()->id();
+
+        // Create an instance of the Soal model and save it
+        $soal = Soal::create($validated);
+
+        // Store uploaded files in the 'materi' directory within the 'public' disk
         if ($request->hasFile('files')) {
-            $files = $request->file('files');
-            dd($files);
-        } else {
-            dd('bagus');
+            foreach ($request->file('files') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('soal', $fileName, 'public');
+
+                // Update the 'file_path' column in the Soal table
+                $soal->update(['file_path' => $filePath]);
+            }
         }
+
+        // Redirect to the index page with a success message
+        return redirect()->route('list-soal.index')->with('success', 'Soal berhasil disimpan!');
     }
+
+
 
     /**
      * Display the specified resource.

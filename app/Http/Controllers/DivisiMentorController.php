@@ -54,6 +54,7 @@ class DivisiMentorController extends Controller
      */
     public function store(StoreDivisiMentorRequest $request)
     {
+        // dd($request->all());
         $userId = $request->input('users');
         $divisiIds = $request->input('divisis');
         $duplicate = false;

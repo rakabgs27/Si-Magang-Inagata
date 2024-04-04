@@ -15,12 +15,9 @@
                 <div class="card-body">
                     <form action="{{ route('list-soal.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
-                        @error('user_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <div class="form-group" style="display: none">
+                            <input type="hidden" name="user_id" value="{{ $currentUser->id }}">
+                        </div>
                         <div class="form-group">
                             <label for="divisi_id">Pilih Divisi</label>
                             <select id="divisi_id" name="divisi_id[]"
