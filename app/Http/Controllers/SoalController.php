@@ -77,17 +77,13 @@ class SoalController extends Controller
      */
     public function store(StoreSoalRequest $request)
     {
-        // Validate the request data
         $validated = $request->validated();
-
-        // Set the authenticated user ID
+        // dd($validated);
         $validated['user_id'] = auth()->id();
 
-        // Convert array 'divisi_id' to string
         $divisiIdsString = implode(',', $validated['divisi_id']);
         $validated['divisi_id'] = $divisiIdsString;
 
-        // Store uploaded files in the 'materi' directory within the 'public' disk
         if ($request->hasFile('files')) {
             $filePaths = []; // Array to store file paths
             foreach ($request->file('files') as $file) {
@@ -95,17 +91,13 @@ class SoalController extends Controller
                 $filePath = $file->storeAs('soal', $fileName, 'public');
                 $filePaths[] = $filePath; // Store file path in array
             }
-            // Convert array of file paths to string and separate them by comma
             $filePathsString = implode(',', $filePaths);
 
-            // Store file paths in 'file_soal' column
             $validated['file_soal'] = $filePathsString;
         }
 
-        // Create an instance of the Soal model and save it
         Soal::create($validated);
 
-        // Redirect to the index page with a success message
         return redirect()->route('list-soal.index')->with('success', 'Soal berhasil disimpan!');
     }
 

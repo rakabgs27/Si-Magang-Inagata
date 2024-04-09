@@ -24,42 +24,27 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <h4>List Soal</h4>
-                            <div class="card-header-action">
-                                <a class="btn btn-icon icon-left btn-primary"
-                                    href="{{ route ('list-soal.create')}}">Tambah Soal</a>
-                                <a class="btn btn-icon icon-left btn-primary"
-                                    href="#">Assign Soal Pendaftar</a>
+                            <div class="d-flex flex-row-reverse card-header-action">
+                                <div class="card-header-actions">
+                                    <a class="btn btn-icon icon-left btn-primary"
+                                        href="{{ route('list-soal.create') }}">Tambah Soal</a>
+                                    <a class="btn btn-icon icon-left btn-primary" href="#">Assign Soal Pendaftar</a>
+                                </div>
+                                <h4></h4>
+                                <form class="card-header-form" id="search" method="GET"
+                                    action="{{ route('list-soal.index') }}">
+                                    <div class="input-group">
+                                        <input type="text" name="judul_soal" class="form-control"
+                                            placeholder="Cari Judul Soal" value="{{ $judulSoalSearch }}">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary btn-icon"><i class="fas fa-search"
+                                                    type="submit"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="show-import" style="display: none">
-                                <div class="custom-file">
-                                    {{-- <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
-                                        {{ csrf_field() }}
-                                        <label class="custom-file-label" for="file-upload">Choose File</label>
-                                        <input type="file" id="file-upload" class="custom-file-input" name="import_file">
-                                        <br /> <br />
-                                        <div class="footer text-right">
-                                            <button class="btn btn-primary">Import File</button>
-                                        </div>
-                                    </form> --}}
-                                </div>
-                            </div>
-                            <div class="show-search mb-3" style="display: none">
-                                {{-- <form id="search" method="GET" action="{{ route('user.index') }}">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4">
-                                            <label for="role">User</label>
-                                            <input type="text" name="name" class="form-control" id="name"
-                                                placeholder="User Name">
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
-                                        <a class="btn btn-secondary" href="{{ route('user.index') }}">Reset</a>
-                                    </div>
-                                </form> --}}
-                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-md">
                                     <tbody>
@@ -68,6 +53,7 @@
                                             <th>Nama Mentor</th>
                                             <th>Nama Divisi</th>
                                             <th>Judul Soal</th>
+                                            <th>Tanggal Upload</th>
                                             <th class="text-right">Action</th>
                                         </tr>
                                         @foreach ($listSoal as $key => $listItem)
@@ -76,21 +62,40 @@
                                                 <td>{{ $listItem->name }}</td>
                                                 <td>{{ $listItem->nama_divisi }}</td>
                                                 <td>{{ $listItem->judul_soal }}</td>
-
+                                                <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->format('d F Y H:i:s') }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
-                                                        <a href="{{ route('divisi-mentor.edit', $listItem->id) }}"
-                                                            class="btn btn-sm btn-info btn-icon "><i
-                                                                class="fas fa-edit"></i>
+                                                        <a href="{{ route('list-soal.edit', $listItem->id) }}"
+                                                            class="btn btn-sm btn-info btn-icon">
+                                                            <i class="fas fa-edit"></i>
                                                             Edit</a>
+                                                        <span class="mr-2"></span> <!-- Tambahkan spasi di sini -->
+                                                        <a href="{{ route('list-soal.edit', $listItem->id) }}"
+                                                            class="btn btn-sm btn-warning btn-icon">
+                                                            <i class="fas fa-edit"></i>
+                                                            Detail</a>
+                                                        <form action="{{ route('list-soal.destroy', $listItem->id) }}"
+                                                            method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="_token"
+                                                                value="{{ csrf_token() }}">
+                                                            <button type="submit" id="#submit"
+                                                                class="btn btn-sm btn-danger btn-icon"
+                                                                data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
+                                                                data-confirm-yes="submitDel(<?= $listItem->id ?>)"
+                                                                data-id="del-{{ $listItem->id }}">
+                                                                <i class="fas fa-times"></i> Delete
+                                                            </button>
+                                                        </form>
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{-- {{ $divisiMentor->withQueryString()->links() }} --}}
+                                    {{ $listSoal->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>

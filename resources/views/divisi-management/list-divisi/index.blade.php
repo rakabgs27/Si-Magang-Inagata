@@ -19,7 +19,6 @@
                         <div class="card-header">
                             <h4>List Divisi</h4>
                             <div class="d-flex flex-row-reverse card-header-action">
-
                                 <div class="card-header-actions">
                                     <a class="btn btn-icon icon-left btn-primary"
                                         href="{{ route('list-divisi.create') }}">Tambah
