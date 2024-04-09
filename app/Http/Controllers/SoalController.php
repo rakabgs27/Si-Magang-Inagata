@@ -56,7 +56,6 @@ class SoalController extends Controller
         $divisiIds = $divisiMentors->pluck('divisi_id');
 
         $divisis = Divisi::whereIn('id', $divisiIds)->get();
-        // dd($divisis);
 
         return view('soal-management.list-soal.create', [
             'divisis' => $divisis,
@@ -78,24 +77,31 @@ class SoalController extends Controller
         // Set the authenticated user ID
         $validated['user_id'] = auth()->id();
 
-        // Create an instance of the Soal model and save it
-        $soal = Soal::create($validated);
+        // Convert array 'divisi_id' to string
+        $divisiIdsString = implode(',', $validated['divisi_id']);
+        $validated['divisi_id'] = $divisiIdsString;
 
         // Store uploaded files in the 'materi' directory within the 'public' disk
         if ($request->hasFile('files')) {
+            $filePaths = []; // Array to store file paths
             foreach ($request->file('files') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs('soal', $fileName, 'public');
-
-                // Update the 'file_path' column in the Soal table
-                $soal->update(['file_path' => $filePath]);
+                $filePaths[] = $filePath; // Store file path in array
             }
+            // Convert array of file paths to string and separate them by comma
+            $filePathsString = implode(',', $filePaths);
+
+            // Store file paths in 'file_soal' column
+            $validated['file_soal'] = $filePathsString;
         }
+
+        // Create an instance of the Soal model and save it
+        Soal::create($validated);
 
         // Redirect to the index page with a success message
         return redirect()->route('list-soal.index')->with('success', 'Soal berhasil disimpan!');
     }
-
 
 
     /**
