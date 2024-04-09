@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Divisi;
 use App\Models\DivisiMentor;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 
@@ -34,13 +35,18 @@ class SoalController extends Controller
 
         $listSoal = Soal::when($request->input('judul_soal'), function ($query, $judulSoal) {
             return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
-        })->paginate(10);
-
+        })
+        ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
+        ->join('users', 'soals.user_id', '=', 'users.id')
+        ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name')
+        ->paginate(10);
+        // dd($listSoal);
         return view('soal-management.list-soal.index', [
             'listSoal' => $listSoal,
             'judulSoalSearch' => $judulSoalSearch,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -73,8 +73,8 @@
                                         @foreach ($listSoal as $key => $listItem)
                                             <tr>
                                                 <td>{{ $listSoal->firstItem() + $key }}</td>
-                                                <td>{{ $listItem->user->name }}</td>
-                                                <td>{{ $listItem->divisi->nama_divisi }}</td>
+                                                <td>{{ $listItem->name }}</td>
+                                                <td>{{ $listItem->nama_divisi }}</td>
                                                 <td>{{ $listItem->judul_soal }}</td>
 
                                                 <td class="text-right">

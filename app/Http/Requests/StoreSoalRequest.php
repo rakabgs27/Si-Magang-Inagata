@@ -25,7 +25,7 @@ class StoreSoalRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'divisi_id' => 'required|array|min:1',
+            'divisi_id' => 'required|array|max:1',
             'judul_soal' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'files.*' => 'nullable|file|mimetypes:image/jpeg,image/png,image/gif,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,audio/mpeg,audio/wav',
@@ -42,7 +42,7 @@ class StoreSoalRequest extends FormRequest
     {
         return [
             'divisi_id.required' => 'Divisi harus diisi.',
-            'divisis.min' => 'Setidaknya satu divisi harus dipilih.',
+            'divisi_id.max' => 'Maksimal satu divisi yang dipilih.',
             'judul_soal.required' => 'Judul soal harus diisi.',
             'judul_soal.max' => 'Judul soal tidak boleh lebih dari :max karakter.',
             'deskripsi.string' => 'Deskripsi harus berupa teks.',
