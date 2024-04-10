@@ -28,7 +28,9 @@
                                 <div class="card-header-actions">
                                     <a class="btn btn-icon icon-left btn-primary"
                                         href="{{ route('list-soal.create') }}">Tambah Soal</a>
-                                    <a class="btn btn-icon icon-left btn-primary" href="#">Assign Soal Pendaftar</a>
+                                    @role('manager')
+                                        <a class="btn btn-icon icon-left btn-primary" href="#">Assign Soal Pendaftar</a>
+                                    @endrole
                                 </div>
                                 <h4></h4>
                                 <form class="card-header-form" id="search" method="GET"
@@ -62,14 +64,15 @@
                                                 <td>{{ $listItem->name }}</td>
                                                 <td>{{ $listItem->nama_divisi }}</td>
                                                 <td>{{ $listItem->judul_soal }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->format('d F Y H:i:s') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->format('d F Y H:i:s') }}
+                                                </td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="{{ route('list-soal.edit', $listItem->id) }}"
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit</a>
-                                                        <span class="mr-2"></span> <!-- Tambahkan spasi di sini -->
+                                                        <span class="mr-2"></span>
                                                         <a href="{{ route('list-soal.edit', $listItem->id) }}"
                                                             class="btn btn-sm btn-warning btn-icon">
                                                             <i class="fas fa-edit"></i>

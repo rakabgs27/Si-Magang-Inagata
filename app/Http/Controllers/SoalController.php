@@ -78,18 +78,17 @@ class SoalController extends Controller
     public function store(StoreSoalRequest $request)
     {
         $validated = $request->validated();
-        // dd($validated);
         $validated['user_id'] = auth()->id();
 
         $divisiIdsString = implode(',', $validated['divisi_id']);
         $validated['divisi_id'] = $divisiIdsString;
 
         if ($request->hasFile('files')) {
-            $filePaths = []; // Array to store file paths
+            $filePaths = [];
             foreach ($request->file('files') as $file) {
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs('soal', $fileName, 'public');
-                $filePaths[] = $filePath; // Store file path in array
+                $filePaths[] = $filePath;
             }
             $filePathsString = implode(',', $filePaths);
 
