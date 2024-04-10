@@ -46,12 +46,12 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="deskripsi">Deskripsi Soal</label>
-                            <textarea name="deskripsi" id="deskripsi"
+                            <label for="deskripsi_soal">Deskripsi Soal</label>
+                            <textarea name="deskripsi_soal" id="deskripsi"
                                 class="text-dark form-control summernote
-                                @error('deskripsi') is-invalid @enderror"
-                                value="{{ old('deskripsi') }}" data-id="deskripsi"></textarea>
-                            @error('deskripsi')
+                                @error('deskripsi_soal') is-invalid @enderror"
+                                value="{{ old('deskripsi_soal') }}" data-id="deskripsi_soal"></textarea>
+                            @error('deskripsi_soal')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
