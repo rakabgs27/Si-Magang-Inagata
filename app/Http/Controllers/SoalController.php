@@ -10,7 +10,7 @@ use App\Models\DivisiMentor;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 
 class SoalController extends Controller
 {
@@ -36,10 +36,10 @@ class SoalController extends Controller
         $listSoal = Soal::when($request->input('judul_soal'), function ($query, $judulSoal) {
             return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
         })
-        ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
-        ->join('users', 'soals.user_id', '=', 'users.id')
-        ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name')
-        ->paginate(10);
+            ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
+            ->join('users', 'soals.user_id', '=', 'users.id')
+            ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name')
+            ->paginate(10);
         // dd($listSoal);
         return view('soal-management.list-soal.index', [
             'listSoal' => $listSoal,
@@ -83,6 +83,10 @@ class SoalController extends Controller
         $divisiIdsString = implode(',', $validated['divisi_id']);
         $validated['divisi_id'] = $divisiIdsString;
 
+        if (is_null($validated['deskripsi_soal'])) {
+            $validated['deskripsi_soal'] = "Tidak ada deskripsi";
+        }
+
         if ($request->hasFile('files')) {
             $filePaths = [];
             foreach ($request->file('files') as $file) {
@@ -107,10 +111,15 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function show(Soal $soal)
+    public function show($id)
     {
-        //
+        $soal = Soal::with('divisi', 'user')->findOrFail($id);
+
+        $fileSoalUrl = Storage::url($soal->file_soal);
+
+        return view('soal-management.list-soal.show', compact('soal', 'fileSoalUrl'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

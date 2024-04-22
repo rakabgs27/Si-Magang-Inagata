@@ -73,7 +73,7 @@
                                                             <i class="fas fa-edit"></i>
                                                             Edit</a>
                                                         <span class="mr-2"></span>
-                                                        <a href="{{ route('list-soal.edit', $listItem->id) }}"
+                                                        <a href="{{ route('list-soal.show', $listItem->id) }}"
                                                             class="btn btn-sm btn-warning btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Detail</a>
