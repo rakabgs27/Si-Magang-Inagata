@@ -145,10 +145,18 @@ class SoalController extends Controller
         $users = User::role('mentor')->get();
         $currentUser = Auth::user();
 
+        $files = FileMateri::where('soal_id', $listSoal->id)->get();
+
+        // Mengambil hanya nama file dari setiap file
+        $fileNames = $files->map(function ($file) {
+            return basename($file->files);
+        });
+
         return view('soal-management.list-soal.edit', [
             'listSoal' => $listSoal,
             'users' => $users,
             'currentUser' => $currentUser,
+            'fileNames' => $fileNames,
         ]);
     }
 

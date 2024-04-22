@@ -82,12 +82,16 @@
                                 <p>Drag files here or click to select files</p>
                             </div>
                             <input type="file" id="fileInput" name="files[]" multiple class="form-control">
-                            @if ($listSoal)
-                                @foreach ($listSoal->files as $file)
-                                    <li>{{ $file->name }} <a href="#">Remove</a></li>
-                                @endforeach
+                            @if ($fileNames->isNotEmpty())
+                                <p><strong>File Terlampir:</strong></p>
+                                <ul>
+                                    @foreach ($fileNames as $fileName)
+                                        <li>{{ $fileName }} <a href="#">Remove</a></li>
+                                    @endforeach
+                                </ul>
                             @endif
                         </div>
+
                         <div class="form-group">
                             <label for="tanggal_upload">Tanggal Upload</label>
                             <input type="datetime-local" class="form-control @error('tanggal_upload') is-invalid @enderror"
