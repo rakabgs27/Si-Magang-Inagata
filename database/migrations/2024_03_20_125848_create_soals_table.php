@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('divisi_id');
             $table->string('judul_soal');
-            $table->string('file_soal');
             $table->string('deskripsi_soal')->nullable();
             $table->dateTime('tanggal_upload');
             $table->timestamps();

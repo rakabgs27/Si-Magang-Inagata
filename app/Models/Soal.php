@@ -15,7 +15,6 @@ class Soal extends Model
         'divisi_id',
         'user_id',
         'judul_soal',
-        'file_soal',
         'deskripsi_soal',
         'tanggal_upload',
     ];

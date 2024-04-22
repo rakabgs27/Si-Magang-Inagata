@@ -21,7 +21,8 @@
                                 <select id="user_id" name="user_id"
                                     class="form-control select2 @error('user_id') is-invalid @enderror">
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" {{ $user->id == $list_soal->user_id ? 'selected' : '' }}>
+                                        <option value="{{ $user->id }}"
+                                            {{ $user->id == $listSoal->user_id ? 'selected' : '' }}>
                                             {{ $user->name }}
                                         </option>
                                     @endforeach
@@ -51,11 +52,11 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="judul_soal">Judul Soal</label>
                             <input type="text" class="form-control @error('judul_soal') is-invalid @enderror"
-                                id="judul_soal" name="judul_soal" value="{{ old('judul_soal') }}"
+                                id="judul_soal" name="judul_soal" value="{{ old('judul_soal', $listSoal->judul_soal) }}"
                                 placeholder="Masukkan Judul Soal">
                             @error('judul_soal')
                                 <div class="invalid-feedback">
@@ -68,7 +69,7 @@
                             <textarea name="deskripsi_soal" id="deskripsi"
                                 class="text-dark form-control summernote
                                 @error('deskripsi_soal') is-invalid @enderror"
-                                value="{{ old('deskripsi_soal') }}" data-id="deskripsi_soal"></textarea>
+                                data-id="deskripsi_soal">{{ old('deskripsi_soal', $listSoal->deskripsi_soal) }}</textarea>
                             @error('deskripsi_soal')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -81,7 +82,11 @@
                                 <p>Drag files here or click to select files</p>
                             </div>
                             <input type="file" id="fileInput" name="files[]" multiple class="form-control">
-                            <ul class="file-list"></ul>
+                            @if ($listSoal)
+                                @foreach ($listSoal->files as $file)
+                                    <li>{{ $file->name }} <a href="#">Remove</a></li>
+                                @endforeach
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="tanggal_upload">Tanggal Upload</label>
@@ -93,7 +98,7 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div> --}}
+                        </div>
                 </div>
                 <div class="card-footer text-right">
                     <button class="btn btn-primary">Submit</button>

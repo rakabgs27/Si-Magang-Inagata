@@ -7,9 +7,9 @@ use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Divisi;
 use App\Models\DivisiMentor;
+use App\Models\FileMateri;
 use App\Models\User;
 use Auth;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -84,23 +84,26 @@ class SoalController extends Controller
         $divisiIdsString = implode(',', $validated['divisi_id']);
         $validated['divisi_id'] = $divisiIdsString;
 
+        $files = $validated['files'];
+        unset($validated['files']);
+
         if (is_null($validated['deskripsi_soal'])) {
             $validated['deskripsi_soal'] = "Tidak ada deskripsi";
         }
 
-        if ($request->hasFile('files')) {
-            $filePaths = [];
-            foreach ($request->file('files') as $file) {
+        $soal = Soal::create($validated);
+
+        if ($request->has('files')) {
+            foreach ($files as $file) {
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs('soal', $fileName, 'public');
-                $filePaths[] = $filePath;
+
+                $uploadFile = new FileMateri();
+                $uploadFile->soal_id = $soal->id;
+                $uploadFile->files = $filePath;
+                $uploadFile->save();
             }
-            $filePathsString = implode(',', $filePaths);
-
-            $validated['file_soal'] = $filePathsString;
         }
-
-        Soal::create($validated);
 
         return redirect()->route('list-soal.index')->with('success', 'Soal berhasil disimpan!');
     }
@@ -112,14 +115,23 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Soal $listSoal)
     {
-        $soal = Soal::with('divisi', 'user')->findOrFail($id);
+        $soal = Soal::with('divisi', 'user')->findOrFail($listSoal->id);
 
-        $fileSoalUrl = Storage::url($soal->file_soal);
+        $files = FileMateri::where('soal_id', $soal->id)->get();
 
-        return view('soal-management.list-soal.show', compact('soal', 'fileSoalUrl'));
+        $fileData = $files->map(function ($file) {
+            $fileName = basename($file->files);
+            return [
+                'url' => Storage::url($file->files),
+                'name' => $fileName
+            ];
+        });
+
+        return view('soal-management.list-soal.show', compact('soal', 'fileData'));
     }
+
 
 
     /**
@@ -128,16 +140,13 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function edit(Soal $list_soal)
+    public function edit(Soal $listSoal)
     {
-        // dd($list_soal);
-
         $users = User::role('mentor')->get();
-
         $currentUser = Auth::user();
 
         return view('soal-management.list-soal.edit', [
-            'list_soal' => $list_soal,
+            'listSoal' => $listSoal,
             'users' => $users,
             'currentUser' => $currentUser,
         ]);
