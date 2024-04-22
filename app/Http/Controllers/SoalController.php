@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Divisi;
 use App\Models\DivisiMentor;
+use App\Models\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -127,10 +128,21 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function edit(Soal $soal)
+    public function edit(Soal $list_soal)
     {
-        //
+        // dd($list_soal);
+
+        $users = User::role('mentor')->get();
+
+        $currentUser = Auth::user();
+
+        return view('soal-management.list-soal.edit', [
+            'list_soal' => $list_soal,
+            'users' => $users,
+            'currentUser' => $currentUser,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
