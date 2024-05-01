@@ -12,7 +12,7 @@
                     <h4>Validasi Edit Soal</h4>
                 </div>
                 <div class="card-body">
-                    <form action="#" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('list-soal.update', $listSoal) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="form-group" style="display: none">
@@ -28,6 +28,7 @@
                             @error('divisi_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                            <input type="hidden" name="divisi_id" value="{{ $divisiSelected }}">
                         </div>
                         <div class="form-group">
                             <label for="judul_soal">Judul Soal</label>
@@ -61,8 +62,16 @@
                             @if ($fileNames->isNotEmpty())
                                 <p><strong>File Terlampir:</strong></p>
                                 <ul>
-                                    @foreach ($fileNames as $fileName)
+                                    {{-- @foreach ($fileNames as $fileName)
                                         <li>{{ $fileName }} <a href="#">Remove</a></li>
+                                    @endforeach --}}
+                                    @foreach ($fileNames as $fileName)
+                                        <li>
+                                            <p style="display: inline-block; margin-right: 10px;">
+                                                {{ basename($fileName->files) }}</p>
+                                            <a href="#" class="remove-link" style="display: inline-block;"
+                                                data-file-id="{{ $fileName->id }}">Remove</a>
+                                        </li>
                                     @endforeach
                                 </ul>
                             @endif
@@ -87,6 +96,7 @@
             </div>
         </div>
     </section>
+
 @endsection
 
 @push('customScript')
@@ -118,7 +128,7 @@
             var dropArea = document.getElementById('dropArea');
             var fileInput = document.getElementById('fileInput');
             var fileList = document.querySelector('.file-list');
-
+            var fileJsobList = @json($fileNames);
 
             dropArea.addEventListener('click', function() {
                 fileInput.click();
@@ -137,9 +147,18 @@
                 handleFiles(e.dataTransfer.files);
             });
 
-            function handleFiles(files) {
-                fileList.innerHTML = '';
+            var removeLinks = document.querySelectorAll('.remove-link');
+            removeLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var listItem = link.parentElement;
+                    var fileName = listItem.querySelector('p').textContent.trim();
+                    listItem.remove();
 
+                });
+            });
+
+            function handleFiles(files) {
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     const listItem = document.createElement('li');
@@ -154,7 +173,7 @@
                     }
 
                     listItem.appendChild(document.createTextNode(file.name));
-                    removeLink.textContent = ' Remove';
+                    removeLink.textContent = 'Remove';
                     removeLink.href = '#';
                     removeLink.className = 'remove-link';
                     listItem.appendChild(removeLink);
@@ -163,9 +182,71 @@
 
                     removeLink.addEventListener('click', function(e) {
                         e.preventDefault();
-                        fileList.removeChild(listItem);
+                        listItem.remove();
                     });
                 }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var deleteUrlTemplate = "{{ route('file-materi.destroy', ['id' => '_id_']) }}";
+    </script>
+    <script>
+        $(document).ready(function() {
+            var fileIdToDelete; // Variabel untuk menyimpan ID file yang akan dihapus
+
+            // Menangani klik pada tombol "Remove"
+            $('.remove-link').click(function(e) {
+                e.preventDefault();
+                fileIdToDelete = $(this).data('file-id'); // Simpan ID file ke dalam variabel
+
+                // Tampilkan SweetAlert untuk konfirmasi penghapusan
+                Swal.fire({
+                    title: 'Konfirmasi Penghapusan',
+                    text: "Apakah Anda yakin ingin menghapus file ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika pengguna mengkonfirmasi, lakukan penghapusan
+                        deleteFile();
+                    }
+                });
+            });
+
+            // Fungsi untuk menghapus file
+            function deleteFile() {
+                var deleteUrl = deleteUrlTemplate.replace('_id_', fileIdToDelete);
+
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'DELETE',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        Swal.fire(
+                            'Berhasil!',
+                            'File telah dihapus.',
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Reload halaman setelah penghapusan berhasil
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr
+                        .responseText); // Tampilkan pesan kesalahan jika penghapusan gagal
+                        Swal.fire(
+                            'Error!',
+                            'Gagal menghapus file.',
+                            'error'
+                        );
+                    }
+                });
             }
         });
     </script>

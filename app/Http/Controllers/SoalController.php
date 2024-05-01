@@ -165,10 +165,6 @@ class SoalController extends Controller
 
         $files = FileMateri::where('soal_id', $listSoal->id)->get();
 
-        $fileNames = $files->map(function ($file) {
-            return basename($file->files);
-        });
-
         $divisiSelected = null;
         if ($listSoal->user_id == $currentUser->id) {
             $divisiSelected = $listSoal->divisi_id;
@@ -177,7 +173,7 @@ class SoalController extends Controller
         return view('soal-management.list-soal.edit', [
             'listSoal' => $listSoal,
             'currentUser' => $currentUser,
-            'fileNames' => $fileNames,
+            'fileNames' => $files,
             'divisiSelected' => $divisiSelected,
         ]);
     }
@@ -220,5 +216,21 @@ class SoalController extends Controller
     public function destroy(Soal $soal)
     {
         //
+    }
+
+    public function destroyFile($id)
+    {
+        $file = FileMateri::find($id);
+        if ($file) {
+
+            Storage::delete($file->files);
+
+
+            $file->delete();
+
+            return redirect()->back()->with('success', 'File berhasil dihapus!');
+        } else {
+            return redirect()->back()->with('error', 'File tidak ditemukan!');
+        }
     }
 }
