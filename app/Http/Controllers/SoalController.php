@@ -32,21 +32,46 @@ class SoalController extends Controller
      */
     public function index(Request $request)
     {
-        $judulSoalSearch = $request->input('judul_soal');
+        try {
+            $user = auth()->user(); // Assuming you're using Laravel's default authentication.
+            $judulSoalSearch = $request->input('judul_soal');
 
-        $listSoal = Soal::when($request->input('judul_soal'), function ($query, $judulSoal) {
-            return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
-        })
-            ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
-            ->join('users', 'soals.user_id', '=', 'users.id')
-            ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name')
-            ->paginate(10);
-        // dd($listSoal);
-        return view('soal-management.list-soal.index', [
-            'listSoal' => $listSoal,
-            'judulSoalSearch' => $judulSoalSearch,
-        ]);
+            // Initialize the query
+            $query = Soal::when($judulSoalSearch, function ($query, $judulSoal) {
+                return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
+            })
+                ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
+                ->join('users', 'soals.user_id', '=', 'users.id')
+                ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name');
+
+            // Check user role and modify query accordingly
+            if ($user->hasRole('mentor')) {
+                // Retrieve all division IDs for the mentor
+                $mentorDivisiIds = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id');
+
+                // Filter the questions by these division IDs
+                if ($mentorDivisiIds->isEmpty()) {
+                    return redirect()->back()->withErrors('No divisions found for this mentor.');
+                }
+
+                $query->whereIn('divisi_id', $mentorDivisiIds);
+            } else if (!$user->hasRole('manager')) {
+                // If not a manager or mentor, restrict access
+                return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
+            }
+
+            // Finalize the query with pagination
+            $listSoal = $query->paginate(10);
+
+            return view('soal-management.list-soal.index', [
+                'listSoal' => $listSoal,
+                'judulSoalSearch' => $judulSoalSearch,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
+
 
 
     /**
@@ -159,7 +184,6 @@ class SoalController extends Controller
             'fileNames' => $fileNames,
         ]);
     }
-
 
     /**
      * Update the specified resource in storage.

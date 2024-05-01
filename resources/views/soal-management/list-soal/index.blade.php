@@ -26,8 +26,10 @@
                             <h4>List Soal</h4>
                             <div class="d-flex flex-row-reverse card-header-action">
                                 <div class="card-header-actions">
+                                    @role('mentor')
                                     <a class="btn btn-icon icon-left btn-primary"
                                         href="{{ route('list-soal.create') }}">Tambah Soal</a>
+                                    @endrole
                                     @role('manager')
                                         <a class="btn btn-icon icon-left btn-primary" href="#">Assign Soal Pendaftar</a>
                                     @endrole
@@ -66,6 +68,7 @@
                                                 <td>{{ $listItem->judul_soal }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->format('d F Y H:i:s') }}
                                                 </td>
+                                                @role('mentor')
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="{{ route('list-soal.edit', $listItem->id) }}"
@@ -91,8 +94,19 @@
                                                             </button>
                                                         </form>
                                                     </div>
-
                                                 </td>
+                                                @endrole
+                                                @role('manager')
+                                                <td class="text-right">
+                                                    <div class="d-flex justify-content-end">
+                                                        <span class="mr-2"></span>
+                                                        <a href="{{ route('list-soal.show', $listItem->id) }}"
+                                                            class="btn btn-sm btn-warning btn-icon">
+                                                            <i class="fas fa-edit"></i>
+                                                            Detail</a>
+                                                    </div>
+                                                </td>
+                                                @endrole
                                             </tr>
                                         @endforeach
                                     </tbody>

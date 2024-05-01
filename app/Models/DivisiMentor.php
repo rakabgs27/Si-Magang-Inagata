@@ -16,7 +16,6 @@ class DivisiMentor extends Model
         'divisi_id',
     ];
 
-    // Di model DivisiMentor
     public function divisi()
     {
         return $this->belongsTo(Divisi::class, 'divisi_id');

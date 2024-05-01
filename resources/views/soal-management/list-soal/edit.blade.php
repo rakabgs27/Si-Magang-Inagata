@@ -37,22 +37,16 @@
                                 <input type="hidden" name="user_id" value="{{ $currentUser->id }}">
                             </div>
                         @endrole
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label for="divisi_id">Pilih Divisi</label>
                             <select id="divisi_id" name="divisi_id[]"
                                 class="form-control select2 @error('divisi_id') is-invalid @enderror" multiple>
-                                @foreach ($divisis as $divisi)
-                                    <option value="{{ $divisi->id }}"
-                                        {{ in_array($divisi->id, old('divisi_id', [])) ? 'selected' : '' }}>
-                                        {{ $divisi->nama_divisi }}</option>
-                                @endforeach
+                                {{-- Opsi divisi akan dimuat oleh JavaScript --}}
                             </select>
                             @error('divisi_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div> --}}
+                        </div>
                         <div class="form-group">
                             <label for="judul_soal">Judul Soal</label>
                             <input type="text" class="form-control @error('judul_soal') is-invalid @enderror"

@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::prefix('soal-management')->group(function () {
         Route::resource('list-soal', SoalController::class);
+        Route::get('/get-divisi/{userId}', [SoalController::class, 'getDivisi'])->name('get.divisi.mentor');
     });
 
     Route::prefix('menu-management')->group(function () {
