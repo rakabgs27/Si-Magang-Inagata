@@ -15,33 +15,15 @@
                     <form action="#" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        @role('manager')
-                            <div class="form-group">
-                                <label for="user_id">Pilih Mentor</label>
-                                <select id="user_id" name="user_id"
-                                    class="form-control select2 @error('user_id') is-invalid @enderror">
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}"
-                                            {{ $user->id == $listSoal->user_id ? 'selected' : '' }}>
-                                            {{ $user->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endrole
-                        @role('mentor')
-                            <div class="form-group" style="display: none">
-                                <input type="hidden" name="user_id" value="{{ $currentUser->id }}">
-                            </div>
-                        @endrole
+                        <div class="form-group" style="display: none">
+                            <input type="hidden" name="user_id" value="{{ $currentUser->id }}">
+                        </div>
                         <div class="form-group">
                             <label for="divisi_id">Pilih Divisi</label>
-                            <select id="divisi_id" name="divisi_id[]"
-                                class="form-control select2 @error('divisi_id') is-invalid @enderror" multiple>
-                                {{-- Opsi divisi akan dimuat oleh JavaScript --}}
+                            <select id="divisi_id" name="divisi_id"
+                                class="form-control select2 @error('divisi_id') is-invalid @enderror" disabled>
+                                <option value="{{ $divisiSelected }}" selected>
+                                    {{ \App\Models\Divisi::find($divisiSelected)->nama_divisi }}</option>
                             </select>
                             @error('divisi_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -85,7 +67,6 @@
                                 </ul>
                             @endif
                         </div>
-
                         <div class="form-group">
                             <label for="tanggal_upload">Tanggal Upload</label>
                             <input type="datetime-local" class="form-control @error('tanggal_upload') is-invalid @enderror"

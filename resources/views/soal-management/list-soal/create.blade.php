@@ -21,11 +21,13 @@
                         <div class="form-group">
                             <label for="divisi_id">Pilih Divisi</label>
                             <select id="divisi_id" name="divisi_id[]"
-                                class="form-control select2 @error('divisi_id') is-invalid @enderror" multiple>
+                                class="form-control @error('divisi_id') is-invalid @enderror">
+                                <option value="">-- Pilih Divisi --</option>
                                 @foreach ($divisis as $divisi)
                                     <option value="{{ $divisi->id }}"
                                         {{ in_array($divisi->id, old('divisi_id', [])) ? 'selected' : '' }}>
-                                        {{ $divisi->nama_divisi }}</option>
+                                        {{ $divisi->nama_divisi }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('divisi_id')
@@ -34,6 +36,7 @@
                                 </div>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label for="judul_soal">Judul Soal</label>
                             <input type="text" class="form-control @error('judul_soal') is-invalid @enderror"
@@ -93,7 +96,7 @@
     <script>
         $(document).ready(function() {
             $('#divisi_id').select2({
-                placeholder: " Pilih satu atau lebih Divisi",
+                placeholder: " Pilih satu Divisi",
                 allowClear: true
             });
         });

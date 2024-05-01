@@ -33,10 +33,9 @@ class SoalController extends Controller
     public function index(Request $request)
     {
         try {
-            $user = auth()->user(); // Assuming you're using Laravel's default authentication.
+            $user = auth()->user();
             $judulSoalSearch = $request->input('judul_soal');
 
-            // Initialize the query
             $query = Soal::when($judulSoalSearch, function ($query, $judulSoal) {
                 return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
             })
@@ -44,23 +43,18 @@ class SoalController extends Controller
                 ->join('users', 'soals.user_id', '=', 'users.id')
                 ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name');
 
-            // Check user role and modify query accordingly
             if ($user->hasRole('mentor')) {
-                // Retrieve all division IDs for the mentor
                 $mentorDivisiIds = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id');
 
-                // Filter the questions by these division IDs
                 if ($mentorDivisiIds->isEmpty()) {
                     return redirect()->back()->withErrors('No divisions found for this mentor.');
                 }
 
                 $query->whereIn('divisi_id', $mentorDivisiIds);
             } else if (!$user->hasRole('manager')) {
-                // If not a manager or mentor, restrict access
                 return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
             }
 
-            // Finalize the query with pagination
             $listSoal = $query->paginate(10);
 
             return view('soal-management.list-soal.index', [
@@ -167,21 +161,24 @@ class SoalController extends Controller
      */
     public function edit(Soal $listSoal)
     {
-        $users = User::role('mentor')->get();
         $currentUser = Auth::user();
 
         $files = FileMateri::where('soal_id', $listSoal->id)->get();
 
-        // Mengambil hanya nama file dari setiap file
         $fileNames = $files->map(function ($file) {
             return basename($file->files);
         });
 
+        $divisiSelected = null;
+        if ($listSoal->user_id == $currentUser->id) {
+            $divisiSelected = $listSoal->divisi_id;
+        }
+
         return view('soal-management.list-soal.edit', [
             'listSoal' => $listSoal,
-            'users' => $users,
             'currentUser' => $currentUser,
             'fileNames' => $fileNames,
+            'divisiSelected' => $divisiSelected,
         ]);
     }
 
@@ -192,10 +189,27 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSoalRequest $request, Soal $soal)
+    public function update(UpdateSoalRequest $request, Soal $listSoal)
     {
-        //
+        $listSoal->judul_soal = $request->input('judul_soal');
+        $listSoal->deskripsi_soal = $request->input('deskripsi_soal', null);
+
+        $listSoal->save();
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('public/files');
+
+                FileMateri::updateOrCreate(
+                    ['soal_id' => $listSoal->id, 'files' => basename($path)],
+                    ['files' => $path]
+                );
+            }
+        }
+
+        return redirect()->route('list-soal.index')->with('success', 'Soal updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.

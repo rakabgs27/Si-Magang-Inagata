@@ -25,10 +25,9 @@
                             @endforeach
                         </ul>
                     @endif
-
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-secondary" href="{{ route('list-soal.index') }}">Kembali</a>
+                    <a class="btn btn-secondary" href="{{ route('list-soal.index') }}">Cancel</a>
                 </div>
             </div>
         </div>
