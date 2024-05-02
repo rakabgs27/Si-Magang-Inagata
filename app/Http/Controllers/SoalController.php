@@ -194,7 +194,7 @@ class SoalController extends Controller
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store('public/files');
+                $path = $file->store('public/soal');
 
                 FileMateri::updateOrCreate(
                     ['soal_id' => $listSoal->id, 'files' => basename($path)],
@@ -235,17 +235,24 @@ class SoalController extends Controller
     }
 
 
-    public function destroyFile($id)
+    public function destroyFile($fileId)
     {
-        $file = FileMateri::find($id);
+
+        $file = FileMateri::find($fileId);
         if ($file) {
             Storage::delete($file->files);
 
             $file->delete();
-
-            return redirect()->back()->with('success', 'File berhasil dihapus!');
+            return response()->json([
+                'message' => 'File berhasil dihapus.',
+                'success' => true
+            ]);
         } else {
-            return redirect()->back()->with('error', 'File tidak ditemukan!');
+            return response()->json([
+                'message' => 'File tidak ditemukan.',
+                'success' => false
+            ]);
         }
     }
 }
+

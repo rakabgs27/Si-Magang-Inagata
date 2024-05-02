@@ -59,19 +59,21 @@
                                 <p>Drag files here or click to select files</p>
                             </div>
                             <input type="file" id="fileInput" name="files[]" multiple class="form-control">
-                            @if ($fileNames->isNotEmpty())
-                                <p><strong>File Terlampir:</strong></p>
-                                <ul>
+                            <p><strong>File Terlampir:</strong></p>
+                            <ul id="existingFiles">
+                                @if ($fileNames->isNotEmpty())
                                     @foreach ($fileNames as $fileName)
                                         <li>
                                             <p style="display: inline-block; margin-right: 10px;">
-                                                {{ basename($fileName->files) }}</p>
+                                                {{ basename($fileName->files) }}
+                                            </p>
                                             <a href="#" class="remove-link" style="display: inline-block;"
                                                 data-file-id="{{ $fileName->id }}">Remove</a>
                                         </li>
                                     @endforeach
-                                </ul>
-                            @endif
+                                @endif
+                            </ul>
+                            <ul id="newFiles"></ul>
                         </div>
                         <div class="form-group">
                             <label for="tanggal_upload">Tanggal Upload</label>
@@ -125,43 +127,33 @@
             var dropArea = document.getElementById('dropArea');
             var fileInput = document.getElementById('fileInput');
             var fileList = document.querySelector('.file-list');
-            var fileJsobList = @json($fileNames);
 
             dropArea.addEventListener('click', function() {
                 fileInput.click();
             });
 
+            // Handle file selection from input
             fileInput.addEventListener('change', function(e) {
                 handleFiles(e.target.files);
             });
 
+            // Prevent default behavior for dragover
             dropArea.addEventListener('dragover', function(e) {
                 e.preventDefault();
             });
 
+            // Handle files dropped onto the drop area
             dropArea.addEventListener('drop', function(e) {
                 e.preventDefault();
                 handleFiles(e.dataTransfer.files);
             });
 
-            // var removeLinks = document.querySelectorAll('.remove-link');
-            // removeLinks.forEach(function(link) {
-            //     link.addEventListener('click', function(e) {
-            //         e.preventDefault();
-            //         var listItem = link.parentElement;
-            //         var fileName = listItem.querySelector('p').textContent.trim();
-            //         listItem.remove();
-
-            //     });
-            // });
-
+            // Function to handle new files
             function handleFiles(files) {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
+                Array.from(files).forEach(file => {
                     const listItem = document.createElement('li');
-                    const removeLink = document.createElement('a');
+                    listItem.textContent = file.name;
 
-                    // File preview
                     if (file.type.startsWith('image/')) {
                         const img = document.createElement('img');
                         img.src = URL.createObjectURL(file);
@@ -169,82 +161,67 @@
                         listItem.appendChild(img);
                     }
 
-                    listItem.appendChild(document.createTextNode(file.name));
-                    removeLink.textContent = 'Remove';
+                    const removeLink = document.createElement('a');
+                    removeLink.textContent = ' Remove';
                     removeLink.href = '#';
                     removeLink.className = 'remove-link';
+                    removeLink.style.color = 'red';
+                    removeLink.onclick = function(e) {
+                        e.preventDefault();
+                        listItem.remove();
+                    };
+
                     listItem.appendChild(removeLink);
-
                     fileList.appendChild(listItem);
-
-                    // removeLink.addEventListener('click', function(e) {
-                    //     e.preventDefault();
-                    //     listItem.remove();
-                    // });
-                }
+                });
             }
-        });
-    </script>
-    <script type="text/javascript">
-        var deleteUrlTemplate = "{{ route('file-materi.destroy', ['id' => '_id_']) }}";
-    </script>
-    <script>
-        $(document).ready(function() {
-            var fileIdToDelete; // Variabel untuk menyimpan ID file yang akan dihapus
 
-            // Menangani klik pada tombol "Remove"
-            $('.remove-link').click(function(e) {
-                e.preventDefault();
-                fileIdToDelete = $(this).data('file-id'); // Simpan ID file ke dalam variabel
-
-                // Tampilkan SweetAlert untuk konfirmasi penghapusan
-                Swal.fire({
-                    title: 'Konfirmasi Penghapusan',
-                    text: "Apakah Anda yakin ingin menghapus file ini?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Hapus',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Jika pengguna mengkonfirmasi, lakukan penghapusan
-                        deleteFile();
+            // Add event listeners to existing remove links
+            document.querySelectorAll('.remove-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (link.dataset.fileId) {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch(`/soal-management/file-materi/${link.dataset.fileId}`, {
+                                        method: 'POST', // Menggunakan metode DELETE untuk API RESTful
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                    'meta[name="csrf-token"]')
+                                                .getAttribute('content'),
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            delete: true
+                                        })
+                                    }).then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            link.parentElement.remove();
+                                            Swal.fire('Deleted!',
+                                                'Your file has been deleted.',
+                                                'success');
+                                        } else {
+                                            Swal.fire('Failed!', 'Error deleting file.',
+                                                'error');
+                                        }
+                                    });
+                            }
+                        });
+                    } else {
+                        link.parentElement.remove();
                     }
                 });
             });
-
-            // Fungsi untuk menghapus file
-            function deleteFile() {
-                var deleteUrl = deleteUrlTemplate.replace('_id_', fileIdToDelete);
-
-                $.ajax({
-                    url: deleteUrl,
-                    type: 'DELETE',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                    },
-                    success: function(response) {
-                        Swal.fire(
-                            'Berhasil!',
-                            'File telah dihapus.',
-                            'success'
-                        ).then(() => {
-                            location.reload(); // Reload halaman setelah penghapusan berhasil
-                        });
-                    },
-                    error: function(xhr) {
-                        console.error(xhr
-                        .responseText); // Tampilkan pesan kesalahan jika penghapusan gagal
-                        Swal.fire(
-                            'Error!',
-                            'Gagal menghapus file.',
-                            'error'
-                        );
-                    }
-                });
-            }
         });
     </script>
 @endpush
