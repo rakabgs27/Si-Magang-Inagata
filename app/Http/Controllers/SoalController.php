@@ -55,7 +55,7 @@ class SoalController extends Controller
                 return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
             }
 
-            $listSoal = $query->paginate(10);
+            $listSoal = $query->paginate(10)->withQueryString();
 
             return view('soal-management.list-soal.index', [
                 'listSoal' => $listSoal,
@@ -213,18 +213,33 @@ class SoalController extends Controller
      * @param  \App\Models\Soal  $soal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Soal $soal)
+    public function destroy(Soal $listSoal)
     {
-        //
+        try {
+            $materis = FileMateri::where('soal_id', $listSoal->id)->get();
+
+            foreach ($materis as $materi) {
+                if ($materi->file_path && Storage::exists($materi->file_path)) {
+                    Storage::delete($materi->file_path);
+                }
+
+                $materi->delete();
+            }
+
+            $listSoal->delete();
+
+            return redirect()->route('list-soal.index')->with('success', 'Soal dan materi terkait berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
+
 
     public function destroyFile($id)
     {
         $file = FileMateri::find($id);
         if ($file) {
-
             Storage::delete($file->files);
-
 
             $file->delete();
 

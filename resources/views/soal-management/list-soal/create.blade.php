@@ -36,7 +36,6 @@
                                 </div>
                             @enderror
                         </div>
-
                         <div class="form-group">
                             <label for="judul_soal">Judul Soal</label>
                             <input type="text" class="form-control @error('judul_soal') is-invalid @enderror"

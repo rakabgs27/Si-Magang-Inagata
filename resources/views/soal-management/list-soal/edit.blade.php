@@ -62,9 +62,6 @@
                             @if ($fileNames->isNotEmpty())
                                 <p><strong>File Terlampir:</strong></p>
                                 <ul>
-                                    {{-- @foreach ($fileNames as $fileName)
-                                        <li>{{ $fileName }} <a href="#">Remove</a></li>
-                                    @endforeach --}}
                                     @foreach ($fileNames as $fileName)
                                         <li>
                                             <p style="display: inline-block; margin-right: 10px;">
@@ -147,16 +144,16 @@
                 handleFiles(e.dataTransfer.files);
             });
 
-            var removeLinks = document.querySelectorAll('.remove-link');
-            removeLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var listItem = link.parentElement;
-                    var fileName = listItem.querySelector('p').textContent.trim();
-                    listItem.remove();
+            // var removeLinks = document.querySelectorAll('.remove-link');
+            // removeLinks.forEach(function(link) {
+            //     link.addEventListener('click', function(e) {
+            //         e.preventDefault();
+            //         var listItem = link.parentElement;
+            //         var fileName = listItem.querySelector('p').textContent.trim();
+            //         listItem.remove();
 
-                });
-            });
+            //     });
+            // });
 
             function handleFiles(files) {
                 for (let i = 0; i < files.length; i++) {
@@ -180,10 +177,10 @@
 
                     fileList.appendChild(listItem);
 
-                    removeLink.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        listItem.remove();
-                    });
+                    // removeLink.addEventListener('click', function(e) {
+                    //     e.preventDefault();
+                    //     listItem.remove();
+                    // });
                 }
             }
         });

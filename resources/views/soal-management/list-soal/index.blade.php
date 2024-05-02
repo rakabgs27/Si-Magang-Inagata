@@ -87,7 +87,7 @@
                                                                 value="{{ csrf_token() }}">
                                                             <button type="submit" id="#submit"
                                                                 class="btn btn-sm btn-danger btn-icon"
-                                                                data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
+                                                                data-confirm="Hapus Data Soal ?|Apakah Kamu Yakin?"
                                                                 data-confirm-yes="submitDel(<?= $listItem->id ?>)"
                                                                 data-id="del-{{ $listItem->id }}">
                                                                 <i class="fas fa-times"></i> Delete
@@ -112,7 +112,7 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{ $listSoal->withQueryString()->links() }}
+                                    {{ $listSoal->links() }}
                                 </div>
                             </div>
                         </div>
@@ -142,6 +142,10 @@
                 $(this).prev('label').text(file);
             });
         });
+
+        function submitDel(id) {
+            $('#del-' + id).submit()
+        }
     </script>
 @endpush
 
