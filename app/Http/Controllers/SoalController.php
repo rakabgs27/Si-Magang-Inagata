@@ -194,10 +194,11 @@ class SoalController extends Controller
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $path = $file->store('public/soal');
+                $originalName = $file->getClientOriginalName();
+                $path = $file->storeAs('soal', $originalName , 'public');
 
                 FileMateri::updateOrCreate(
-                    ['soal_id' => $listSoal->id, 'files' => basename($path)],
+                    ['soal_id' => $listSoal->id, 'files' => $originalName],
                     ['files' => $path]
                 );
             }
@@ -255,4 +256,3 @@ class SoalController extends Controller
         }
     }
 }
-

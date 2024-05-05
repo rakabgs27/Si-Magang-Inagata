@@ -6,7 +6,7 @@
             <h1>List Soal</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Soal</h2>
+            <h2 class="section-title">Edit Soal</h2>
             <div class="card">
                 <div class="card-header">
                     <h4>Validasi Edit Soal</h4>
@@ -73,6 +73,7 @@
                                     @endforeach
                                 @endif
                             </ul>
+                            <p><strong>File Tambahan:</strong></p>
                             <ul id="newFiles"></ul>
                         </div>
                         <div class="form-group">
@@ -151,9 +152,11 @@
             // Function to handle new files
             function handleFiles(files) {
                 Array.from(files).forEach(file => {
+                    // Create list item for each file
                     const listItem = document.createElement('li');
                     listItem.textContent = file.name;
 
+                    // Optionally, display an image thumbnail if the file is an image
                     if (file.type.startsWith('image/')) {
                         const img = document.createElement('img');
                         img.src = URL.createObjectURL(file);
@@ -161,6 +164,7 @@
                         listItem.appendChild(img);
                     }
 
+                    // Create a remove link for each file
                     const removeLink = document.createElement('a');
                     removeLink.textContent = ' Remove';
                     removeLink.href = '#';
@@ -172,7 +176,15 @@
                     };
 
                     listItem.appendChild(removeLink);
-                    fileList.appendChild(listItem);
+
+                    // Add the file to the 'newFiles' list
+                    document.getElementById('newFiles').appendChild(listItem);
+
+                    // Also append to 'fileList' if you want to show it in the main list immediately
+                    if (fileList) {
+                        fileList.appendChild(listItem.cloneNode(
+                        true)); // Clone the node if needed in both places
+                    }
                 });
             }
 
