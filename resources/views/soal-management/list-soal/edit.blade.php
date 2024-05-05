@@ -152,11 +152,9 @@
             // Function to handle new files
             function handleFiles(files) {
                 Array.from(files).forEach(file => {
-                    // Create list item for each file
                     const listItem = document.createElement('li');
                     listItem.textContent = file.name;
 
-                    // Optionally, display an image thumbnail if the file is an image
                     if (file.type.startsWith('image/')) {
                         const img = document.createElement('img');
                         img.src = URL.createObjectURL(file);
@@ -164,7 +162,6 @@
                         listItem.appendChild(img);
                     }
 
-                    // Create a remove link for each file
                     const removeLink = document.createElement('a');
                     removeLink.textContent = ' Remove';
                     removeLink.href = '#';
@@ -177,18 +174,14 @@
 
                     listItem.appendChild(removeLink);
 
-                    // Add the file to the 'newFiles' list
                     document.getElementById('newFiles').appendChild(listItem);
 
-                    // Also append to 'fileList' if you want to show it in the main list immediately
                     if (fileList) {
-                        fileList.appendChild(listItem.cloneNode(
-                        true)); // Clone the node if needed in both places
+                        fileList.appendChild(listItem.cloneNode(true));
                     }
                 });
             }
 
-            // Add event listeners to existing remove links
             document.querySelectorAll('.remove-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -204,7 +197,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 fetch(`/soal-management/file-materi/${link.dataset.fileId}`, {
-                                        method: 'POST', // Menggunakan metode DELETE untuk API RESTful
+                                        method: 'POST',
                                         headers: {
                                             'X-CSRF-TOKEN': document.querySelector(
                                                     'meta[name="csrf-token"]')
