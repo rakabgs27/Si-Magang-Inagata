@@ -4,7 +4,7 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>List Soal</h1>
+            <h1>List Assign Soal</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Components</a></div>
@@ -22,25 +22,20 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4>List Soal</h4>
+                            <h4>List Assign Soal</h4>
                             <div class="d-flex flex-row-reverse card-header-action">
                                 <div class="card-header-actions">
-                                    @role('mentor')
-                                        <a class="btn btn-icon icon-left btn-primary"
-                                            href="{{ route('list-soal.create') }}">Tambah Soal</a>
-                                    @endrole
                                     @role('manager')
-                                        <a class="btn btn-info btn-primary active import">
-                                            <i class="fa fa-filter" aria-hidden="true"></i>
-                                            Filter by Divisi</a>
+                                    <a class="btn btn-icon icon-left btn-primary"
+                                    href="{{ route('assign-soal.create') }}">Assign Soal Pendaftar</a>
                                     @endrole
                                 </div>
                                 <h4></h4>
                                 <form class="card-header-form" id="search" method="GET"
-                                    action="{{ route('list-soal.index') }}">
+                                    action="#">
                                     <div class="input-group">
                                         <input type="text" name="judul_soal" class="form-control"
-                                            placeholder="Cari Judul Soal" value="{{ $judulSoalSearch }}">
+                                            placeholder="Cari Pendaftar" value="">
                                         <div class="input-group-btn">
                                             <button class="btn btn-primary btn-icon"><i class="fas fa-search"
                                                     type="submit"></i></button>
@@ -50,47 +45,18 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="show-import" style="display: none">
-                                <div class="custom-file">
-                                    <form action="{{ route('list-soal.index') }}" method="GET">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <select class="form-control select2" name="divisi_id">
-                                                    <option value="">Select Divisi</option>
-                                                    @foreach ($divisis as $divisi)
-                                                        <option value="{{ $divisi->id }}"
-                                                            {{ $selectedDivisi == $divisi->id ? 'selected' : '' }}>
-                                                            {{ $divisi->nama_divisi }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row justify-content-end">
-                                            <div class="form-group col-md-2 col-lg-1">
-                                                <button type="submit" class="btn btn-primary btn-block">Filter</button>
-                                            </div>
-                                            <div class="form-group col-md-2 col-lg-1">
-                                                <a href="{{ route('list-soal.index') }}"
-                                                    class="btn btn-secondary btn-block">Cancel</a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            <br><br><br>
-                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-md">
                                     <tbody>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Mentor</th>
-                                            <th>Nama Divisi</th>
+                                            <th>Nama Pendaftar</th>
                                             <th>Judul Soal</th>
-                                            <th>Tanggal Upload</th>
+                                            <th>Tanggal Mulai</th>
+                                            <th>Tanggal Akhir</th>
                                             <th class="text-right">Action</th>
                                         </tr>
-                                        @if ($listSoal->isEmpty())
+                                        {{-- @if ($listSoal->isEmpty())
                                             <tr>
                                                 <td colspan="6" class="text-center">Tidak Ada Data</td>
                                             </tr>
@@ -144,11 +110,11 @@
                                                     @endrole
                                                 </tr>
                                             @endforeach
-                                        @endif
+                                        @endif --}}
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{ $listSoal->links() }}
+                                    {{-- {{ $listSoal->links() }} --}}
                                 </div>
                             </div>
                         </div>

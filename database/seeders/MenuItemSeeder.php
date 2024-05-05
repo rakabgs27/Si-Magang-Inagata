@@ -83,6 +83,12 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 5,
                 ],
                 [
+                    'name' => 'Assign Soal',
+                    'route' => 'soal-management/assign-soal',
+                    'permission_name' => 'assign-soal.index',
+                    'menu_group_id' => 5,
+                ],
+                [
                     'name' => 'Test Soal',
                     'route' => 'soal-management/test-soal',
                     'permission_name' => 'test-soal.index',

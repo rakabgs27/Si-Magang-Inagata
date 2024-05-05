@@ -82,6 +82,7 @@ class RoleAndPermissionSeeder extends Seeder
             'divisi-mentor',
             'list-pendaftar',
             'list-soal',
+            'assign-soal',
             'test-soal',
             'list-jawaban',
             'test-jawaban',
@@ -140,5 +141,15 @@ class RoleAndPermissionSeeder extends Seeder
         $user->assignRole('mentor');
         $user = User::find(10);
         $user->assignRole('mentor');
+        $user = User::find(11);
+        $user->assignRole('user');
+        $user = User::find(12);
+        $user->assignRole('user');
+        $user = User::find(13);
+        $user->assignRole('user');
+        $user = User::find(14);
+        $user->assignRole('user');
+        $user = User::find(15);
+        $user->assignRole('user');
     }
 }

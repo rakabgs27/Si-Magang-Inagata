@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Divisi;
 use App\Models\DivisiMentor;
 use App\Models\FileMateri;
-use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,11 +29,48 @@ class SoalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index(Request $request)
+    // {
+    //     try {
+    //         $user = auth()->user();
+    //         $judulSoalSearch = $request->input('judul_soal');
+
+    //         $query = Soal::when($judulSoalSearch, function ($query, $judulSoal) {
+    //             return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
+    //         })
+    //             ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
+    //             ->join('users', 'soals.user_id', '=', 'users.id')
+    //             ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name');
+
+    //         if ($user->hasRole('mentor')) {
+    //             $mentorDivisiIds = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id');
+
+    //             if ($mentorDivisiIds->isEmpty()) {
+    //                 return redirect()->back()->withErrors('No divisions found for this mentor.');
+    //             }
+
+    //             $query->whereIn('divisi_id', $mentorDivisiIds);
+    //         } else if (!$user->hasRole('manager')) {
+    //             return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
+    //         }
+
+    //         $listSoal = $query->paginate(10)->withQueryString();
+
+    //         return view('soal-management.list-soal.index', [
+    //             'listSoal' => $listSoal,
+    //             'judulSoalSearch' => $judulSoalSearch,
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return back()->withErrors(['error' => $e->getMessage()]);
+    //     }
+    // }
+
     public function index(Request $request)
     {
         try {
             $user = auth()->user();
             $judulSoalSearch = $request->input('judul_soal');
+            $divisiFilter = $request->input('divisi_id'); // Menangkap input filter divisi
 
             $query = Soal::when($judulSoalSearch, function ($query, $judulSoal) {
                 return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
@@ -43,29 +79,34 @@ class SoalController extends Controller
                 ->join('users', 'soals.user_id', '=', 'users.id')
                 ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name');
 
+            // Filter by divisi if divisiFilter is present
+            if (!empty($divisiFilter)) {
+                $query->where('divisi_id', $divisiFilter);
+            }
+
             if ($user->hasRole('mentor')) {
                 $mentorDivisiIds = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id');
-
                 if ($mentorDivisiIds->isEmpty()) {
                     return redirect()->back()->withErrors('No divisions found for this mentor.');
                 }
-
                 $query->whereIn('divisi_id', $mentorDivisiIds);
             } else if (!$user->hasRole('manager')) {
                 return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
             }
 
             $listSoal = $query->paginate(10)->withQueryString();
+            $divisis = Divisi::all(); // Dapatkan semua divisi untuk dropdown
 
             return view('soal-management.list-soal.index', [
                 'listSoal' => $listSoal,
                 'judulSoalSearch' => $judulSoalSearch,
+                'divisis' => $divisis, // Pass divisi data to view
+                'selectedDivisi' => $divisiFilter
             ]);
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
 
 
     /**
@@ -195,7 +236,7 @@ class SoalController extends Controller
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $originalName = $file->getClientOriginalName();
-                $path = $file->storeAs('soal', $originalName , 'public');
+                $path = $file->storeAs('soal', $originalName, 'public');
 
                 FileMateri::updateOrCreate(
                     ['soal_id' => $listSoal->id, 'files' => $originalName],
@@ -238,7 +279,6 @@ class SoalController extends Controller
 
     public function destroyFile($fileId)
     {
-
         $file = FileMateri::find($fileId);
         if ($file) {
             Storage::delete($file->files);

@@ -27,7 +27,7 @@ class PendaftarController extends Controller
     {
         $namaUserSearch = $request->input('name');
 
-        $listPendaftar = Pendaftar::with('user')
+        $listPendaftar = Pendaftar::with(['user', 'divisi'])
             ->when($namaUserSearch, function ($query, $namaUserSearch) {
                 return $query->whereHas('user', function ($query) use ($namaUserSearch) {
                     return $query->where('name', 'like', '%' . $namaUserSearch . '%');

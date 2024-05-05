@@ -17,6 +17,7 @@ use App\Http\Controllers\RoleAndPermission\ImportRoleController;
 use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
 use App\Http\Controllers\SoalController;
+use App\Http\Controllers\SoalPendaftarController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\UserController;
@@ -61,6 +62,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('list-soal', SoalController::class);
         Route::post('/file-materi/{fileId}', [SoalController::class, 'destroyFile'])->name('file-materi.destroy');
         Route::get('/get-divisi/{userId}', [SoalController::class, 'getDivisi'])->name('get.divisi.mentor');
+        Route::resource('assign-soal', SoalPendaftarController::class);
     });
 
     Route::prefix('menu-management')->group(function () {
