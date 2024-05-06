@@ -3,28 +3,41 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>List Soal</h1>
+            <h1>List Assing Soal</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Soal</h2>
+            <h2 class="section-title">Assign Soal</h2>
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Validasi Tambah Soal</h4>
+                    <h4>Validasi Assign Soal</h4>
                 </div>
                 <div class="card-body">
                     <form action="#" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="divisi_id">Pilih Divisi</label>
-                            <select id="divisi_id" name="divisi_id[]"
-                                class="form-control @error('divisi_id') is-invalid @enderror">
+                            <label for="pendaftar_id">Pilih Pendaftar</label>
+                            <select id="pendaftar_id" name="pendaftar_id"
+                                class="form-control select2 @error('pendaftar_id') is-invalid @enderror">
+                                <option value="">Pilih Pendaftar</option>
+                                @foreach ($listPendaftar as $pendaftar)
+                                    <option value="{{ $pendaftar->id }}"
+                                        {{ old('pendaftar_id') == $pendaftar->id ? 'selected' : '' }}>
+                                        {{ $pendaftar->user ? $pendaftar->user->name : 'No Name Available' }}
+                                    </option>
+                                @endforeach
                             </select>
-                            @error('divisi_id')
+                            @error('pendaftar_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
                             @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="soal_id">Pilih Soal</label>
+                            <select id="soal_id" name="soal_id[]" class="form-control select2">
+                                {{-- Opsi soal akan dimuat secara dinamis di sini --}}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="deskripsi_tugas">Deskripsi Soal</label>
@@ -83,6 +96,37 @@
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']]
             ]
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#soal_id').select2(); // Initialize the Select2 component
+
+            $('#pendaftar_id').on('change', function() {
+                var pendaftarId = $(this).val(); // Get the selected pendaftar ID from the dropdown
+                $('#soal_id').empty(); // Clear the current options in the soal dropdown
+
+                // Construct the URL for the AJAX request directly in JavaScript
+                var url = "/get-soal-divisi/" + pendaftarId;
+
+                $.ajax({
+                    url: url, // Use the constructed URL
+                    type: 'GET',
+                    success: function(data) {
+                        // Loop through the data returned by the server, which should be an array of soal
+                        $.each(data, function(index, soal) {
+                            $('#soal_id').append('<option value="' + soal.id + '">' +
+                                soal.judul_soal + '</option>');
+                        });
+                        $('#soal_id')
+                            .select2(); // Re-initialize Select2 for the updated soal dropdown
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status,
+                            error); // Log any error to the console for debugging
+                    }
+                });
+            });
         });
     </script>
 @endpush

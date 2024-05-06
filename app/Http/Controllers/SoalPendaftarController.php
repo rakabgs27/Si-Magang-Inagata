@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SoalPendaftar;
 use App\Http\Requests\StoreSoalPendaftarRequest;
 use App\Http\Requests\UpdateSoalPendaftarRequest;
+use App\Models\Pendaftar;
+use App\Models\Soal;
 
 class SoalPendaftarController extends Controller
 {
@@ -25,8 +27,13 @@ class SoalPendaftarController extends Controller
      */
     public function create()
     {
-        return view('soal-management.assign-soal.create');
+        $listPendaftar = Pendaftar::with('user')->get();
+        // dd($listPendaftar);
+        return view('soal-management.assign-soal.create', [
+            'listPendaftar' => $listPendaftar,
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -82,5 +89,17 @@ class SoalPendaftarController extends Controller
     public function destroy(SoalPendaftar $soalPendaftar)
     {
         //
+    }
+
+    public function getSoalByDivisiPendaftar($pendaftarId)
+    {
+        $pendaftar = Pendaftar::where('id', $pendaftarId)->first();
+
+        if (!$pendaftar) {
+            return response()->json(['error' => 'Pendaftar not found'], 404);
+        }
+
+        $soal = Soal::where('divisi_id', $pendaftar->divisi_id)->get();
+        return response()->json($soal);
     }
 }

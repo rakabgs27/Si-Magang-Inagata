@@ -29,42 +29,6 @@ class SoalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index(Request $request)
-    // {
-    //     try {
-    //         $user = auth()->user();
-    //         $judulSoalSearch = $request->input('judul_soal');
-
-    //         $query = Soal::when($judulSoalSearch, function ($query, $judulSoal) {
-    //             return $query->where('judul_soal', 'like', '%' . $judulSoal . '%');
-    //         })
-    //             ->join('divisis', 'soals.divisi_id', '=', 'divisis.id')
-    //             ->join('users', 'soals.user_id', '=', 'users.id')
-    //             ->select('soals.*', 'divisis.nama_divisi as nama_divisi', 'users.name as name');
-
-    //         if ($user->hasRole('mentor')) {
-    //             $mentorDivisiIds = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id');
-
-    //             if ($mentorDivisiIds->isEmpty()) {
-    //                 return redirect()->back()->withErrors('No divisions found for this mentor.');
-    //             }
-
-    //             $query->whereIn('divisi_id', $mentorDivisiIds);
-    //         } else if (!$user->hasRole('manager')) {
-    //             return redirect()->back()->withErrors('Access Denied: You do not have permission to view this page.');
-    //         }
-
-    //         $listSoal = $query->paginate(10)->withQueryString();
-
-    //         return view('soal-management.list-soal.index', [
-    //             'listSoal' => $listSoal,
-    //             'judulSoalSearch' => $judulSoalSearch,
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return back()->withErrors(['error' => $e->getMessage()]);
-    //     }
-    // }
-
     public function index(Request $request)
     {
         try {

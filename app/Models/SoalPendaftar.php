@@ -12,8 +12,8 @@ class SoalPendaftar extends Model
     protected $table = 'soal_pendaftars';
 
     protected $fillable = [
-        'soal_id',
         'pendaftar_id',
+        'soal_id',
         'deskripsi_tugas',
         'tanggal_mulai',
         'tanggal_akhir',
