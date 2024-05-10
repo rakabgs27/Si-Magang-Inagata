@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('list-soal', SoalController::class);
         Route::post('/file-materi/{fileId}', [SoalController::class, 'destroyFile'])->name('file-materi.destroy');
         Route::resource('assign-soal', SoalPendaftarController::class);
-        Route::get('/get-soal-divisi/{pendaftarId}', [SoalController::class, 'getSoalByDivisiPendaftar'])->name('get.soal.divisi');
+        Route::get('/get-soal-divisi/{pendaftarId}', [SoalPendaftarController::class, 'getSoalByDivisiPendaftar'])->name('soal-divisi.get');
     });
 
     Route::prefix('menu-management')->group(function () {

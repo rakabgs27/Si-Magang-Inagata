@@ -32,10 +32,10 @@
                                 </div>
                                 <h4></h4>
                                 <form class="card-header-form" id="search" method="GET"
-                                    action="#">
+                                    action="{{ route('assign-soal.index') }}">
                                     <div class="input-group">
-                                        <input type="text" name="judul_soal" class="form-control"
-                                            placeholder="Cari Pendaftar" value="">
+                                        <input type="text" name="name" class="form-control"
+                                            placeholder="Cari Pendaftar" value="{{ $namaUserSearch }}">
                                         <div class="input-group-btn">
                                             <button class="btn btn-primary btn-icon"><i class="fas fa-search"
                                                     type="submit"></i></button>
@@ -56,32 +56,26 @@
                                             <th>Tanggal Akhir</th>
                                             <th class="text-right">Action</th>
                                         </tr>
-                                        {{-- @if ($listSoal->isEmpty())
+                                        @if ($listSoalPendaftar->isEmpty())
                                             <tr>
                                                 <td colspan="6" class="text-center">Tidak Ada Data</td>
                                             </tr>
                                         @else
-                                            @foreach ($listSoal as $key => $listItem)
+                                            @foreach ($listSoalPendaftar as $key => $listItem)
                                                 <tr>
-                                                    <td>{{ $listSoal->firstItem() + $key }}</td>
-                                                    <td>{{ $listItem->name }}</td>
-                                                    <td>{{ $listItem->nama_divisi }}</td>
-                                                    <td>{{ $listItem->judul_soal }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->format('d F Y H:i:s') }}
+                                                    <td>{{ $listSoalPendaftar->firstItem() + $key }}</td>
+                                                    <td>{{ $listItem->pendaftar->user->name }}</td>
+                                                    <td>{{ $listItem->soal->judul_soal }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}
                                                     </td>
-                                                    @role('mentor')
                                                         <td class="text-right">
                                                             <div class="d-flex justify-content-end">
-                                                                <a href="{{ route('list-soal.edit', $listItem->id) }}"
-                                                                    class="btn btn-sm btn-info btn-icon">
-                                                                    <i class="fas fa-edit"></i>
-                                                                    Edit</a>
-                                                                <span class="mr-2"></span>
-                                                                <a href="{{ route('list-soal.show', $listItem->id) }}"
+                                                                <a href="#"
                                                                     class="btn btn-sm btn-warning btn-icon">
                                                                     <i class="fas fa-edit"></i>
                                                                     Detail</a>
-                                                                <form action="{{ route('list-soal.destroy', $listItem->id) }}"
+                                                                <form action="#"
                                                                     method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="_token"
@@ -96,25 +90,13 @@
                                                                 </form>
                                                             </div>
                                                         </td>
-                                                    @endrole
-                                                    @role('manager')
-                                                        <td class="text-right">
-                                                            <div class="d-flex justify-content-end">
-                                                                <span class="mr-2"></span>
-                                                                <a href="{{ route('list-soal.show', $listItem->id) }}"
-                                                                    class="btn btn-sm btn-warning btn-icon">
-                                                                    <i class="fas fa-edit"></i>
-                                                                    Detail</a>
-                                                            </div>
-                                                        </td>
-                                                    @endrole
                                                 </tr>
                                             @endforeach
-                                        @endif --}}
+                                        @endif
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{-- {{ $listSoal->links() }} --}}
+                                    {{ $listSoalPendaftar->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>

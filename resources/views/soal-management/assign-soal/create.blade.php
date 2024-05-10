@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>List Assing Soal</h1>
+            <h1>List Assign Soal</h1>
         </div>
         <div class="section-body">
             <h2 class="section-title">Assign Soal</h2>
@@ -13,7 +13,7 @@
                     <h4>Validasi Assign Soal</h4>
                 </div>
                 <div class="card-body">
-                    <form action="#" method="POST">
+                    <form action="{{ route('assign-soal.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="pendaftar_id">Pilih Pendaftar</label>
@@ -35,12 +35,12 @@
                         </div>
                         <div class="form-group">
                             <label for="soal_id">Pilih Soal</label>
-                            <select id="soal_id" name="soal_id[]" class="form-control select2">
+                            <select id="soal_id" name="soal_id" class="form-control select2">
                                 {{-- Opsi soal akan dimuat secara dinamis di sini --}}
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="deskripsi_tugas">Deskripsi Soal</label>
+                            <label for="deskripsi_tugas">Deskripsi Tugas</label>
                             <textarea name="deskripsi_tugas" id="deskripsi"
                                 class="text-dark form-control summernote
                                 @error('deskripsi_tugas') is-invalid @enderror"
@@ -53,7 +53,8 @@
                         </div>
                         <div class="form-group">
                             <label for="tanggal_mulai">Tanggal Mulai</label>
-                            <input type="datetime-local" class="form-control @error('tanggal_mulai') is-invalid @enderror"
+                            <input type="datetime-local"
+                                class="form-control tanggal-input @error('tanggal_mulai') is-invalid @enderror"
                                 id="tanggal_mulai" name="tanggal_mulai">
                             @error('tanggal_mulai')
                                 <div class="invalid-feedback">
@@ -63,7 +64,8 @@
                         </div>
                         <div class="form-group">
                             <label for="tanggal_akhir">Tanggal Akhir</label>
-                            <input type="datetime-local" class="form-control @error('tanggal_akhir') is-invalid @enderror"
+                            <input type="datetime-local"
+                                class="form-control tanggal-input @error('tanggal_akhir') is-invalid @enderror"
                                 id="tanggal_akhir" name="tanggal_akhir">
                             @error('tanggal_akhir')
                                 <div class="invalid-feedback">
@@ -71,6 +73,7 @@
                                 </div>
                             @enderror
                         </div>
+
                 </div>
                 <div class="card-footer text-right">
                     <button class="btn btn-primary">Submit</button>
@@ -81,7 +84,6 @@
         </div>
     </section>
 @endsection
-
 @push('customScript')
     <script src="/assets/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
@@ -105,9 +107,11 @@
             $('#pendaftar_id').on('change', function() {
                 var pendaftarId = $(this).val(); // Get the selected pendaftar ID from the dropdown
                 $('#soal_id').empty(); // Clear the current options in the soal dropdown
+                console.log(pendaftarId);
 
-                // Construct the URL for the AJAX request directly in JavaScript
-                var url = "/get-soal-divisi/" + pendaftarId;
+                // Construct the URL for the AJAX request using Laravel's route function
+                var url = "{{ route('soal-divisi.get', ':pendaftarId') }}";
+                url = url.replace(':pendaftarId', pendaftarId);
 
                 $.ajax({
                     url: url, // Use the constructed URL

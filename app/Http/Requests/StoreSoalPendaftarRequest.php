@@ -13,7 +13,7 @@ class StoreSoalPendaftarRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,32 @@ class StoreSoalPendaftarRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'pendaftar_id' => 'required',
+            'soal_id' => 'required',
+            'deskripsi_tugas' => 'required|string',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_akhir' => 'required|date|after:tanggal_mulai',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'pendaftar_id.required' => 'Pilih pendaftar terlebih dahulu.',
+            'pendaftar_id.exists' => 'Pendaftar yang dipilih tidak valid.',
+            'soal_id.required' => 'Pilih setidaknya satu soal.',
+            'soal_id.*.exists' => 'Salah satu soal yang dipilih tidak valid.',
+            'deskripsi_tugas.required' => 'Deskripsi soal wajib diisi.',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
+            'tanggal_mulai.date' => 'Format tanggal mulai tidak valid.',
+            'tanggal_akhir.required' => 'Tanggal akhir wajib diisi.',
+            'tanggal_akhir.date' => 'Format tanggal akhir tidak valid.',
+            'tanggal_akhir.after' => 'Tanggal akhir harus setelah tanggal mulai.',
         ];
     }
 }

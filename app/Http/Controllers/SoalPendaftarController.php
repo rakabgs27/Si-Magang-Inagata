@@ -7,17 +7,42 @@ use App\Http\Requests\StoreSoalPendaftarRequest;
 use App\Http\Requests\UpdateSoalPendaftarRequest;
 use App\Models\Pendaftar;
 use App\Models\Soal;
+use Illuminate\Http\Request;
 
 class SoalPendaftarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:assign-soal.index')->only('index');
+        $this->middleware('permission:assign-soal.create')->only('create', 'store');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('soal-management.assign-soal.index');
+        $namaUserSearch = $request->input('name');
+
+        try {
+            $listSoalPendaftar = SoalPendaftar::when($namaUserSearch, function ($query, $namaUserSearch) {
+                return $query->whereHas('pendaftar.user', function ($query) use ($namaUserSearch) {
+                    $query->where('name', 'like', '%' . $namaUserSearch . '%');
+                });
+            })->paginate(10);
+        } catch (\Exception $e) {
+            // Handle error, you can log it if you prefer
+            \Log::error('Error fetching soal pendaftar: ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong.');
+        }
+
+        return view('soal-management.assign-soal.index', [
+            'listSoalPendaftar' => $listSoalPendaftar,
+            'namaUserSearch' => $namaUserSearch,
+        ]);
     }
 
     /**
@@ -28,7 +53,7 @@ class SoalPendaftarController extends Controller
     public function create()
     {
         $listPendaftar = Pendaftar::with('user')->get();
-        // dd($listPendaftar);
+
         return view('soal-management.assign-soal.create', [
             'listPendaftar' => $listPendaftar,
         ]);
@@ -43,7 +68,16 @@ class SoalPendaftarController extends Controller
      */
     public function store(StoreSoalPendaftarRequest $request)
     {
-        //
+        // dd($request);
+        SoalPendaftar::create([
+            'pendaftar_id' => $request->pendaftar_id,
+            'soal_id' => $request->soal_id,
+            'deskripsi_tugas' => $request->deskripsi_tugas,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_akhir' => $request->tanggal_akhir,
+        ]);
+
+        return redirect()->route('assign-soal.index')->with('success', 'Soal berhasil diassign.');
     }
 
     /**
