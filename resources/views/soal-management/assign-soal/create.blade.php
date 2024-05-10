@@ -36,8 +36,11 @@
                         <div class="form-group">
                             <label for="soal_id">Pilih Soal</label>
                             <select id="soal_id" name="soal_id" class="form-control select2">
-                                {{-- Opsi soal akan dimuat secara dinamis di sini --}}
+                                <option selected disabled>Select a soal</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <ul id="fileList"></ul>
                         </div>
                         <div class="form-group">
                             <label for="deskripsi_tugas">Deskripsi Tugas</label>
@@ -102,37 +105,84 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#soal_id').select2(); // Initialize the Select2 component
+            // Initialize select2 for the soal_id dropdown
+            $('#soal_id').select2();
 
+            // Handle changes to the pendaftar_id dropdown
             $('#pendaftar_id').on('change', function() {
-                var pendaftarId = $(this).val(); // Get the selected pendaftar ID from the dropdown
-                $('#soal_id').empty(); // Clear the current options in the soal dropdown
-                console.log(pendaftarId);
+                var pendaftarId = $(this).val();
+                $('#soal_id').empty().append('<option selected disabled>Select a soal</option>'); // Show placeholder option
+                $('#soal_id').select2(); // Reinitialize select2
 
-                // Construct the URL for the AJAX request using Laravel's route function
+                // Clear file list when pendaftar changes, especially to "Pilih Pendaftar"
+                $('#fileList').empty();
+
+                // Exit if "Pilih Pendaftar" or an invalid option is selected
+                if (!pendaftarId || pendaftarId === "") {
+                    $('#fileList').html('<p>Please select a pendaftar to see files.</p>');
+                    return;
+                }
+
+                // Prepare the URL with the selected pendaftarId
                 var url = "{{ route('soal-divisi.get', ':pendaftarId') }}";
                 url = url.replace(':pendaftarId', pendaftarId);
 
                 $.ajax({
-                    url: url, // Use the constructed URL
+                    url: url,
                     type: 'GET',
                     success: function(data) {
-                        // Loop through the data returned by the server, which should be an array of soal
-                        $.each(data, function(index, soal) {
-                            $('#soal_id').append('<option value="' + soal.id + '">' +
-                                soal.judul_soal + '</option>');
-                        });
-                        $('#soal_id')
-                            .select2(); // Re-initialize Select2 for the updated soal dropdown
+                        if (data.length > 0) {
+                            $.each(data, function(index, soal) {
+                                $('#soal_id').append('<option value="' + soal.id + '">' + soal.judul_soal + '</option>');
+                            });
+                        } else {
+                            $('#soal_id').append('<option disabled>No soals available</option>');
+                        }
+                        $('#soal_id').select2(); // Reinitialize select2 for updated options
                     },
                     error: function(xhr, status, error) {
-                        console.error("AJAX error:", status,
-                            error); // Log any error to the console for debugging
+                        $('#soal_id').empty().append('<option disabled>Error loading soals</option>'); // Show error in dropdown
+                        $('#soal_id').select2();
+                        console.error("AJAX error:", status, error);
+                    }
+                });
+            });
+
+            // Event delegation for handling changes to dynamically updated soal_id dropdown
+            $(document).on('change', '#soal_id', function() {
+                if (!this.value || this.value === "") { // Check if the placeholder or disabled option is selected
+                    $('#fileList').empty();
+                    return;
+                }
+
+                var soalId = $(this).val();
+                console.log('Selected soalId:', soalId); // Log the selected soal_id or take other actions
+
+                // Trigger fetching and displaying files here
+                var fileUrl = "{{ route('file-soal.get', ['soalId' => ':soalId']) }}";
+                fileUrl = fileUrl.replace(':soalId', soalId);
+                $.ajax({
+                    url: fileUrl,
+                    type: 'GET',
+                    success: function(files) {
+                        $('#fileList').empty();
+                        if (files.length > 0) {
+                            files.forEach(function(file) {
+                                $('#fileList').append($('<li>').text(file.basename));
+                            });
+                        } else {
+                            $('#fileList').html('<p>No files found for this soal.</p>');
+                        }
+                    },
+                    error: function() {
+                        $('#fileList').empty();
+                        $('#fileList').append($('<li>').text('Error loading files.'));
                     }
                 });
             });
         });
     </script>
+
 @endpush
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SoalPendaftar;
 use App\Http\Requests\StoreSoalPendaftarRequest;
 use App\Http\Requests\UpdateSoalPendaftarRequest;
+use App\Models\FileMateri;
 use App\Models\Pendaftar;
 use App\Models\Soal;
 use Illuminate\Http\Request;
@@ -28,13 +29,19 @@ class SoalPendaftarController extends Controller
         $namaUserSearch = $request->input('name');
 
         try {
-            $listSoalPendaftar = SoalPendaftar::when($namaUserSearch, function ($query, $namaUserSearch) {
-                return $query->whereHas('pendaftar.user', function ($query) use ($namaUserSearch) {
+            $listSoalPendaftar = SoalPendaftar::with([
+                'soal',
+                'pendaftar.user' => function ($query) use ($namaUserSearch) {
+                    if (!empty($namaUserSearch)) {
+                        $query->where('name', 'like', '%' . $namaUserSearch . '%');
+                    }
+                }
+            ])->whereHas('pendaftar.user', function ($query) use ($namaUserSearch) {
+                if (!empty($namaUserSearch)) {
                     $query->where('name', 'like', '%' . $namaUserSearch . '%');
-                });
+                }
             })->paginate(10);
         } catch (\Exception $e) {
-            // Handle error, you can log it if you prefer
             \Log::error('Error fetching soal pendaftar: ' . $e->getMessage());
             return back()->with('error', 'Something went wrong.');
         }
@@ -68,7 +75,6 @@ class SoalPendaftarController extends Controller
      */
     public function store(StoreSoalPendaftarRequest $request)
     {
-        // dd($request);
         SoalPendaftar::create([
             'pendaftar_id' => $request->pendaftar_id,
             'soal_id' => $request->soal_id,
@@ -135,5 +141,20 @@ class SoalPendaftarController extends Controller
 
         $soal = Soal::where('divisi_id', $pendaftar->divisi_id)->get();
         return response()->json($soal);
+    }
+
+    public function showBySoalId($soalId)
+    {
+        $files = FileMateri::where('soal_id', $soalId)->get();
+
+        $filesData = $files->map(function ($file) {
+            return [
+                'id' => $file->id,
+                'filename' => $file->files,
+                'basename' => pathinfo($file->files, PATHINFO_BASENAME)
+            ];
+        });
+
+        return response()->json($filesData);
     }
 }
