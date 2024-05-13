@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="soal_id">Pilih Soal</label>
                             <select id="soal_id" name="soal_id" class="form-control select2">
-                                <option selected disabled>Select a soal</option>
+                                <option selected disabled>Pilih soal</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -105,25 +105,20 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Initialize select2 for the soal_id dropdown
             $('#soal_id').select2();
 
-            // Handle changes to the pendaftar_id dropdown
             $('#pendaftar_id').on('change', function() {
                 var pendaftarId = $(this).val();
-                $('#soal_id').empty().append('<option selected disabled>Select a soal</option>'); // Show placeholder option
-                $('#soal_id').select2(); // Reinitialize select2
+                $('#soal_id').empty().append('<option selected disabled>Pilih soal</option>'); // Show placeholder option
+                $('#soal_id').select2();
 
-                // Clear file list when pendaftar changes, especially to "Pilih Pendaftar"
                 $('#fileList').empty();
 
-                // Exit if "Pilih Pendaftar" or an invalid option is selected
                 if (!pendaftarId || pendaftarId === "") {
-                    $('#fileList').html('<p>Please select a pendaftar to see files.</p>');
+                    $('#fileList').html('<p>Pilih Soal Untuk Melihat File Soal</p>');
                     return;
                 }
 
-                // Prepare the URL with the selected pendaftarId
                 var url = "{{ route('soal-divisi.get', ':pendaftarId') }}";
                 url = url.replace(':pendaftarId', pendaftarId);
 
@@ -138,7 +133,7 @@
                         } else {
                             $('#soal_id').append('<option disabled>No soals available</option>');
                         }
-                        $('#soal_id').select2(); // Reinitialize select2 for updated options
+                        $('#soal_id').select2();
                     },
                     error: function(xhr, status, error) {
                         $('#soal_id').empty().append('<option disabled>Error loading soals</option>'); // Show error in dropdown
@@ -148,17 +143,15 @@
                 });
             });
 
-            // Event delegation for handling changes to dynamically updated soal_id dropdown
             $(document).on('change', '#soal_id', function() {
-                if (!this.value || this.value === "") { // Check if the placeholder or disabled option is selected
+                if (!this.value || this.value === "") {
                     $('#fileList').empty();
                     return;
                 }
 
                 var soalId = $(this).val();
-                console.log('Selected soalId:', soalId); // Log the selected soal_id or take other actions
+                console.log('Selected soalId:', soalId);
 
-                // Trigger fetching and displaying files here
                 var fileUrl = "{{ route('file-soal.get', ['soalId' => ':soalId']) }}";
                 fileUrl = fileUrl.replace(':soalId', soalId);
                 $.ajax({

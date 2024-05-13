@@ -75,7 +75,7 @@
                                                                     class="btn btn-sm btn-warning btn-icon">
                                                                     <i class="fas fa-edit"></i>
                                                                     Detail</a>
-                                                                <form action="#"
+                                                                <form action="{{ route('assign-soal.destroy', $listItem->id) }}"
                                                                     method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="_token"

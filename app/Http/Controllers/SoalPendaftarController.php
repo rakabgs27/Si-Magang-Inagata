@@ -126,9 +126,15 @@ class SoalPendaftarController extends Controller
      * @param  \App\Models\SoalPendaftar  $soalPendaftar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SoalPendaftar $soalPendaftar)
+    public function destroy(SoalPendaftar $assignSoal)
     {
-        //
+        try {
+            $assignSoal->delete();
+
+            return redirect()->route('assign-soal.index')->with('success', 'Assign Soal berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('assign-soal.index')->with('error', 'Gagal Menghapus Assign Soal: ' . $e->getMessage());
+        }
     }
 
     public function getSoalByDivisiPendaftar($pendaftarId)
