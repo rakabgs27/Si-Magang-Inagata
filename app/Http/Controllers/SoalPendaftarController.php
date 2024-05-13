@@ -9,6 +9,8 @@ use App\Models\FileMateri;
 use App\Models\Pendaftar;
 use App\Models\Soal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class SoalPendaftarController extends Controller
 {
@@ -92,9 +94,25 @@ class SoalPendaftarController extends Controller
      * @param  \App\Models\SoalPendaftar  $soalPendaftar
      * @return \Illuminate\Http\Response
      */
-    public function show(SoalPendaftar $soalPendaftar)
+    public function show(SoalPendaftar $assignSoal)
     {
-        //
+        try {
+            $soal = SoalPendaftar::with(['soal.divisi', 'pendaftar.user'])->findOrFail($assignSoal->id)->soal;
+
+            $files = FileMateri::where('soal_id', $soal->id)->get();
+
+            $fileData = $files->map(function ($file) {
+                $fileName = basename($file->files);
+                return [
+                    'url' => Storage::url($file->files),
+                    'name' => $fileName
+                ];
+            });
+
+            return view('soal-management.assign-soal.show', compact('assignSoal', 'soal', 'fileData'));
+        } catch (\Exception $e) {
+            return redirect()->route('assign-soal.index')->with('error', 'Gagal Untuk Mengambil Data Assign Soal: ' . $e->getMessage());
+        }
     }
 
     /**

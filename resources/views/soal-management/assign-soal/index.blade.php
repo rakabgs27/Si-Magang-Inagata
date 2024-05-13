@@ -71,7 +71,7 @@
                                                     </td>
                                                         <td class="text-right">
                                                             <div class="d-flex justify-content-end">
-                                                                <a href="#"
+                                                                <a href="{{ route('assign-soal.show', $listItem->id) }}"
                                                                     class="btn btn-sm btn-warning btn-icon">
                                                                     <i class="fas fa-edit"></i>
                                                                     Detail</a>
