@@ -110,6 +110,14 @@ class RoleAndPermissionSeeder extends Seeder
             'dashboard',
             'user.management',
             'user.index',
+            'soal.management',
+            'test-soal.index',
+            'jawaban.management',
+            'test-jawaban.index',
+            'wawancara.management',
+            'jadwal-wawancara.index',
+            'pengumuman.management',
+            'hasil-pengumuman.index',
         ]);
 
         // create manager
