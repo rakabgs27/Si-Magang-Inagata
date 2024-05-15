@@ -16,27 +16,25 @@
                     <form action="{{ route('assign-soal.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="pendaftar_id">Pilih Pendaftar</label>
-                            <select id="pendaftar_id" name="pendaftar_id"
-                                class="form-control select2 @error('pendaftar_id') is-invalid @enderror">
-                                <option value="">Pilih Pendaftar</option>
-                                @foreach ($listPendaftar as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}"
-                                        {{ old('pendaftar_id') == $pendaftar->id ? 'selected' : '' }}>
-                                        {{ $pendaftar->user ? $pendaftar->user->name : 'No Name Available' }}
-                                    </option>
+                            <label for="divisi_id">Pilih Divisi</label>
+                            <select id="divisi_id" name="divisi_id" class="form-control select2">
+                                <option selected disabled>Pilih Divisi</option>
+                                @foreach ($listDivisi as $divisi)
+                                    <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
                                 @endforeach
                             </select>
-                            @error('pendaftar_id')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="pendaftar_id">Pilih Pendaftar</label>
+                            <select id="pendaftar_id" name="pendaftar_id[]" class="form-control select2" multiple
+                                data-placeholder="Pilih Pendaftar">
+                                <option></option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="soal_id">Pilih Soal</label>
                             <select id="soal_id" name="soal_id" class="form-control select2">
-                                <option selected disabled>Pilih soal</option>
+                                <option selected disabled>Pilih Soal</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -76,7 +74,6 @@
                                 </div>
                             @enderror
                         </div>
-
                 </div>
                 <div class="card-footer text-right">
                     <button class="btn btn-primary">Submit</button>
@@ -105,13 +102,49 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#soal_id').select2();
+            $('.select2').select2({
+                placeholder: function() {
+                    $(this).data('placeholder');
+                }
+            });
 
-            $('#pendaftar_id').on('change', function() {
+            $('#divisi_id').change(function() {
+                var divisiId = $(this).val();
+
+                // Clear pendaftar and soal selections and file list
+                $('#pendaftar_id').empty().select2({
+                    placeholder: 'Pilih Pendaftar'
+                });
+                $('#soal_id').empty().append('<option selected disabled>Pilih Soal</option>').select2();
+                $('#fileList').html('<p>Pilih Soal Untuk Melihat File Soal</p>');
+
+                // Fetch pendaftars based on selected divisi
+                $.ajax({
+                    url: '{{ route('divisi-pendaftar.get', ':divisiId') }}'.replace(':divisiId',
+                        divisiId),
+                    type: 'GET',
+                    success: function(data) {
+                        var pendaftarSelect = $('#pendaftar_id');
+                        pendaftarSelect.empty();
+                        pendaftarSelect.append('<option></option>');
+                        $.each(data.pendaftars, function(key, value) {
+                            pendaftarSelect.append('<option value="' + value.id + '">' +
+                                value.user.name + '</option>');
+                        });
+                        pendaftarSelect.select2({
+                            placeholder: 'Pilih Pendaftar'
+                        });
+                        console.log("Pendaftars loaded:", data.pendaftars);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                    }
+                });
+            });
+
+            $('#pendaftar_id').change(function() {
                 var pendaftarId = $(this).val();
-                $('#soal_id').empty().append('<option selected disabled>Pilih soal</option>'); // Show placeholder option
-                $('#soal_id').select2();
-
+                $('#soal_id').empty().append('<option selected disabled>Pilih Soal</option>').select2();
                 $('#fileList').empty();
 
                 if (!pendaftarId || pendaftarId === "") {
@@ -128,16 +161,19 @@
                     success: function(data) {
                         if (data.length > 0) {
                             $.each(data, function(index, soal) {
-                                $('#soal_id').append('<option value="' + soal.id + '">' + soal.judul_soal + '</option>');
+                                $('#soal_id').append('<option value="' + soal.id +
+                                    '">' + soal.judul_soal + '</option>');
                             });
                         } else {
-                            $('#soal_id').append('<option disabled>No soals available</option>');
+                            $('#soal_id').append(
+                            '<option disabled>No soals available</option>');
                         }
                         $('#soal_id').select2();
+                        console.log("Soals loaded:", data);
                     },
                     error: function(xhr, status, error) {
-                        $('#soal_id').empty().append('<option disabled>Error loading soals</option>'); // Show error in dropdown
-                        $('#soal_id').select2();
+                        $('#soal_id').empty().append(
+                            '<option disabled>Error loading soals</option>').select2();
                         console.error("AJAX error:", status, error);
                     }
                 });
@@ -166,16 +202,17 @@
                         } else {
                             $('#fileList').html('<p>No files found for this soal.</p>');
                         }
+                        console.log("Files loaded:", files);
                     },
                     error: function() {
                         $('#fileList').empty();
                         $('#fileList').append($('<li>').text('Error loading files.'));
+                        console.error("AJAX error loading files");
                     }
                 });
             });
         });
     </script>
-
 @endpush
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">

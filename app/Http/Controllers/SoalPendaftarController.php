@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SoalPendaftar;
 use App\Http\Requests\StoreSoalPendaftarRequest;
 use App\Http\Requests\UpdateSoalPendaftarRequest;
+use App\Models\Divisi;
 use App\Models\FileMateri;
 use App\Models\Pendaftar;
 use App\Models\Soal;
@@ -62,9 +63,11 @@ class SoalPendaftarController extends Controller
     public function create()
     {
         $listPendaftar = Pendaftar::with('user')->get();
+        $listDivisi = Divisi::all();
 
         return view('soal-management.assign-soal.create', [
             'listPendaftar' => $listPendaftar,
+            'listDivisi' => $listDivisi,
         ]);
     }
 
@@ -77,16 +80,20 @@ class SoalPendaftarController extends Controller
      */
     public function store(StoreSoalPendaftarRequest $request)
     {
-        SoalPendaftar::create([
-            'pendaftar_id' => $request->pendaftar_id,
-            'soal_id' => $request->soal_id,
-            'deskripsi_tugas' => $request->deskripsi_tugas,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_akhir' => $request->tanggal_akhir,
-        ]);
+        $pendaftarIds = $request->pendaftar_id;
+        foreach ($pendaftarIds as $pendaftarId) {
+            SoalPendaftar::create([
+                'pendaftar_id' => $pendaftarId,
+                'soal_id' => $request->soal_id,
+                'deskripsi_tugas' => $request->deskripsi_tugas,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_akhir' => $request->tanggal_akhir,
+            ]);
+        }
 
         return redirect()->route('assign-soal.index')->with('success', 'Soal berhasil diassign.');
     }
+
 
     /**
      * Display the specified resource.
@@ -180,5 +187,17 @@ class SoalPendaftarController extends Controller
         });
 
         return response()->json($filesData);
+    }
+
+    public function getPendaftarsByDivisi($divisiId)
+    {
+        $assignedPendaftarIds = SoalPendaftar::pluck('pendaftar_id')->toArray();
+
+        $pendaftars = Pendaftar::where('divisi_id', $divisiId)
+            ->whereNotIn('id', $assignedPendaftarIds)
+            ->with('user')
+            ->get();
+
+        return response()->json(['pendaftars' => $pendaftars]);
     }
 }
