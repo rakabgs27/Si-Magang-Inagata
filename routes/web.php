@@ -18,6 +18,7 @@ use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\SoalPendaftarController;
+use App\Http\Controllers\TestSoalController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\UserController;
@@ -65,7 +66,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/getPendaftarsByDivisi/{divisiId}', [SoalPendaftarController::class, 'getPendaftarsByDivisi'])->name('divisi-pendaftar.get');
         Route::get('/get-soal-divisi/{pendaftarId}', [SoalPendaftarController::class, 'getSoalByDivisiPendaftar'])->name('soal-divisi.get');
         Route::get('/get-file-soal/{soalId}', [SoalPendaftarController::class, 'showBySoalId'])->name('file-soal.get');
-        Route::resource('test-soal', SoalPendaftarController::class);
+        Route::resource('test-soal', TestSoalController::class);
     });
 
     Route::prefix('menu-management')->group(function () {

@@ -138,7 +138,6 @@
         });
     </script>
 @endpush
-
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
 @endpush

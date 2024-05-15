@@ -15,7 +15,7 @@ class TestSoalController extends Controller
      */
     public function index()
     {
-        //
+        return view('soal-management.test-soal.index');
     }
 
     /**
