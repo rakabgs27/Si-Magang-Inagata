@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\TestSoal;
 use App\Http\Requests\StoreTestSoalRequest;
 use App\Http\Requests\UpdateTestSoalRequest;
+use App\Models\Pendaftar;
+use App\Models\SoalPendaftar;
+use Illuminate\Support\Facades\Auth;
 
 class TestSoalController extends Controller
 {
@@ -15,7 +18,18 @@ class TestSoalController extends Controller
      */
     public function index()
     {
-        return view('soal-management.test-soal.index');
+        try {
+            $userId = Auth::id();
+
+            $pendaftar = Pendaftar::where('user_id', $userId)->first();
+
+            $soalPendaftars = SoalPendaftar::where('pendaftar_id', $pendaftar->id)->get();
+            // dd($soalPendaftars);
+
+            return view('soal-management.test-soal.index', compact('soalPendaftars'));
+        } catch (\Exception $e) {
+            \Log::error('Error fetching test questions: ' . $e->getMessage());
+        }
     }
 
     /**

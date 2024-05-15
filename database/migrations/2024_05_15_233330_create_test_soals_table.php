@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('test_soals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('soal_pendaftar_id');
             $table->timestamps();
+            $table->foreign('soal_pendaftar_id')->references('id')->on('soal_pendaftars')->restrictOnDelete();
         });
     }
 
