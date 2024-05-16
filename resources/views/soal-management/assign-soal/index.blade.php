@@ -26,14 +26,11 @@
                                     @endrole
                                 </div>
                                 <h4></h4>
-                                <form class="card-header-form" id="search" method="GET"
-                                    action="{{ route('assign-soal.index') }}">
+                                <form class="card-header-form" id="search-form" method="GET" action="{{ route('assign-soal.index') }}">
                                     <div class="input-group">
-                                        <input type="text" name="name" class="form-control"
-                                            placeholder="Cari Pendaftar" value="{{ $namaUserSearch }}">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Cari Pendaftar" value="{{ $namaUserSearch }}">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-primary btn-icon"><i class="fas fa-search"
-                                                    type="submit"></i></button>
+                                            <button class="btn btn-primary btn-icon" type="submit"><i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
                                 </form>
@@ -54,7 +51,7 @@
                                         </tr>
                                         @if ($listSoalPendaftar->isEmpty())
                                             <tr>
-                                                <td colspan="6" class="text-center">Tidak Ada Data</td>
+                                                <td colspan="7" class="text-center">Tidak Ada Data</td>
                                             </tr>
                                         @else
                                             @foreach ($listSoalPendaftar as $key => $listItem)
@@ -62,27 +59,19 @@
                                                     <td>{{ $listSoalPendaftar->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->pendaftar->user->name }}</td>
                                                     <td>{{ $listItem->soal->judul_soal }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}
-                                                    <td>{{ $listItem->status }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}</td>
+                                                    <td class="{{ $listItem->status === 'Sedang Dikerjakan' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                        {{ $listItem->status }}
                                                     </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
-                                                            <a href="{{ route('assign-soal.show', $listItem->id) }}"
-                                                                class="btn btn-sm btn-warning btn-icon">
-                                                                <i class="fas fa-edit"></i>
-                                                                Detail</a>
-                                                            <form
-                                                                action="{{ route('assign-soal.destroy', $listItem->id) }}"
-                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <input type="hidden" name="_token"
-                                                                    value="{{ csrf_token() }}">
-                                                                <button type="submit" id="#submit"
-                                                                    class="btn btn-sm btn-danger btn-icon"
-                                                                    data-confirm="Hapus Data Soal ?|Apakah Kamu Yakin?"
-                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
-                                                                    data-id="del-{{ $listItem->id }}">
+                                                            <a href="{{ route('assign-soal.show', $listItem->id) }}" class="btn btn-sm btn-warning btn-icon">
+                                                                <i class="fas fa-edit"></i> Detail</a>
+                                                            <form action="{{ route('assign-soal.destroy', $listItem->id) }}" method="POST" class="ml-2" id="del-{{ $listItem->id }}">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-sm btn-danger btn-icon">
                                                                     <i class="fas fa-times"></i> Delete
                                                                 </button>
                                                             </form>
@@ -104,6 +93,7 @@
         </div>
     </section>
 @endsection
+
 @push('customScript')
     <script src="/assets/js/select2.min.js"></script>
     <script>
@@ -118,24 +108,22 @@
                 $(".show-search").slideToggle("fast");
                 $(".show-import").hide();
             });
-            //ganti label berdasarkan nama file
+            // ganti label berdasarkan nama file
             $('#file-upload').change(function() {
                 var i = $(this).prev('label').clone();
                 var file = $('#file-upload')[0].files[0].name;
                 $(this).prev('label').text(file);
             });
+
+            $('.select2').select2();
         });
 
         function submitDel(id) {
             $('#del-' + id).submit()
         }
     </script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
 @endpush
+
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
 @endpush

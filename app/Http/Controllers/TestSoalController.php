@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\TestSoal;
 use App\Http\Requests\StoreTestSoalRequest;
 use App\Http\Requests\UpdateTestSoalRequest;
+use App\Models\FileMateri;
 use App\Models\Pendaftar;
 use App\Models\SoalPendaftar;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class TestSoalController extends Controller
 {
@@ -58,10 +61,27 @@ class TestSoalController extends Controller
      * @param  \App\Models\TestSoal  $testSoal
      * @return \Illuminate\Http\Response
      */
-    public function show(TestSoal $testSoal)
+    public function show(SoalPendaftar $testSoal)
     {
-        //
+        try {
+            $soal = SoalPendaftar::with(['soal.divisi', 'pendaftar.user'])->findOrFail($testSoal->id)->soal;
+
+            $files = FileMateri::where('soal_id', $soal->id)->get();
+
+            $fileData = $files->map(function ($file) {
+                $fileName = basename($file->files);
+                return [
+                    'url' => Storage::url($file->files),
+                    'name' => $fileName
+                ];
+            });
+
+            return view('soal-management.test-soal.show', compact('testSoal', 'soal', 'fileData'));
+        } catch (\Exception $e) {
+            return redirect()->route('test-soal.index')->with('error', 'Gagal Untuk Mengambil Data Assign Soal: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.

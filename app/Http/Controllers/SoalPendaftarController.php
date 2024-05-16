@@ -11,7 +11,8 @@ use App\Models\Pendaftar;
 use App\Models\Soal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SoalPendaftarController extends Controller
 {
@@ -44,9 +45,9 @@ class SoalPendaftarController extends Controller
                     $query->where('name', 'like', '%' . $namaUserSearch . '%');
                 }
             })->paginate(10);
+
         } catch (\Exception $e) {
-            \Log::error('Error fetching soal pendaftar: ' . $e->getMessage());
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
         }
 
         return view('soal-management.assign-soal.index', [

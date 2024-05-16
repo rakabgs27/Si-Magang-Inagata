@@ -23,17 +23,16 @@
                                             data-background="{{ asset('assets/img/news/images20.png') }}">
                                         </div>
                                         <div class="article-badge">
-                                            <div class="article-badge-item bg-danger"><i class="fas fa-times"></i>Sedang
-                                                Dikerjakan</div>
+                                            <div class="article-badge-item bg-danger"><i class="fas fa-times"></i>{{ $soalPendaftar->status }}</div>
                                         </div>
                                     </div>
                                     <div class="article-details">
                                         <div class="article-title">
                                             <h2><a href="#">{{ $soalPendaftar->soal->judul_soal }}</a></h2>
                                         </div>
-                                        <p>{{ strip_tags($soalPendaftar->deskripsi_tugas) }}</p>
+                                        <p>Klik Kerjakan Untuk Melihat Detail Soal Test</p>
                                         <div class="article-cta">
-                                            <a href="#">Kerjakan <i class="fas fa-chevron-right"></i></a>
+                                            <a href="{{ route('test-soal.show', $soalPendaftar->id) }}">Kerjakan <i class="fas fa-chevron-right"></i></a>
                                         </div>
                                     </div>
                                 </article>

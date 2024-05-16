@@ -17,6 +17,7 @@ class SoalPendaftar extends Model
         'deskripsi_tugas',
         'tanggal_mulai',
         'tanggal_akhir',
+        'status'
     ];
 
     public function soal()
