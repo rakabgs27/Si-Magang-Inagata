@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('deskripsi_tugas')->nullable();
             $table->dateTime('tanggal_mulai');
             $table->dateTime('tanggal_akhir');
+            $table->enum('status', ['Sedang Dikerjakan', 'Selesai Dikerjakan']);
             $table->timestamps();
             $table->foreign('soal_id')->references('id')->on('soals')->restrictOnDelete();
             $table->foreign('pendaftar_id')->references('id')->on('pendaftars')->restrictOnDelete();

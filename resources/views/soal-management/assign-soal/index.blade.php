@@ -21,8 +21,8 @@
                             <div class="d-flex flex-row-reverse card-header-action">
                                 <div class="card-header-actions">
                                     @role('manager')
-                                    <a class="btn btn-icon icon-left btn-primary"
-                                    href="{{ route('assign-soal.create') }}">Assign Soal Pendaftar</a>
+                                        <a class="btn btn-icon icon-left btn-primary"
+                                            href="{{ route('assign-soal.create') }}">Assign Soal Pendaftar</a>
                                     @endrole
                                 </div>
                                 <h4></h4>
@@ -49,6 +49,7 @@
                                             <th>Judul Soal</th>
                                             <th>Tanggal Mulai</th>
                                             <th>Tanggal Akhir</th>
+                                            <th>Status</th>
                                             <th class="text-right">Action</th>
                                         </tr>
                                         @if ($listSoalPendaftar->isEmpty())
@@ -63,28 +64,30 @@
                                                     <td>{{ $listItem->soal->judul_soal }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}
                                                     <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}
+                                                    <td>{{ $listItem->status }}</td>
                                                     </td>
-                                                        <td class="text-right">
-                                                            <div class="d-flex justify-content-end">
-                                                                <a href="{{ route('assign-soal.show', $listItem->id) }}"
-                                                                    class="btn btn-sm btn-warning btn-icon">
-                                                                    <i class="fas fa-edit"></i>
-                                                                    Detail</a>
-                                                                <form action="{{ route('assign-soal.destroy', $listItem->id) }}"
-                                                                    method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="_token"
-                                                                        value="{{ csrf_token() }}">
-                                                                    <button type="submit" id="#submit"
-                                                                        class="btn btn-sm btn-danger btn-icon"
-                                                                        data-confirm="Hapus Data Soal ?|Apakah Kamu Yakin?"
-                                                                        data-confirm-yes="submitDel(<?= $listItem->id ?>)"
-                                                                        data-id="del-{{ $listItem->id }}">
-                                                                        <i class="fas fa-times"></i> Delete
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </td>
+                                                    <td class="text-right">
+                                                        <div class="d-flex justify-content-end">
+                                                            <a href="{{ route('assign-soal.show', $listItem->id) }}"
+                                                                class="btn btn-sm btn-warning btn-icon">
+                                                                <i class="fas fa-edit"></i>
+                                                                Detail</a>
+                                                            <form
+                                                                action="{{ route('assign-soal.destroy', $listItem->id) }}"
+                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="_token"
+                                                                    value="{{ csrf_token() }}">
+                                                                <button type="submit" id="#submit"
+                                                                    class="btn btn-sm btn-danger btn-icon"
+                                                                    data-confirm="Hapus Data Soal ?|Apakah Kamu Yakin?"
+                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
+                                                                    data-id="del-{{ $listItem->id }}">
+                                                                    <i class="fas fa-times"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @endif

@@ -88,11 +88,13 @@ class SoalPendaftarController extends Controller
                 'deskripsi_tugas' => $request->deskripsi_tugas,
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_akhir' => $request->tanggal_akhir,
+                'status' => 'Sedang Dikerjakan'
             ]);
         }
 
         return redirect()->route('assign-soal.index')->with('success', 'Soal berhasil diassign.');
     }
+
 
 
     /**

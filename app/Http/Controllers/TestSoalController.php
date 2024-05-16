@@ -24,7 +24,6 @@ class TestSoalController extends Controller
             $pendaftar = Pendaftar::where('user_id', $userId)->first();
 
             $soalPendaftars = SoalPendaftar::where('pendaftar_id', $pendaftar->id)->get();
-            // dd($soalPendaftars);
 
             return view('soal-management.test-soal.index', compact('soalPendaftars'));
         } catch (\Exception $e) {
