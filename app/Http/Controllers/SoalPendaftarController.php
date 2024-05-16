@@ -45,7 +45,6 @@ class SoalPendaftarController extends Controller
                     $query->where('name', 'like', '%' . $namaUserSearch . '%');
                 }
             })->paginate(10);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
         }
@@ -202,5 +201,14 @@ class SoalPendaftarController extends Controller
             ->get();
 
         return response()->json(['pendaftars' => $pendaftars]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $assignSoal = SoalPendaftar::findOrFail($id);
+        $assignSoal->status = 'Selesai Dikerjakan';
+        $assignSoal->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }

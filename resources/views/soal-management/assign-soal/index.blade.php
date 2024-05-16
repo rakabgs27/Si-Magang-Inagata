@@ -26,11 +26,14 @@
                                     @endrole
                                 </div>
                                 <h4></h4>
-                                <form class="card-header-form" id="search-form" method="GET" action="{{ route('assign-soal.index') }}">
+                                <form class="card-header-form" id="search-form" method="GET"
+                                    action="{{ route('assign-soal.index') }}">
                                     <div class="input-group">
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="Cari Pendaftar" value="{{ $namaUserSearch }}">
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            placeholder="Cari Pendaftar" value="{{ $namaUserSearch }}">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-primary btn-icon" type="submit"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-primary btn-icon" type="submit"><i
+                                                    class="fas fa-search"></i></button>
                                         </div>
                                     </div>
                                 </form>
@@ -55,23 +58,32 @@
                                             </tr>
                                         @else
                                             @foreach ($listSoalPendaftar as $key => $listItem)
-                                                <tr>
+                                                <tr data-id="{{ $listItem->id }}"
+                                                    data-end-date="{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->toDateTimeString() }}">
                                                     <td>{{ $listSoalPendaftar->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->pendaftar->user->name }}</td>
                                                     <td>{{ $listItem->soal->judul_soal }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}</td>
-                                                    <td class="{{ $listItem->status === 'Sedang Dikerjakan' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}
+                                                    </td>
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}
+                                                    </td>
+                                                    <td
+                                                        class="status {{ $listItem->status === 'Sedang Dikerjakan' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $listItem->status }}
                                                     </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
-                                                            <a href="{{ route('assign-soal.show', $listItem->id) }}" class="btn btn-sm btn-warning btn-icon">
-                                                                <i class="fas fa-edit"></i> Detail</a>
-                                                            <form action="{{ route('assign-soal.destroy', $listItem->id) }}" method="POST" class="ml-2" id="del-{{ $listItem->id }}">
+                                                            <a href="{{ route('assign-soal.show', $listItem->id) }}"
+                                                                class="btn btn-sm btn-warning btn-icon">
+                                                                <i class="fas fa-edit"></i> Detail
+                                                            </a>
+                                                            <form
+                                                                action="{{ route('assign-soal.destroy', $listItem->id) }}"
+                                                                method="POST" class="ml-2" id="del-{{ $listItem->id }}">
                                                                 @method('DELETE')
                                                                 @csrf
-                                                                <button type="submit" class="btn btn-sm btn-danger btn-icon">
+                                                                <button type="submit"
+                                                                    class="btn btn-sm btn-danger btn-icon">
                                                                     <i class="fas fa-times"></i> Delete
                                                                 </button>
                                                             </form>
@@ -98,6 +110,41 @@
     <script src="/assets/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
+            var intervalId = setInterval(function() {
+                var now = new Date();
+                var allCompleted = true; // Flag to check if all items are completed
+
+                $('tr[data-end-date]').each(function() {
+                    var endDate = new Date($(this).data('end-date'));
+                    if (now > endDate && $(this).find('.status').text().trim() !==
+                        'Selesai Dikerjakan') {
+                        allCompleted = false; // If any item is not completed, set flag to false
+                        var row = $(this);
+                        var id = row.data('id');
+                        $.ajax({
+                            url: "{{ route('assign-soal.update-status', '') }}/" + id,
+                            type: 'PATCH',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function(response) {
+                                row.find('.status').text('Selesai Dikerjakan')
+                                    .removeClass('text-danger').addClass(
+                                    'text-success');
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+                if (allCompleted) {
+                    clearInterval(intervalId);
+                }
+            }, 60000);
+
+            // Event handling lainnya
             $('.import').click(function(event) {
                 event.stopPropagation();
                 $(".show-import").slideToggle("fast");
@@ -108,9 +155,7 @@
                 $(".show-search").slideToggle("fast");
                 $(".show-import").hide();
             });
-            // ganti label berdasarkan nama file
             $('#file-upload').change(function() {
-                var i = $(this).prev('label').clone();
                 var file = $('#file-upload')[0].files[0].name;
                 $(this).prev('label').text(file);
             });

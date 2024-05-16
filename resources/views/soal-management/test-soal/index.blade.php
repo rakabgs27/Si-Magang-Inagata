@@ -23,7 +23,13 @@
                                             data-background="{{ asset('assets/img/news/images20.png') }}">
                                         </div>
                                         <div class="article-badge">
-                                            <div class="article-badge-item bg-danger"><i class="fas fa-times"></i>{{ $soalPendaftar->status }}</div>
+                                            @if ($soalPendaftar->status == 'Sedang Dikerjakan')
+                                                <div class="article-badge-item bg-danger"><i class="fas fa-times"></i>
+                                                    {{ $soalPendaftar->status }}</div>
+                                            @else
+                                                <div class="article-badge-item bg-success"><i class="fas fa-check"></i>
+                                                    {{ $soalPendaftar->status }}</div>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="article-details">
@@ -32,7 +38,8 @@
                                         </div>
                                         <p>Klik Kerjakan Untuk Melihat Detail Soal Test</p>
                                         <div class="article-cta">
-                                            <a href="{{ route('test-soal.show', $soalPendaftar->id) }}">Kerjakan <i class="fas fa-chevron-right"></i></a>
+                                            <a href="{{ route('test-soal.show', $soalPendaftar->id) }}">Kerjakan <i
+                                                    class="fas fa-chevron-right"></i></a>
                                         </div>
                                     </div>
                                 </article>
