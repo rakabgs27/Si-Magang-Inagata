@@ -9,7 +9,7 @@
             <h2 class="section-title">Soal Management</h2>
             <div class="card">
                 <div class="card-header">
-                    <h4>Detail Test Soal</h4>
+                    <h4>Test Soal Pendaftar</h4>
                 </div>
                 <div class="card-body">
                     @if ($soalPendaftars->isEmpty())
