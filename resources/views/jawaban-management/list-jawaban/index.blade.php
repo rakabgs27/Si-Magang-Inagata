@@ -90,8 +90,9 @@
                                                     <td>{{ $jawabanPendaftar->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->soalPendaftar->pendaftar->user->name }}</td>
                                                     <td>{{ $listItem->soalPendaftar->pendaftar->divisi->nama_divisi }}</td>
-                                                    <td>{{ $listItem->link_jawaban }}</td>
-                                                    <td>{{ $listItem->file_jawaban }}</td>
+                                                    <td><a href="{{ $listItem->link_jawaban }}"
+                                                            target="_blank">{{ $listItem->link_jawaban }}</a></td>
+                                                    <td>{{ basename($listItem->file_jawaban) }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($listItem->tanggal_pengumpulan)->format('d F Y H:i:s') }}
                                                     </td>
                                                     <td class="text-right">

@@ -17,36 +17,37 @@ class JawabanPendaftarController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-{
-    $namaUserSearch = $request->input('name');
-    $divisiId = $request->input('divisi_id');
+    {
+        $namaUserSearch = $request->input('name');
+        $divisiId = $request->input('divisi_id');
 
-    $divisis = Divisi::all();
+        $divisis = Divisi::all();
 
-    try {
-        $jawabanPendaftar = JawabanPendaftar::with(['soalPendaftar.pendaftar.user', 'soalPendaftar.pendaftar.divisi'])
-            ->whereHas('soalPendaftar.pendaftar.user', function ($query) use ($namaUserSearch) {
-                if (!empty($namaUserSearch)) {
-                    $query->where('name', 'like', '%' . $namaUserSearch . '%');
-                }
-            })
-            ->whereHas('soalPendaftar.pendaftar.divisi', function ($query) use ($divisiId) {
-                if (!empty($divisiId)) {
-                    $query->where('id', $divisiId);
-                }
-            })
-            ->paginate(10);
-    } catch (\Exception $e) {
-        return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
+        try {
+            $jawabanPendaftar = JawabanPendaftar::with(['soalPendaftar.pendaftar.user', 'soalPendaftar.pendaftar.divisi'])
+                ->whereHas('soalPendaftar.pendaftar.user', function ($query) use ($namaUserSearch) {
+                    if (!empty($namaUserSearch)) {
+                        $query->where('name', 'like', '%' . $namaUserSearch . '%');
+                    }
+                })
+                ->whereHas('soalPendaftar.pendaftar.divisi', function ($query) use ($divisiId) {
+                    if (!empty($divisiId)) {
+                        $query->where('id', $divisiId);
+                    }
+                })
+                ->paginate(10);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
+        }
+
+        return view('jawaban-management.list-jawaban.index', [
+            'jawabanPendaftar' => $jawabanPendaftar,
+            'namaUserSearch' => $namaUserSearch,
+            'divisiId' => $divisiId,
+            'divisis' => $divisis,
+        ]);
     }
 
-    return view('jawaban-management.list-jawaban.index', [
-        'jawabanPendaftar' => $jawabanPendaftar,
-        'namaUserSearch' => $namaUserSearch,
-        'divisiId' => $divisiId,
-        'divisis' => $divisis,
-    ]);
-}
 
 
     /**
