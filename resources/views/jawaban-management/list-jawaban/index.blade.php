@@ -77,12 +77,13 @@
                                             <th>Nama Divisi</th>
                                             <th>Link Jawaban</th>
                                             <th>File Jawaban</th>
-                                            <th>Tangal Pengumpulan</th>
+                                            <th>Tanggal Pengumpulan</th>
+                                            <th>Preview</th>
                                             <th class="text-right">Action</th>
                                         </tr>
                                         @if ($jawabanPendaftar->isEmpty())
                                             <tr>
-                                                <td colspan="6" class="text-center">Tidak Ada Data</td>
+                                                <td colspan="8" class="text-center">Tidak Ada Data</td>
                                             </tr>
                                         @else
                                             @foreach ($jawabanPendaftar as $key => $listItem)
@@ -95,12 +96,16 @@
                                                     <td>{{ basename($listItem->file_jawaban) }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($listItem->tanggal_pengumpulan)->format('d F Y H:i:s') }}
                                                     </td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm"
+                                                            onclick="previewFile('{{ Storage::url($listItem->file_jawaban) }}', '{{ pathinfo($listItem->file_jawaban, PATHINFO_EXTENSION) }}')">Preview</button>
+                                                    </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
                                                             <span class="mr-2"></span>
                                                             <a href="#" class="btn btn-sm btn-warning btn-icon">
-                                                                <i class="fas fa-edit"></i>
-                                                                Detail</a>
+                                                                <i class="fas fa-edit"></i> Detail
+                                                            </a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -108,6 +113,9 @@
                                         @endif
                                     </tbody>
                                 </table>
+
+
+
                                 <div class="d-flex justify-content-center">
                                     {{ $jawabanPendaftar->links() }}
                                 </div>
@@ -118,9 +126,31 @@
             </div>
         </div>
     </section>
+    <!-- Modal Structure -->
+    <!-- Modal Structure -->
+    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel">File Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Preview content will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 @push('customScript')
     <script src="/assets/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('.import').click(function(event) {
@@ -142,16 +172,57 @@
         });
 
         function submitDel(id) {
-            $('#del-' + id).submit()
+            $('#del-' + id).submit();
         }
-    </script>
-    <script>
+
         $(document).ready(function() {
             $('.select2').select2();
         });
+
+        function previewFile(filePath, fileExtension) {
+            var modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = ''; // Clear previous content
+
+            if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png') {
+                var img = document.createElement('img');
+                img.src = filePath;
+                img.style.maxWidth = '100%';
+                modalBody.appendChild(img);
+            } else if (fileExtension === 'pdf') {
+                var iframe = document.createElement('iframe');
+                iframe.src = filePath;
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                modalBody.appendChild(iframe);
+            } else if (fileExtension === 'docx') {
+                fetch(filePath).then(function(response) {
+                    return response.arrayBuffer();
+                }).then(function(arrayBuffer) {
+                    mammoth.convertToHtml({
+                        arrayBuffer: arrayBuffer
+                    }).then(function(result) {
+                        modalBody.innerHTML = result.value;
+                    });
+                });
+            } else {
+                modalBody.innerHTML = 'No preview available';
+            }
+
+            $('#previewModal').modal('show');
+        }
     </script>
 @endpush
 
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <style>
+        #modalBody img {
+            max-width: 100%;
+        }
+
+        #modalBody iframe {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
 @endpush

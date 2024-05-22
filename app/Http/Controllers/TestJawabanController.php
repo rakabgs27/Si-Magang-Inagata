@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\FileMateri;
+use App\Models\Pendaftar;
+use App\Models\Soal;
 use App\Models\SoalPendaftar;
+use App\Models\TestSoal;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +20,13 @@ class TestJawabanController extends Controller
      */
     public function index()
     {
-        //
+        $auth = Auth::user()->id;
+        $idPendaftar = Pendaftar::where('user_id', $auth)->value('id');
+        $testSoal = SoalPendaftar::where('pendaftar_id', $idPendaftar)
+            ->where('status', '=', 'Sedang Dikerjakan')
+            ->first();
+
+        return redirect()->route('test-jawaban.show', $testSoal->id);
     }
 
     /**
