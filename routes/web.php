@@ -3,6 +3,7 @@
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
+use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\PendaftarController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\SoalPendaftarController;
+use App\Http\Controllers\TestJawabanController;
 use App\Http\Controllers\TestSoalController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -68,6 +70,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/get-file-soal/{soalId}', [SoalPendaftarController::class, 'showBySoalId'])->name('file-soal.get');
         Route::patch('/assign-soal/update-status/{id}', [SoalPendaftarController::class, 'updateStatus'])->name('assign-soal.update-status');
         Route::resource('test-soal', TestSoalController::class);
+    });
+
+    Route::prefix('jawaban-management')->group(function () {
+        Route::resource('list-jawaban', JawabanPendaftarController::class);
+        Route::resource('test-jawaban', TestJawabanController::class);
     });
 
     Route::prefix('menu-management')->group(function () {

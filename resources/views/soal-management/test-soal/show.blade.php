@@ -26,7 +26,7 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-primary mr-2" href="#">Kumpulkan Jawaban</a>
+                    <a class="btn btn-primary mr-2" href="{{ route('test-jawaban.show', $testSoal->id) }}">Kumpulkan Jawaban</a>
                     <a class="btn btn-secondary" href="{{ route('test-soal.index') }}">Cancel</a>
                 </div>
             </div>
