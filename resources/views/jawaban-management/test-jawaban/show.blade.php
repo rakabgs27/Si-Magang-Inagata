@@ -6,6 +6,11 @@
             <h1>Detail Assign Soal</h1>
         </div>
         <div class="section-body">
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <h2 class="section-title">{{ $soal->judul_soal }}</h2>
             <div class="row d-flex align-items-stretch">
                 <!-- Detail Soal Card -->
@@ -74,20 +79,18 @@
         </div>
     </section>
 @endsection
+
 @push('customScript')
     <script>
         var countDownDate = new Date("{{ \Carbon\Carbon::parse($testJawaban->tanggal_akhir)->format('M d, Y H:i:s') }}")
             .getTime();
 
         var x = setInterval(function() {
-
             var now = new Date().getTime();
-
             var distance = countDownDate - now;
-
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / 1000 * 60);
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             document.getElementById("countdown").innerHTML = days + "d " + hours + "h " +

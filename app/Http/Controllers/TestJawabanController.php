@@ -26,8 +26,13 @@ class TestJawabanController extends Controller
             ->where('status', '=', 'Sedang Dikerjakan')
             ->first();
 
+        if (!$testSoal) {
+            return redirect()->route('test-soal.index')->with('error', 'Tidak ada soal yang sedang dikerjakan.');
+        }
+
         return redirect()->route('test-jawaban.show', $testSoal->id);
     }
+
 
     /**
      * Show the form for creating a new resource.

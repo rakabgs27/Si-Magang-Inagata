@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSoalPendaftarRequest;
 use App\Http\Requests\UpdateSoalPendaftarRequest;
 use App\Models\Divisi;
 use App\Models\FileMateri;
+use App\Models\JawabanPendaftar;
 use App\Models\Pendaftar;
 use App\Models\Soal;
 use Illuminate\Http\Request;
@@ -156,6 +157,9 @@ class SoalPendaftarController extends Controller
     public function destroy(SoalPendaftar $assignSoal)
     {
         try {
+
+            JawabanPendaftar::where('soal_pendaftar_id', $assignSoal->id)->delete();
+
             $assignSoal->delete();
 
             return redirect()->route('assign-soal.index')->with('success', 'Assign Soal berhasil dihapus');

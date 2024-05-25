@@ -29,4 +29,9 @@ class SoalPendaftar extends Model
     {
         return $this->belongsTo(Pendaftar::class);
     }
+
+    public function jawabanPendaftars()
+    {
+        return $this->hasMany(JawabanPendaftar::class);
+    }
 }
