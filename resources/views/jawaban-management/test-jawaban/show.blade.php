@@ -6,11 +6,6 @@
             <h1>Detail Assign Soal</h1>
         </div>
         <div class="section-body">
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
             <h2 class="section-title">{{ $soal->judul_soal }}</h2>
             <div class="row d-flex align-items-stretch">
                 <!-- Detail Soal Card -->
@@ -49,7 +44,7 @@
                                     <label for="link_jawaban">Link Jawaban</label>
                                     <input type="url" class="form-control @error('link_jawaban') is-invalid @enderror"
                                         id="link_jawaban" name="link_jawaban" placeholder="Masukkan link"
-                                        value="{{ old('link_jawaban') }}">
+                                        value="{{ old('link_jawaban', $jawabanPendaftar->link_jawaban ?? '') }}">
                                     <p class="mt-3"><small>Catatan: Link jawaban dapat berupa link GitHub, Figma, atau
                                             platform lain yang relevan.</small></p>
                                     @error('link_jawaban')
@@ -62,6 +57,12 @@
                                     <label for="file_jawaban">Upload Berkas Jawaban</label>
                                     <input type="file" class="form-control @error('file_jawaban') is-invalid @enderror"
                                         id="file_jawaban" name="file_jawaban">
+                                    @if ($jawabanPendaftar && $jawabanPendaftar->file_jawaban)
+                                        <p><small>File saat ini: <a
+                                                    href="{{ Storage::url($jawabanPendaftar->file_jawaban) }}"
+                                                    target="_blank">{{ basename($jawabanPendaftar->file_jawaban) }}</a></small>
+                                        </p>
+                                    @endif
                                     @error('file_jawaban')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -69,7 +70,11 @@
                                     @enderror
                                 </div>
                                 <p><strong>Waktu Tersisa:</strong> <span id="countdown"></span></p>
-                                <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                                @if ($jawabanPendaftar)
+                                    <button type="submit" class="btn btn-primary" id="updateBtn">Update</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                                @endif
                                 <a class="btn btn-secondary" href="{{ route('test-soal.index') }}">Cancel</a>
                             </form>
                         </div>
@@ -93,8 +98,8 @@
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " +
-                minutes + "m " + seconds + "s ";
+            document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds +
+                "s ";
 
             if (distance < 0) {
                 clearInterval(x);

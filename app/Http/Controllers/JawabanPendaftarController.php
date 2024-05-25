@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateJawabanPendaftarRequest;
 use App\Models\Divisi;
 use App\Models\SoalPendaftar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class JawabanPendaftarController extends Controller
 {
@@ -72,16 +74,17 @@ class JawabanPendaftarController extends Controller
         $data['tanggal_pengumpulan'] = now();
 
         if ($request->hasFile('file_jawaban')) {
-            $data['file_jawaban'] = $request->file('file_jawaban')->storeAs('jawaban', $request->file('file_jawaban')->getClientOriginalName(), 'public'); // Ubah direktori penyimpanan ke 'jawaban'
+            $data['file_jawaban'] = $request->file('file_jawaban')->storeAs(
+                'jawaban',
+                $request->file('file_jawaban')->getClientOriginalName(),
+                'public'
+            );
         }
-
         $jawabanPendaftar = JawabanPendaftar::where('soal_pendaftar_id', $request->soal_pendaftar_id)->first();
 
         if ($jawabanPendaftar) {
-
             $jawabanPendaftar->update($data);
         } else {
-
             JawabanPendaftar::create($data);
         }
 
@@ -90,6 +93,7 @@ class JawabanPendaftarController extends Controller
 
         return redirect()->route('test-soal.index')->with('success', 'Jawaban berhasil dikumpulkan.');
     }
+
 
 
 
@@ -124,8 +128,8 @@ class JawabanPendaftarController extends Controller
      */
     public function update(UpdateJawabanPendaftarRequest $request, JawabanPendaftar $jawabanPendaftar)
     {
-        //
     }
+
 
     /**
      * Remove the specified resource from storage.

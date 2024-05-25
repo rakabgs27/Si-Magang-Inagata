@@ -13,7 +13,7 @@ class UpdateJawabanPendaftarRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateJawabanPendaftarRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'soal_pendaftar_id' => 'required|exists:soal_pendaftars,id',
+            'link_jawaban' => 'nullable|url',
+            'file_jawaban' => 'nullable|file|mimes:pdf,doc,docx,zip',
         ];
     }
 }
