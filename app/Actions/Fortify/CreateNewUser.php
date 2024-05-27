@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Mail\NewRegistrantNotification;
+use Illuminate\Support\Facades\Mail;
+use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -80,6 +83,12 @@ class CreateNewUser implements CreatesNewUsers
                 'nomor_hp' => $input['nomor_hp'],
                 'status' => 'Pending'
             ]);
+
+            // Send email to managers
+            $managers = Role::where('name', 'manager')->first()->users;
+            foreach ($managers as $manager) {
+                Mail::to($manager->email)->send(new NewRegistrantNotification($input));
+            }
 
             return $user;
         } catch (\Exception $e) {
