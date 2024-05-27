@@ -47,14 +47,9 @@
                                             <th>Nama Lengkap</th>
                                             <th>Email</th>
                                             <th>Divisi</th>
-                                            <th>Nomor WhatsApp</th>
-                                            <th>Nama Instansi</th>
-                                            <th>Nama Jurusan/Prodi</th>
-                                            <th>NIM</th>
-                                            <th>Link CV</th>
-                                            <th>Link Portofolio</th>
                                             <th>Status</th>
                                             <th class="text-right">Action</th>
+                                            <th>Details</th>
                                         </tr>
                                         @foreach ($listPendaftar as $key => $listItem)
                                             <tr>
@@ -62,13 +57,6 @@
                                                 <td>{{ $listItem->user->name }}</td>
                                                 <td>{{ $listItem->user->email }}</td>
                                                 <td>{{ $listItem->divisi->nama_divisi }}</td>
-                                                <td>{{ $listItem->nomor_hp }}</td>
-                                                <td>{{ $listItem->nama_instansi }}</td>
-                                                <td>{{ $listItem->nama_jurusan }}</td>
-                                                <td>{{ $listItem->nim }}</td>
-                                                <td><a href="{{ $listItem->link_cv }}">{{ $listItem->link_cv }}</a></td>
-                                                <td><a href="{{ $listItem->link_porto }}">{{ $listItem->link_porto }}</a>
-                                                </td>
                                                 <td>{{ $listItem->status }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex flex-column flex-md-row justify-content-end">
@@ -90,12 +78,57 @@
                                                         @endif
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="toggleDetails({{ $listItem->id }})">View Details</button>
+                                                </td>
+                                            </tr>
+                                            <tr id="details-row-{{ $listItem->id }}" class="details-row collapse">
+                                                <td colspan="7">
+                                                    <div class="card border-primary">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item"><strong>Nomor
+                                                                                WhatsApp:</strong>
+                                                                            {{ $listItem->nomor_hp }}</li>
+                                                                        <li class="list-group-item"><strong>Nama
+                                                                                Instansi:</strong>
+                                                                            {{ $listItem->nama_instansi }}</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item"><strong>Nama
+                                                                                Jurusan/Prodi:</strong>
+                                                                            {{ $listItem->nama_jurusan }}</li>
+                                                                        <li class="list-group-item"><strong>NIM:</strong>
+                                                                            {{ $listItem->nim }}</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item"><strong>Link
+                                                                                CV:</strong> <a
+                                                                                href="{{ $listItem->link_cv }}">{{ $listItem->link_cv }}</a>
+                                                                        </li>
+                                                                        <li class="list-group-item"><strong>Link
+                                                                                Portofolio:</strong> <a
+                                                                                href="{{ $listItem->link_porto }}">{{ $listItem->link_porto }}</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{-- {{ $listDivisi->withQueryString()->links() }} --}}
+                                    {{ $listPendaftar->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
@@ -110,6 +143,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
+        let currentlyOpenDetailsId = null;
+
         function changeStatus(id, status) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -150,11 +185,32 @@
                 }
             });
         }
+
+        function toggleDetails(id) {
+            if (currentlyOpenDetailsId !== null && currentlyOpenDetailsId !== id) {
+                $('#details-row-' + currentlyOpenDetailsId).removeClass('show').addClass('collapse');
+            }
+            $('#details-row-' + id).toggleClass('collapse show');
+            currentlyOpenDetailsId = $('#details-row-' + id).hasClass('show') ? id : null;
+        }
     </script>
     <script src="/assets/js/select2.min.js"></script>
 @endpush
 
 @push('customStyle')
+    <style>
+        .collapse.show {
+            display: table-row !important;
+        }
+
+        .collapse:not(.show) {
+            display: none;
+        }
+
+        .card.border-primary {
+            border-width: 2px;
+        }
+    </style>
     <link rel="stylesheet" href="/assets/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
