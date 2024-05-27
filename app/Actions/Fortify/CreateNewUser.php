@@ -54,15 +54,21 @@ class CreateNewUser implements CreatesNewUsers
             'nim' => ['required', 'string', 'max:255'],
             'link_cv' => ['required', 'string', 'max:255'],
             'link_porto' => ['required', 'string', 'max:255'],
-            'nomor_hp' => ['required', 'regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/'],
+            'nomor_hp' => ['required','regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/'],
         ], $messages)->validate();
 
-         $user = User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'password' => Hash::make('temporary_password'),
+            'email_verified_at' => now(),
         ]);
 
-        $user->assignRole('user');
+        $password = $input['nim'] . $user->id;
+        $hashedPassword = Hash::make($password);
+        $user->update(['password' => $hashedPassword]);
+
+        // $user->assignRole('user');
 
         Pendaftar::create([
             'user_id' => $user->id,
@@ -73,7 +79,7 @@ class CreateNewUser implements CreatesNewUsers
             'link_cv' => $input['link_cv'],
             'link_porto' => $input['link_porto'],
             'nomor_hp' => $input['nomor_hp'],
-            'status'=> 'Pending'
+            'status' => 'Pending'
         ]);
 
         return $user;

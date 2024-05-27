@@ -75,7 +75,7 @@
                                                         <i class="fas fa-phone"></i>
                                                     </div>
                                                 </div>
-                                                <input name="nomor_hp" type="text" value="{{ old('nomor_hp') }}"
+                                                <input name="nomor_hp" type="number" value="{{ old('nomor_hp') }}"
                                                     class="form-control phone-number
                                                     @error('nomor_hp') is-invalid @enderror">
                                             </div>

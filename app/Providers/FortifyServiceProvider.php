@@ -6,11 +6,15 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -21,7 +25,45 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->instance(
+            LoginResponse::class,
+            new class implements LoginResponse
+            {
+                public function toResponse($request)
+                {
+                    if (Auth::user()->hasRole('manager')) {
+                        return $request->wantsJson()
+                            ? response()->json(['two_factor' => false])
+                            : redirect()->intended(config('fortify.home-manager'));
+                    }
+                    if (Auth::user()->hasRole('user')) {
+                        return $request->wantsJson()
+                            ? response()->json(['two_factor' => false])
+                            : redirect()->intended(config('fortify.home-user'));
+                    }
+                    // if (Auth::user()->hasRole('dokter')) {
+                    //     return $request->wantsJson()
+                    //         ? response()->json(['two_factor' => false])
+                    //         : redirect()->intended(config('fortify.home-dokter'));
+                    // }
+                }
+            }
+        );
+
+        $this->app->instance(
+            RegisterResponse::class,
+            new class implements RegisterResponse
+            {
+                public function toResponse($request)
+                {
+                    $user = Auth::user();
+
+                    if ($user->roles->isEmpty()) {
+                        return redirect()->route('login');
+                    }
+                }
+            }
+        );
     }
 
     /**

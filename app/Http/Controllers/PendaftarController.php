@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Pendaftar;
 use App\Http\Requests\StorePendaftarRequest;
 use App\Http\Requests\UpdatePendaftarRequest;
+use App\Mail\StatusUpdateMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PendaftarController extends Controller
 {
@@ -39,6 +41,26 @@ class PendaftarController extends Controller
             'listPendaftar' => $listPendaftar,
             'namaUserSearch' => $namaUserSearch,
         ]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $pendaftar = Pendaftar::find($request->id);
+        if ($pendaftar) {
+            $pendaftar->status = $request->status;
+            if ($request->status == 'Terverifikasi') {
+                $pendaftar->user->assignRole('user');
+            } else {
+                $pendaftar->user->removeRole('user');
+            }
+            $pendaftar->save();
+
+            Mail::to($pendaftar->user->email)->send(new StatusUpdateMail($pendaftar, $request->status));
+
+            return response()->json(['message' => 'Status updated successfully and email sent.'], 200);
+        }
+
+        return response()->json(['message' => 'Pendaftar not found'], 404);
     }
 
 

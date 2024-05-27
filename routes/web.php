@@ -36,30 +36,16 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('auth/login');
+// });
+Route::get('/login', function () {
     return view('auth/login');
-});
+})->name('login');
 
 Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
-Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/dashboard', function () {
-        return view('home', ['users' => User::get(),]);
-    });
-    Route::resource('profile', ProfileController::class);
-
-    Route::prefix('user-management')->group(function () {
-        Route::resource('user', UserController::class);
-        Route::resource('list-pendaftar', PendaftarController::class);
-        Route::resource('divisi-mentor', DivisiMentorController::class);
-        Route::post('import', [UserController::class, 'import'])->name('user.import');
-        Route::get('export', [UserController::class, 'export'])->name('user.export');
-        Route::get('demo', DemoController::class)->name('user.demo');
-    });
-
-    Route::prefix('divisi-management')->group(function () {
-        Route::resource('list-divisi', DivisiController::class);
-    });
+Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
 
     Route::prefix('soal-management')->group(function () {
         Route::resource('list-soal', SoalController::class);
@@ -76,6 +62,28 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('list-jawaban', JawabanPendaftarController::class);
         Route::resource('test-jawaban', TestJawabanController::class);
     });
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function () {
+    Route::get('/dashboard', function () {
+        return view('home', ['users' => User::get(),]);
+    });
+    Route::resource('profile', ProfileController::class);
+
+    Route::prefix('user-management')->group(function () {
+        Route::resource('user', UserController::class);
+        Route::resource('list-pendaftar', PendaftarController::class);
+        Route::post('/list-pendaftar/change-status', [PendaftarController::class, 'changeStatus'])->name('list-pendaftar.changeStatus');
+        Route::resource('divisi-mentor', DivisiMentorController::class);
+        Route::post('import', [UserController::class, 'import'])->name('user.import');
+        Route::get('export', [UserController::class, 'export'])->name('user.export');
+        Route::get('demo', DemoController::class)->name('user.demo');
+    });
+
+    Route::prefix('divisi-management')->group(function () {
+        Route::resource('list-divisi', DivisiController::class);
+    });
+
 
     Route::prefix('menu-management')->group(function () {
         Route::resource('menu-group', MenuGroupController::class);
