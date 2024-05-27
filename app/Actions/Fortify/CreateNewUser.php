@@ -39,49 +39,51 @@ class CreateNewUser implements CreatesNewUsers
             'link_porto.required' => 'Link Porto Wajib Diisi',
         ];
 
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255', 'min:4'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
-            'divisi_id' => ['required', 'integer'],
-            'nama_instansi' => ['required', 'string', 'max:255'],
-            'nama_jurusan' => ['required', 'string', 'max:255'],
-            'nim' => ['required', 'string', 'max:255'],
-            'link_cv' => ['required', 'string', 'max:255'],
-            'link_porto' => ['required', 'string', 'max:255'],
-            'nomor_hp' => ['required','regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/'],
-        ], $messages)->validate();
+        try {
+            Validator::make($input, [
+                'name' => ['required', 'string', 'max:255', 'min:4'],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique(User::class),
+                ],
+                'divisi_id' => ['required', 'integer'],
+                'nama_instansi' => ['required', 'string', 'max:255'],
+                'nama_jurusan' => ['required', 'string', 'max:255'],
+                'nim' => ['required', 'string', 'max:255'],
+                'link_cv' => ['required', 'string', 'max:255'],
+                'link_porto' => ['required', 'string', 'max:255'],
+                'nomor_hp' => ['required', 'regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/'],
+            ], $messages)->validate();
 
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make('temporary_password'),
-            'email_verified_at' => now(),
-        ]);
+            $user = User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'password' => Hash::make('temporary_password'),
+                'email_verified_at' => now(),
+            ]);
 
-        $password = $input['nim'] . $user->id;
-        $hashedPassword = Hash::make($password);
-        $user->update(['password' => $hashedPassword]);
+            $password = $input['nim'] . $user->id;
+            $hashedPassword = Hash::make($password);
+            $user->update(['password' => $hashedPassword]);
 
-        // $user->assignRole('user');
+            Pendaftar::create([
+                'user_id' => $user->id,
+                'divisi_id' => $input['divisi_id'],
+                'nama_instansi' => $input['nama_instansi'],
+                'nama_jurusan' => $input['nama_jurusan'],
+                'nim' => $input['nim'],
+                'link_cv' => $input['link_cv'],
+                'link_porto' => $input['link_porto'],
+                'nomor_hp' => $input['nomor_hp'],
+                'status' => 'Pending'
+            ]);
 
-        Pendaftar::create([
-            'user_id' => $user->id,
-            'divisi_id' => $input['divisi_id'],
-            'nama_instansi' => $input['nama_instansi'],
-            'nama_jurusan' => $input['nama_jurusan'],
-            'nim' => $input['nim'],
-            'link_cv' => $input['link_cv'],
-            'link_porto' => $input['link_porto'],
-            'nomor_hp' => $input['nomor_hp'],
-            'status' => 'Pending'
-        ]);
-
-        return $user;
+            return $user;
+        } catch (\Exception $e) {
+            throw new \Exception('Something went wrong while creating the user: ' . $e->getMessage());
+        }
     }
 }
