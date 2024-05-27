@@ -133,8 +133,7 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label>Link CV</label>
-                                                <small class="text-muted" style="display: block;">Please provide a
-                                                    valid portfolio link.</small>
+                                                <small class="text-muted" style="display: block;">Masukkan Link CV dari Google Drive</small>
                                                 <input name="link_cv" type="text" value="{{ old('link_cv') }}"
                                                     class="form-control @error('link_cv') is-invalid @enderror"
                                                     placeholder="Masukkan Link CV">
@@ -148,8 +147,7 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label>Link Portofolio</label><br>
-                                                <small class="text-muted" style="display: block;">Please provide a
-                                                    valid portfolio link.</small>
+                                                <small class="text-muted" style="display: block;">Masukkan Link Porto dari Google Drive</small>
                                                 <input name="link_porto" type="text"
                                                     value="{{ old('link_porto') }}"
                                                     class="form-control @error('link_porto') is-invalid @enderror"

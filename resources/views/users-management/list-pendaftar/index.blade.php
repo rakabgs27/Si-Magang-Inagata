@@ -55,6 +55,7 @@
                                                 <th>NIM</th>
                                                 <th>Link CV</th>
                                                 <th>Link Portofolio</th>
+                                                <th>Status</th>
                                                 <th class="text-right">Action</th>
                                             </tr>
                                             @foreach ($listPendaftar as $key => $listItem)
@@ -69,24 +70,13 @@
                                                     <td>{{ $listItem->nim }}</td>
                                                     <td><a href="{{ $listItem->link_cv }}">{{ $listItem->link_cv }}</a></td>
                                                     <td><a href="{{ $listItem->link_porto }}">{{ $listItem->link_porto }}</a></td>
+                                                    <td>{{ $listItem->status }}</td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
                                                             <a href="#"
-                                                                class="btn btn-sm btn-info btn-icon "><i
+                                                                class="btn btn-sm btn-success btn-icon "><i
                                                                     class="fas fa-edit"></i>
-                                                                Edit</a>
-                                                            <form action="#"
-                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <input type="hidden" name="_token"
-                                                                    value="{{ csrf_token() }}">
-                                                                <button type="submit" id="#submit"
-                                                                    class="btn btn-sm btn-danger btn-icon "
-                                                                    data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
-                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
-                                                                    data-id="del-{{ $listItem->id }}">
-                                                                    <i class="fas fa-times"> </i> Delete </button>
-                                                            </form>
+                                                                Verifikasi</a>
                                                         </div>
                                                     </td>
                                                 </tr>

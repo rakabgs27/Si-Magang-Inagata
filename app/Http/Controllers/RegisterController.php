@@ -15,7 +15,6 @@ class RegisterController extends Controller
     public function index()
     {
         $divisi = Divisi::all();
-        // dd($divisis);
 
         return view('auth.register', [
             'divisi' => $divisi,

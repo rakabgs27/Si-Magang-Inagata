@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('nim');
             $table->string('link_cv');
             $table->string('link_porto');
+            $table->enum('status', ['Pending', 'Terverifikasi', 'Tertolak']);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->restrictOnDelete();
             $table->foreign('divisi_id')->references('id')->on('divisis')->restrictOnDelete();

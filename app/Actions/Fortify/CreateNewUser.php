@@ -73,6 +73,7 @@ class CreateNewUser implements CreatesNewUsers
             'link_cv' => $input['link_cv'],
             'link_porto' => $input['link_porto'],
             'nomor_hp' => $input['nomor_hp'],
+            'status'=> 'Pending'
         ]);
 
         return $user;
