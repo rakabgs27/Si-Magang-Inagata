@@ -76,24 +76,14 @@
             <h1>New Registrant Notification</h1>
         </div>
         <div class="content">
-            <p>There is a new registrant in the system. Please review their information and take the necessary actions.</p>
-            <a id="view-registrants-button" class="button">View Registrants</a>
+            <p>There is a new registrant in the system. Please review their information and take the necessary actions.
+            </p>
+            <strong><a href="{{ $signedUrl }}" class="button">View Registrants</a></strong>
         </div>
         <div class="footer">
             <p>This is an automated notification. Please do not reply to this email.</p>
         </div>
     </div>
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var button = document.getElementById('view-registrants-button');
-            var token = "{{ $token }}";
-            var baseUrl = "{{ route('list-pendaftar.index') }}";
-            var url = new URL(baseUrl);
-            url.searchParams.append('token', token);
-            button.href = url.toString();
-        });
-    </script> --}}
 </body>
 
 </html>

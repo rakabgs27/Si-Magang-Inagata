@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
         Route::resource('user', UserController::class);
         Route::resource('list-pendaftar', PendaftarController::class);
         Route::post('/list-pendaftar/change-status', [PendaftarController::class, 'changeStatus'])->name('list-pendaftar.changeStatus');
+        Route::get('/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])->name('list-pendaftar.direct-access');
         Route::resource('divisi-mentor', DivisiMentorController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');

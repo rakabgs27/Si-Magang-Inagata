@@ -11,6 +11,8 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Mail\NewRegistrantNotification;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -86,8 +88,15 @@ class CreateNewUser implements CreatesNewUsers
 
             // Send email to managers
             $managers = Role::where('name', 'manager')->first()->users;
+            $token = Str::random(32);
+
+            // Store the token in cache with a 60-minute expiry
+            Cache::put($token, true, now()->addMinutes(60));
+
+            $signedUrl = route('list-pendaftar.direct-access', ['token' => $token]);
+
             foreach ($managers as $manager) {
-                Mail::to($manager->email)->send(new NewRegistrantNotification($input));
+                Mail::to($manager->email)->send(new NewRegistrantNotification($input, $signedUrl));
             }
 
             return $user;

@@ -8,6 +8,8 @@ use App\Http\Requests\UpdatePendaftarRequest;
 use App\Mail\StatusUpdateMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class PendaftarController extends Controller
 {
@@ -61,6 +63,22 @@ class PendaftarController extends Controller
         }
 
         return response()->json(['message' => 'Pendaftar not found'], 404);
+    }
+
+    public function directAccess(Request $request)
+    {
+        $token = $request->query('token');
+        Log::info('Token received: ' . $token);
+
+        if (Cache::has($token)) {
+            Log::info('Token is valid');
+            Cache::forget($token);
+
+            return $this->index($request);
+        }
+
+        Log::warning('Token is invalid or expired');
+        return redirect()->route('login')->with('error', 'Unauthenticated or Token Expired');
     }
 
 

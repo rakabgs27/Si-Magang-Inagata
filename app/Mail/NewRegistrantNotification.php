@@ -10,16 +10,18 @@ class NewRegistrantNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $registrant;
+    public $input;
+    public $signedUrl;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($registrant)
+    public function __construct($input, $signedUrl)
     {
-        $this->registrant = $registrant;
+        $this->input = $input;
+        $this->signedUrl = $signedUrl;
     }
 
     /**
@@ -30,6 +32,7 @@ class NewRegistrantNotification extends Mailable
     public function build()
     {
         return $this->subject('New Registrant Notification')
-                    ->view('emails.newRegistration');
+            ->view('emails.newRegistration')
+            ->with(['input' => $this->input, 'signedUrl' => $this->signedUrl]);
     }
 }
