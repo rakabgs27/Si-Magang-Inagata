@@ -7,15 +7,18 @@ use App\Http\Requests\StorePendaftarRequest;
 use App\Http\Requests\UpdatePendaftarRequest;
 use App\Mail\StatusUpdateMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class PendaftarController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('auto-login-manager')->only('directAccess');
         $this->middleware('permission:list-pendaftar.index')->only('index');
         $this->middleware('permission:list-pendaftar.create')->only('create', 'store');
         $this->middleware('permission:list-pendaftar.edit')->only('edit', 'update');
@@ -65,22 +68,17 @@ class PendaftarController extends Controller
         return response()->json(['message' => 'Pendaftar not found'], 404);
     }
 
+
     public function directAccess(Request $request)
     {
-        $token = $request->query('token');
-        Log::info('Token received: ' . $token);
+        $manager = Role::where('name', 'manager')->first()->users()->first();
 
-        if (Cache::has($token)) {
-            Log::info('Token is valid');
-            Cache::forget($token);
-
-            return $this->index($request);
+        if ($manager) {
+            Auth::login($manager);
         }
 
-        Log::warning('Token is invalid or expired');
-        return redirect()->route('login')->with('error', 'Unauthenticated or Token Expired');
+        return redirect()->route('list-pendaftar.index');
     }
-
 
     /**
      * Show the form for creating a new resource.

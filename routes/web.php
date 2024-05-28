@@ -42,7 +42,9 @@ use App\Http\Controllers\UserController;
 Route::get('/login', function () {
     return view('auth/login');
 })->name('login');
-
+Route::get('/user-management/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])
+    ->name('list-pendaftar.direct-access')
+    ->middleware('auto-login-manager');
 Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
 Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
@@ -74,7 +76,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
         Route::resource('user', UserController::class);
         Route::resource('list-pendaftar', PendaftarController::class);
         Route::post('/list-pendaftar/change-status', [PendaftarController::class, 'changeStatus'])->name('list-pendaftar.changeStatus');
-        Route::get('/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])->name('list-pendaftar.direct-access');
+        // Route::get('/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])->name('list-pendaftar.direct-access');
+
         Route::resource('divisi-mentor', DivisiMentorController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');

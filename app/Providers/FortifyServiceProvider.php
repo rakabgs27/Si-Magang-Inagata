@@ -58,9 +58,7 @@ class FortifyServiceProvider extends ServiceProvider
                 {
                     $user = Auth::user();
 
-                    if ($user->roles->isEmpty()) {
                         return redirect()->route('login');
-                    }
                 }
             }
         );
