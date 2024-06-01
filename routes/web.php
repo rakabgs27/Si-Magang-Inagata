@@ -47,19 +47,30 @@ Route::get('/user-management/list-pendaftar/direct-access', [PendaftarController
     ->middleware('auto-login-manager');
 Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
-Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']], function () {
+    Route::get('/dashboard', function () {
+        return view('home', ['users' => User::get(),]);
+    });
+    Route::resource('profile', ProfileController::class);
+});
 
+Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], function () {
     Route::prefix('soal-management')->group(function () {
         Route::resource('list-soal', SoalController::class);
-        Route::post('/file-materi/{fileId}', [SoalController::class, 'destroyFile'])->name('file-materi.destroy');
         Route::resource('assign-soal', SoalPendaftarController::class);
+        Route::resource('list-soal', SoalController::class);
+        Route::post('/file-materi/{fileId}', [SoalController::class, 'destroyFile'])->name('file-materi.destroy');
         Route::get('/getPendaftarsByDivisi/{divisiId}', [SoalPendaftarController::class, 'getPendaftarsByDivisi'])->name('divisi-pendaftar.get');
         Route::get('/get-soal-divisi/{pendaftarId}', [SoalPendaftarController::class, 'getSoalByDivisiPendaftar'])->name('soal-divisi.get');
         Route::get('/get-file-soal/{soalId}', [SoalPendaftarController::class, 'showBySoalId'])->name('file-soal.get');
         Route::patch('/assign-soal/update-status/{id}', [SoalPendaftarController::class, 'updateStatus'])->name('assign-soal.update-status');
+    });
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
+    Route::prefix('soal-management')->group(function () {
         Route::resource('test-soal', TestSoalController::class);
     });
-
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('list-jawaban', JawabanPendaftarController::class);
         Route::resource('test-jawaban', TestJawabanController::class);
@@ -67,17 +78,10 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function () {
-    Route::get('/dashboard', function () {
-        return view('home', ['users' => User::get(),]);
-    });
-    Route::resource('profile', ProfileController::class);
-
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('list-pendaftar', PendaftarController::class);
         Route::post('/list-pendaftar/change-status', [PendaftarController::class, 'changeStatus'])->name('list-pendaftar.changeStatus');
-        // Route::get('/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])->name('list-pendaftar.direct-access');
-
         Route::resource('divisi-mentor', DivisiMentorController::class);
         Route::post('import', [UserController::class, 'import'])->name('user.import');
         Route::get('export', [UserController::class, 'export'])->name('user.export');
@@ -87,7 +91,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
     Route::prefix('divisi-management')->group(function () {
         Route::resource('list-divisi', DivisiController::class);
     });
-
 
     Route::prefix('menu-management')->group(function () {
         Route::resource('menu-group', MenuGroupController::class);

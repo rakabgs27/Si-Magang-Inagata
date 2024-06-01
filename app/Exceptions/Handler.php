@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -44,5 +46,24 @@ class Handler extends ExceptionHandler
             //
             return response()->json(['message' => 'Unauthenticated or Token Expired'], 429);
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof AuthorizationException) {
+            return response()->view('errors.403', [], 403);
+        }
+        if ($exception instanceof HttpException) {
+            $statusCode = $exception->getStatusCode();
+            if ($statusCode == 429) {
+                return response()->view('errors.404', [], 429);
+            } elseif ($statusCode == 404) {
+                return response()->view('errors.404', [], 404);
+            } elseif ($statusCode == 500) {
+                return response()->view('errors.500', [], 500);
+            }
+        }
+
+        return parent::render($request, $exception);
     }
 }

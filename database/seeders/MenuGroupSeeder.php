@@ -37,6 +37,11 @@ class MenuGroupSeeder extends Seeder
                     'permisison_name' => 'menu.management',
                 ],
                 [
+                    'name' => 'Divisi Management',
+                    'icon' => 'fas fa-user-graduate',
+                    'permisison_name' => 'divisi.management',
+                ],
+                [
                     'name' => 'Soal Management',
                     'icon' => 'fas fa-book-open',
                     'permisison_name' => 'soal.management',
@@ -47,26 +52,21 @@ class MenuGroupSeeder extends Seeder
                     'permisison_name' => 'jawaban.management',
                 ],
                 [
-                    'name' => 'Pengumuman Management',
-                    'icon' => 'fas fa-envelope',
-                    'permisison_name' => 'pengumuman.management',
-                ],
-                [
                     'name' => 'Nilai Management',
                     'icon' => 'fas fa-certificate',
                     'permisison_name' => 'nilai.management',
-                ],
-                [
-                    'name' => 'Divisi Management',
-                    'icon' => 'fas fa-user-graduate',
-                    'permisison_name' => 'divisi.management',
                 ],
                 [
                     'name' => 'Wawancara Management',
                     'icon' => 'fas fa-calendar',
                     'permisison_name' => 'wawancara.management',
                 ],
-            ]
+                [
+                    'name' => 'Pengumuman Management',
+                    'icon' => 'fas fa-envelope',
+                    'permisison_name' => 'pengumuman.management',
+                ],
+                ]
         );
     }
 }

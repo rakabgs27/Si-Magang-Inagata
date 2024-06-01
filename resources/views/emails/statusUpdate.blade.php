@@ -41,12 +41,15 @@
             <p>Your application status has been updated to: <strong>{{ $status }}</strong>.</p>
             @if ($status == 'Terverifikasi')
                 <p>Congratulations! You have passed the administration process.</p>
+                <p>Your login credentials are:</p>
+                <p>Email: {{ $email }}</p>
+                <p>Password: {{ $password }}</p>
             @elseif ($status == 'Tertolak')
                 <p>We regret to inform you that your application did not meet our criteria.</p>
             @endif
         </div>
         <div class="email-footer">
-            <p>Thank you,<br>Admin Team</p>
+            <p>Thank you,<br>Hub Inagata</p>
         </div>
     </div>
 </body>

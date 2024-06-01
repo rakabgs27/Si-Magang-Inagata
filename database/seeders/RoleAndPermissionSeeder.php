@@ -108,8 +108,6 @@ class RoleAndPermissionSeeder extends Seeder
         $roleUser = Role::create(['name' => 'user']);
         $roleUser->givePermissionTo([
             'dashboard',
-            'user.management',
-            'user.index',
             'soal.management',
             'test-soal.index',
             'jawaban.management',
@@ -122,11 +120,48 @@ class RoleAndPermissionSeeder extends Seeder
 
         // create manager
         $role = Role::create(['name' => 'manager']);
-        $role->givePermissionTo(Permission::all());
+        $role->givePermissionTo([
+            'dashboard',
+            'user.management',
+            'user.index','user.create','user.edit','user.destroy',
+            'divisi-mentor.index','divisi-mentor.create','divisi-mentor.edit','divisi-mentor.destroy',
+            'list-pendaftar.index','list-pendaftar.create','list-pendaftar.edit','list-pendaftar.destroy',
+            'role.permission.management',
+            'role.index','role.create','role.edit','role.destroy',
+            'permission.index','permission.index','permission.create','permission.edit','permission.destroy',
+            'assign.user.index','assign.user.create','assign.user.edit',
+            'assign.index','assign.create','assign.edit','assign.destroy',
+            'menu.management',
+            'menu-group.index','menu-group.create','menu-group.edit','menu-group.destroy',
+            'menu-item.index','menu-item.create','menu-item.edit','menu-item.destroy',
+            'divisi.management',
+            'list-divisi.index','list-divisi.create','list-divisi.edit','list-divisi.destroy',
+            'soal.management',
+            'list-soal.index','list-soal.create','list-soal.edit','list-soal.destroy',
+            'assign-soal.index','assign-soal.create','assign-soal.edit','assign-soal.destroy',
+            'jawaban.management',
+            'list-jawaban.index','list-jawaban.create','list-jawaban.edit','list-jawaban.destroy',
+            'nilai.management',
+            'hasil-akhir.index','hasil-akhir.create','hasil-akhir.edit','hasil-akhir.destroy',
+            'wawancara.management',
+            'list-wawancara.index','list-wawancara.create','list-wawancara.edit','list-wawancara.destroy',
+            'pengumuman.management',
+            'list-pengumuman.index','list-pengumuman.create','list-pengumuman.edit','list-pengumuman.destroy',
+        ]);
 
         // create mentor
         $role = Role::create(['name' => 'mentor']);
-        $role->givePermissionTo(Permission::all());
+        $role->givePermissionTo([
+            'dashboard',
+            'soal.management',
+            'list-soal.index','list-soal.create','list-soal.edit','list-soal.destroy',
+            'jawaban.management',
+            'list-jawaban.index','list-jawaban.create','list-jawaban.edit','list-jawaban.destroy',
+            'nilai.management',
+            'list-nilai.index','list-nilai.create','list-nilai.edit','list-nilai.destroy',
+            'wawancara.management',
+            'list-wawancara.index','list-wawancara.create','list-wawancara.edit','list-wawancara.destroy',
+        ]);
 
         //assign user id 1 ke manager
         $user = User::find(1);

@@ -55,18 +55,19 @@ class PendaftarController extends Controller
             $pendaftar->status = $request->status;
             if ($request->status == 'Terverifikasi') {
                 $pendaftar->user->assignRole('user');
+
+                Mail::to($pendaftar->user->email)->send(new StatusUpdateMail($pendaftar, $request->status));
             } else {
                 $pendaftar->user->removeRole('user');
             }
             $pendaftar->save();
-
-            Mail::to($pendaftar->user->email)->send(new StatusUpdateMail($pendaftar, $request->status));
 
             return response()->json(['message' => 'Status updated successfully and email sent.'], 200);
         }
 
         return response()->json(['message' => 'Pendaftar not found'], 404);
     }
+
 
 
     public function directAccess(Request $request)

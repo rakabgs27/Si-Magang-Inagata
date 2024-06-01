@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Mail\NewRegistrantNotification;
+use App\Mail\RegistrantWelcomeEmail;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
@@ -100,7 +101,7 @@ class CreateNewUser implements CreatesNewUsers
                 Mail::to($manager->email)->send(new NewRegistrantNotification($input, $signedUrl));
             }
 
-
+            Mail::to($user->email)->send(new RegistrantWelcomeEmail($input));
             return $user;
         } catch (\Exception $e) {
             throw new \Exception('Something went wrong while creating the user: ' . $e->getMessage());
