@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
 
 Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], function () {
     Route::prefix('soal-management')->group(function () {
-        Route::resource('list-soal', SoalController::class);
         Route::resource('assign-soal', SoalPendaftarController::class);
         Route::resource('list-soal', SoalController::class);
         Route::post('/file-materi/{fileId}', [SoalController::class, 'destroyFile'])->name('file-materi.destroy');
@@ -65,6 +64,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], func
         Route::get('/get-file-soal/{soalId}', [SoalPendaftarController::class, 'showBySoalId'])->name('file-soal.get');
         Route::patch('/assign-soal/update-status/{id}', [SoalPendaftarController::class, 'updateStatus'])->name('assign-soal.update-status');
     });
+    Route::prefix('jawaban-management')->group(function () {
+        Route::resource('list-jawaban', JawabanPendaftarController::class);
+    });
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
@@ -72,7 +74,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
         Route::resource('test-soal', TestSoalController::class);
     });
     Route::prefix('jawaban-management')->group(function () {
-        Route::resource('list-jawaban', JawabanPendaftarController::class);
         Route::resource('test-jawaban', TestJawabanController::class);
     });
 });
@@ -87,16 +88,13 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
         Route::get('export', [UserController::class, 'export'])->name('user.export');
         Route::get('demo', DemoController::class)->name('user.demo');
     });
-
     Route::prefix('divisi-management')->group(function () {
         Route::resource('list-divisi', DivisiController::class);
     });
-
     Route::prefix('menu-management')->group(function () {
         Route::resource('menu-group', MenuGroupController::class);
         Route::resource('menu-item', MenuItemController::class);
     });
-
     Route::group(['prefix' => 'role-and-permission'], function () {
         //role
         Route::resource('role', RoleController::class);

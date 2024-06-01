@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
     public const HOME_MANAGER = '/dashboard';
+    public const HOME_MENTOR = '/dashboard';
     public const HOME_USER = '/soal-management/test-soal';
 
     /**

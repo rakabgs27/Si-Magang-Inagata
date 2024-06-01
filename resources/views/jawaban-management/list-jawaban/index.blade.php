@@ -113,9 +113,6 @@
                                         @endif
                                     </tbody>
                                 </table>
-
-
-
                                 <div class="d-flex justify-content-center">
                                     {{ $jawabanPendaftar->links() }}
                                 </div>
@@ -126,7 +123,6 @@
             </div>
         </div>
     </section>
-    <!-- Modal Structure -->
     <!-- Modal Structure -->
     <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel"
         aria-hidden="true">
@@ -150,7 +146,6 @@
 @push('customScript')
     <script src="/assets/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
-
     <script>
         $(document).ready(function() {
             $('.import').click(function(event) {
@@ -169,17 +164,18 @@
                 var file = $('#file-upload')[0].files[0].name;
                 $(this).prev('label').text(file);
             });
+
+            $('.select2').select2();
         });
 
         function submitDel(id) {
             $('#del-' + id).submit();
         }
 
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-
         function previewFile(filePath, fileExtension) {
+            console.log('File Path:', filePath);
+            console.log('File Extension:', fileExtension);
+
             var modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = ''; // Clear previous content
 
@@ -189,21 +185,36 @@
                 img.style.maxWidth = '100%';
                 modalBody.appendChild(img);
             } else if (fileExtension === 'pdf') {
-                var iframe = document.createElement('iframe');
-                iframe.src = filePath;
-                iframe.style.width = '100%';
-                iframe.style.height = '500px';
-                modalBody.appendChild(iframe);
+                var object = document.createElement('object');
+                object.data = filePath;
+                object.type = 'application/pdf';
+                object.style.width = '100%';
+                object.style.height = '500px';
+                modalBody.appendChild(object);
             } else if (fileExtension === 'docx') {
-                fetch(filePath).then(function(response) {
-                    return response.arrayBuffer();
-                }).then(function(arrayBuffer) {
-                    mammoth.convertToHtml({
-                        arrayBuffer: arrayBuffer
-                    }).then(function(result) {
-                        modalBody.innerHTML = result.value;
+                fetch(filePath)
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.arrayBuffer();
+                    })
+                    .then(function(arrayBuffer) {
+                        mammoth.convertToHtml({
+                                arrayBuffer: arrayBuffer
+                            })
+                            .then(function(result) {
+                                modalBody.innerHTML = result.value;
+                            })
+                            .catch(function(error) {
+                                console.error('Error converting file to HTML:', error);
+                                modalBody.innerHTML = 'Error converting file to HTML';
+                            });
+                    })
+                    .catch(function(error) {
+                        console.error('Error fetching the file:', error);
+                        modalBody.innerHTML = 'Error fetching the file';
                     });
-                });
             } else {
                 modalBody.innerHTML = 'No preview available';
             }
@@ -212,7 +223,6 @@
         }
     </script>
 @endpush
-
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
     <style>
