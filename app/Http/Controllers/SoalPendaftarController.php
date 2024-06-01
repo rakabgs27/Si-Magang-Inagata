@@ -201,11 +201,13 @@ class SoalPendaftarController extends Controller
 
         $pendaftars = Pendaftar::where('divisi_id', $divisiId)
             ->whereNotIn('id', $assignedPendaftarIds)
+            ->where('status', 'Terverifikasi')
             ->with('user')
             ->get();
 
         return response()->json(['pendaftars' => $pendaftars]);
     }
+
 
     public function updateStatus(Request $request, $id)
     {
