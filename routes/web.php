@@ -6,6 +6,7 @@ use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
+use App\Http\Controllers\NIlaiPendaftarController;
 use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -39,6 +40,7 @@ use App\Http\Controllers\UserController;
 // Route::get('/', function () {
 //     return view('auth/login');
 // });
+
 Route::get('/login', function () {
     return view('auth/login');
 })->name('login');
@@ -75,6 +77,12 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     });
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('test-jawaban', TestJawabanController::class);
+    });
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () {
+    Route::prefix('nilai-management')->group(function () {
+        Route::resource('list-nilai', NIlaiPendaftarController::class);
     });
 });
 
