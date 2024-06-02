@@ -6,7 +6,7 @@ use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
-use App\Http\Controllers\NIlaiPendaftarController;
+use App\Http\Controllers\NilaiPendaftarController;
 use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
         return view('home', ['users' => User::get(),]);
     });
     Route::resource('profile', ProfileController::class);
+    Route::prefix('jawaban-management')->group(function () {
+        Route::resource('list-jawaban', JawabanPendaftarController::class);
+    });
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], function () {
@@ -65,9 +68,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], func
         Route::get('/get-soal-divisi/{pendaftarId}', [SoalPendaftarController::class, 'getSoalByDivisiPendaftar'])->name('soal-divisi.get');
         Route::get('/get-file-soal/{soalId}', [SoalPendaftarController::class, 'showBySoalId'])->name('file-soal.get');
         Route::patch('/assign-soal/update-status/{id}', [SoalPendaftarController::class, 'updateStatus'])->name('assign-soal.update-status');
-    });
-    Route::prefix('jawaban-management')->group(function () {
-        Route::resource('list-jawaban', JawabanPendaftarController::class);
     });
 });
 
@@ -82,7 +82,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
 
 Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () {
     Route::prefix('nilai-management')->group(function () {
-        Route::resource('list-nilai', NIlaiPendaftarController::class);
+        Route::resource('list-nilai', NilaiPendaftarController::class);
     });
 });
 

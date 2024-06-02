@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Storage;
 
 class JawabanPendaftarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:list-jawaban.index')->only('index');
+        $this->middleware('permission:list-jawaban.create')->only('create', 'store');
+        $this->middleware('permission:list-jawaban.edit')->only('edit', 'update');
+        $this->middleware('permission:list-jawaban.destroy')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *

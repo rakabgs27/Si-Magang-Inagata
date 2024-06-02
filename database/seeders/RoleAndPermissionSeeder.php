@@ -112,6 +112,7 @@ class RoleAndPermissionSeeder extends Seeder
             'test-soal.index',
             'jawaban.management',
             'test-jawaban.index',
+            'list-jawaban.create',
             'wawancara.management',
             'jadwal-wawancara.index',
             'pengumuman.management',

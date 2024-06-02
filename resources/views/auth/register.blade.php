@@ -14,6 +14,12 @@
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css">
     @stack('customStyle')
+    <style>
+        .btn-ellipse {
+            border-radius: 50px;
+            padding: 5px 20px;
+        }
+    </style>
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/components.css">
@@ -32,8 +38,9 @@
                                 class="shadow-light rounded-circle">
                         </div>
                         <div class="card card-primary">
-                            <div class="card-header">
+                            <div class="card-header" style="justify-content:space-between">
                                 <h4>Register</h4>
+                                <a href="{{ route('login') }}" class="btn btn-secondary btn-ellipse">Back</a>
                             </div>
                             <div class="card-body">
                                 <form action="{{ route('register') }}" method="POST">
@@ -133,7 +140,8 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label>Link CV</label>
-                                                <small class="text-muted" style="display: block;">Masukkan Link CV dari Google Drive</small>
+                                                <small class="text-muted" style="display: block;">Masukkan Link CV dari
+                                                    Google Drive</small>
                                                 <input name="link_cv" type="text" value="{{ old('link_cv') }}"
                                                     class="form-control @error('link_cv') is-invalid @enderror"
                                                     placeholder="Masukkan Link CV">
@@ -147,7 +155,8 @@
                                         <div class="form-group col-6">
                                             <div class="form-group">
                                                 <label>Link Portofolio</label><br>
-                                                <small class="text-muted" style="display: block;">Masukkan Link Porto dari Google Drive</small>
+                                                <small class="text-muted" style="display: block;">Masukkan Link Porto
+                                                    dari Google Drive</small>
                                                 <input name="link_porto" type="text"
                                                     value="{{ old('link_porto') }}"
                                                     class="form-control @error('link_porto') is-invalid @enderror"

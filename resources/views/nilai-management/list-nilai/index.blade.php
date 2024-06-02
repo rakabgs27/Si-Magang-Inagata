@@ -3,10 +3,10 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Menu Nilai Management</h1>
+            <h1>List Nilai Management</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tabel List Nilai Pendaftar</h2>
+            <h2 class="section-title">Nilai Management</h2>
 
             <div class="row">
                 <div class="col-12">
@@ -48,7 +48,9 @@
                                 {{ $divisiMentors->where('divisi_id', $divisiId)->first()->divisi->nama_divisi }}</h4>
                             <div class="d-flex flex-row-reverse card-header-action">
                                 <div class="card-header-actions">
-                                    <a class="btn btn-icon icon-left btn-primary" href="#">Tambah Nilai Pendaftar</a>
+                                    <a class="btn btn-icon icon-left btn-primary"
+                                        href="{{ route('list-nilai.create', ['divisi_id' => $divisiId]) }}">Tambah Nilai
+                                        Pendaftar</a>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +71,7 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item['pendaftar']->user->name }}</td>
                                                 <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
-                                                <td>{{ $item['status']}}</td>
+                                                <td>{{ $item['status'] }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="#" class="btn btn-sm btn-info btn-icon"><i
@@ -95,76 +97,301 @@
                                                             <div class="card-body">
                                                                 <div class="row">
                                                                     <div class="col-md-12">
-                                                                        @if ($divisiId == 1)
-                                                                            <ul class="list-group">
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memiliki pengetahuan yang luas
-                                                                                        dalam arsitektur software:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memahami cara deployment ke
-                                                                                        server menjadi nilai
-                                                                                        tambah:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memahami penggunaan kontrol
-                                                                                        versi seperti Git:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_3'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memiliki pengetahuan tentang
-                                                                                        functional dan object oriented
-                                                                                        programming:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_4'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memahami bahasa pemrograman
-                                                                                        seperti PHP, dan NodeJS:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_5'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Memahami Sql database:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_6'] ?? 'N/A' }}
-                                                                                </li>
-                                                                            </ul>
-                                                                        {{-- @elseif ($divisiId == 2)
-                                                                            <ul class="list-group">
-                                                                                <!-- Add criteria for divisiId == 2 -->
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Kriteria 1 untuk Divisi
-                                                                                        2:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Kriteria 2 untuk Divisi
-                                                                                        2:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <!-- Add more criteria as needed -->
-                                                                            </ul>
-                                                                        @elseif ($divisiId == 3)
-                                                                            <ul class="list-group">
-                                                                                <!-- Add criteria for divisiId == 3 -->
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Kriteria 1 untuk Divisi
-                                                                                        3:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <li class="list-group-item">
-                                                                                    <strong>Kriteria 2 untuk Divisi
-                                                                                        3:</strong>
-                                                                                    {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
-                                                                                </li>
-                                                                                <!-- Add more criteria as needed -->
-                                                                            </ul> --}}
-                                                                        @else
-                                                                            <ul class="list-group">
-                                                                                <li class="list-group-item">Tidak ada
-                                                                                    kriteria untuk divisi ini.</li>
-                                                                            </ul>
-                                                                        @endif
+                                                                        @switch($divisiId)
+                                                                            @case(1)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki pengetahuan yang luas
+                                                                                            dalam arsitektur software:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami cara deployment ke
+                                                                                            server menjadi nilai
+                                                                                            tambah:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami penggunaan kontrol
+                                                                                            versi seperti Git:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_3'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki pengetahuan tentang
+                                                                                            functional dan object oriented
+                                                                                            programming:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_4'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami bahasa pemrograman
+                                                                                            seperti PHP, dan NodeJS:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_5'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami Sql database:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_6'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(2)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami HTML, CSS, dan
+                                                                                            Javascript:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_7'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami cara menggunakan control
+                                                                                            versi seperti Git:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_8'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami konsep REST API:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_9'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami beberapa framework yang
+                                                                                            sering digunakan seperti Taliwind
+                                                                                            Boostrap, VueJS atau ReactJS:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_10'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami proses pembuatan website
+                                                                                            dengan menggunakan metode responsive web
+                                                                                            design:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_11'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(3)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki pengalaman dengan Library
+                                                                                            dan API:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_12'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu memecahkan masalah dengan
+                                                                                            baik:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_13'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu menafsirkan dan mengikuti
+                                                                                            rencana teknis:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_14'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami penggunaan Flutter, Android
+                                                                                            Studio, dll:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_15'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(4)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Melakukan riset untuk user
+                                                                                            experience yang baik:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_16'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami perilaku android dan iOS
+                                                                                            dan Web:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_17'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Kompeten dalam pembuatan user flow
+                                                                                            pada sebuah aplikasi:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_18'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Membuat solusi desain dengan
+                                                                                            memerhatikan fungsional, keindahan, dan
+                                                                                            interaktif:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_19'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Familiar dan bisa menggunakan design
+                                                                                            tools seperti Figma, Adobe XD:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_20'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Melakukan usability testing &
+                                                                                            mempresentasikan hasil test design
+                                                                                            kepada stakeholder:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_21'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(5)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki kemampuan problem solving &
+                                                                                            komunikasi yang baik:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_22'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki pemahaman yang kuat tentang
+                                                                                            statistik dan matematika:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_23'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki pemahaman terkait model
+                                                                                            data, pengembangan design database,
+                                                                                            teknik data mining dan
+                                                                                            segmentasi:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_24'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki kemampuan dalam menyajikan
+                                                                                            informasi melalui bagan dan grafik
+                                                                                            dengan menggunakan tools seperti Tableau
+                                                                                            dan lain-lain:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_25'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu menggunakan tools analisis
+                                                                                            seperti SQL, XML, JavaScript dan
+                                                                                            sebagainya:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_26'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Pemahaman bahasa pemrograman menjadi
+                                                                                            nilai tambah:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_27'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(6)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Good Personality:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_28'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Tegas dan Bijak dalam menentukan
+                                                                                            suatu keputusan:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_29'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Cepat dalam menjalankan tugas dan
+                                                                                            kewajiban:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_30'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki komitmen dan pendirian yang
+                                                                                            kuat:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_31'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki komunikasi yang sangat
+                                                                                            bagus:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_32'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki relasi yang cukup
+                                                                                            luas:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_33'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu untuk berpikir
+                                                                                            kritis:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_34'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(7)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu mengembangkan ide secara
+                                                                                            komunikatif, strategis &
+                                                                                            inovatif:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_35'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami penggunaan social media
+                                                                                            terkini seperti Instagram, TikTok, You
+                                                                                            Tube, LinkedIn, dll.:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_36'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki analytical thinking dan
+                                                                                            problem solving yang baik:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_37'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mengetahui SEO/SEM:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_38'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mengetahui dan mampu menggunakan
+                                                                                            tools pendukung sesuai kebutuhan seperti
+                                                                                            Google Workspace, Trello, Web Analytics,
+                                                                                            SEO tools, dll:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_39'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki salah satu skill yang
+                                                                                            dibutuhkan, antara lain Konten Kreator,
+                                                                                            Video Editing, Copywriting, atau Digital
+                                                                                            marketing Ads.:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_40'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @case(8)
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mampu mengembangkan ide secara
+                                                                                            komunikatif, strategis &
+                                                                                            inovatif:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_41'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memahami penggunaan social media
+                                                                                            terkini seperti Instagram, TikTok, You
+                                                                                            Tube, LinkedIn, dll:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_42'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki analytical thinking dan
+                                                                                            problem solving yang baik:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_43'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mengetahui SEO/SEM:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_44'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Mengetahui dan mampu menggunakan
+                                                                                            tools pendukung sesuai kebutuhan seperti
+                                                                                            Google Workspace, Trello, Web Analytics,
+                                                                                            SEO tools, dll.:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_45'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                    <li class="list-group-item">
+                                                                                        <strong>Memiliki salah satu skill yang
+                                                                                            dibutuhkan, antara lain Konten Kreator,
+                                                                                            Video Editing, Copywriting, atau Digital
+                                                                                            marketing Ads:</strong>
+                                                                                        {{ $item['kriteria']['kriteria_46'] ?? 'N/A' }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            @break
+
+                                                                            @default
+                                                                                <ul class="list-group">
+                                                                                    <li class="list-group-item">Tidak ada
+                                                                                        kriteria untuk divisi ini.</li>
+                                                                                </ul>
+                                                                        @endswitch
                                                                     </div>
                                                                 </div>
                                                             </div>
