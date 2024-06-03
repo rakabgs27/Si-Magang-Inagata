@@ -4,6 +4,7 @@ use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\JawabanPendaftarController;
+use App\Http\Controllers\ListWawancaraController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\NilaiPendaftarController;
@@ -98,6 +99,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
     });
     Route::prefix('divisi-management')->group(function () {
         Route::resource('list-divisi', DivisiController::class);
+    });
+    Route::prefix('wawancara-management')->group(function () {
+        Route::resource('list-wawancara', ListWawancaraController::class);
     });
     Route::prefix('menu-management')->group(function () {
         Route::resource('menu-group', MenuGroupController::class);
