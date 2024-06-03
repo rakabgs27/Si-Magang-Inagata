@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pendaftar_id');
             $table->enum('status',['Belum Dinilai','Sudah Dinilai']);
-            for ($i = 1; $i <= 46; $i++) {
+            for ($i = 1; $i <= 44; $i++) {
                 $table->double('kriteria_' . $i)->nullable();
             }
             $table->foreign('pendaftar_id')->references('id')->on('pendaftars')->onDelete('cascade');

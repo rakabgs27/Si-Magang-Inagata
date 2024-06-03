@@ -15,7 +15,7 @@ class ListWawancaraController extends Controller
      */
     public function index()
     {
-        //
+        return view('wawancara-management.list-wawancara.index');
     }
 
     /**

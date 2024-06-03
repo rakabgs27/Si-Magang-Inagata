@@ -101,35 +101,40 @@
                                                                             @case(1)
                                                                                 <ul class="list-group">
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memiliki pengetahuan yang luas
-                                                                                            dalam arsitektur software:</strong>
+                                                                                        <strong>Memiliki pengetahuan yang luas dalam
+                                                                                            arsitektur software:</strong>
                                                                                         {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_1']) }})
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memahami cara deployment ke
-                                                                                            server menjadi nilai
-                                                                                            tambah:</strong>
+                                                                                        <strong>Memahami cara deployment ke server
+                                                                                            menjadi nilai tambah:</strong>
                                                                                         {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_2']) }})
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memahami penggunaan kontrol
-                                                                                            versi seperti Git:</strong>
+                                                                                        <strong>Memahami penggunaan kontrol versi
+                                                                                            seperti Git:</strong>
                                                                                         {{ $item['kriteria']['kriteria_3'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_3']) }})
                                                                                     </li>
                                                                                     <li class="list-group-item">
                                                                                         <strong>Memiliki pengetahuan tentang
                                                                                             functional dan object oriented
                                                                                             programming:</strong>
                                                                                         {{ $item['kriteria']['kriteria_4'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_4']) }})
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memahami bahasa pemrograman
-                                                                                            seperti PHP, dan NodeJS:</strong>
+                                                                                        <strong>Memahami bahasa pemrograman seperti
+                                                                                            PHP, dan NodeJS:</strong>
                                                                                         {{ $item['kriteria']['kriteria_5'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_5']) }})
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memahami Sql database:</strong>
+                                                                                        <strong>Memahami SQL database:</strong>
                                                                                         {{ $item['kriteria']['kriteria_6'] ?? 'N/A' }}
+                                                                                        ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_6']) }})
                                                                                     </li>
                                                                                 </ul>
                                                                             @break
@@ -349,40 +354,27 @@
                                                                             @case(8)
                                                                                 <ul class="list-group">
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Mampu mengembangkan ide secara
-                                                                                            komunikatif, strategis &
-                                                                                            inovatif:</strong>
+                                                                                        <strong>Memiliki kemampuan problem solving &
+                                                                                            komunikasi yang baik:</strong>
                                                                                         {{ $item['kriteria']['kriteria_41'] ?? 'N/A' }}
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memahami penggunaan social media
-                                                                                            terkini seperti Instagram, TikTok, You
-                                                                                            Tube, LinkedIn, dll:</strong>
+                                                                                        <strong>Memiliki pemahaman dasar mengenai
+                                                                                            prinsip desain
+                                                                                            :</strong>
                                                                                         {{ $item['kriteria']['kriteria_42'] ?? 'N/A' }}
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Memiliki analytical thinking dan
-                                                                                            problem solving yang baik:</strong>
+                                                                                        <strong>Mampu memahami dan membuat blueprint
+                                                                                            sesuai dengan kebutuhan user:</strong>
                                                                                         {{ $item['kriteria']['kriteria_43'] ?? 'N/A' }}
                                                                                     </li>
                                                                                     <li class="list-group-item">
-                                                                                        <strong>Mengetahui SEO/SEM:</strong>
+                                                                                        <strong>Mampu menggunakan software grafis
+                                                                                            Adobe illustrator, photoshop dan
+                                                                                            Figma:</strong>
                                                                                         {{ $item['kriteria']['kriteria_44'] ?? 'N/A' }}
-                                                                                    </li>
-                                                                                    <li class="list-group-item">
-                                                                                        <strong>Mengetahui dan mampu menggunakan
-                                                                                            tools pendukung sesuai kebutuhan seperti
-                                                                                            Google Workspace, Trello, Web Analytics,
-                                                                                            SEO tools, dll.:</strong>
-                                                                                        {{ $item['kriteria']['kriteria_45'] ?? 'N/A' }}
-                                                                                    </li>
-                                                                                    <li class="list-group-item">
-                                                                                        <strong>Memiliki salah satu skill yang
-                                                                                            dibutuhkan, antara lain Konten Kreator,
-                                                                                            Video Editing, Copywriting, atau Digital
-                                                                                            marketing Ads:</strong>
-                                                                                        {{ $item['kriteria']['kriteria_46'] ?? 'N/A' }}
-                                                                                    </li>
+                                                                                    </li>}
                                                                                 </ul>
                                                                             @break
 

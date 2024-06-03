@@ -111,8 +111,6 @@ class NilaiPendaftarController extends Controller
                             'kriteria_42' => $nilai->kriteria_42,
                             'kriteria_43' => $nilai->kriteria_43,
                             'kriteria_44' => $nilai->kriteria_44,
-                            'kriteria_45' => $nilai->kriteria_45,
-                            'kriteria_46' => $nilai->kriteria_46,
                         ];
                         break;
                     default:
@@ -185,80 +183,78 @@ class NilaiPendaftarController extends Controller
         switch ($request->divisi_id) {
             case 1: // Backend
                 $criteriaFields = [
-                    'kriteria_1' => 'nullable|numeric',
-                    'kriteria_2' => 'nullable|numeric',
-                    'kriteria_3' => 'nullable|numeric',
-                    'kriteria_4' => 'nullable|numeric',
-                    'kriteria_5' => 'nullable|numeric',
-                    'kriteria_6' => 'nullable|numeric',
+                    'kriteria_1' => 'nullable|string',
+                    'kriteria_2' => 'nullable|string',
+                    'kriteria_3' => 'nullable|string',
+                    'kriteria_4' => 'nullable|string',
+                    'kriteria_5' => 'nullable|string',
+                    'kriteria_6' => 'nullable|string',
                 ];
                 break;
             case 2: // Frontend
                 $criteriaFields = [
-                    'kriteria_7' => 'nullable|numeric',
-                    'kriteria_8' => 'nullable|numeric',
-                    'kriteria_9' => 'nullable|numeric',
-                    'kriteria_10' => 'nullable|numeric',
-                    'kriteria_11' => 'nullable|numeric',
+                    'kriteria_7' => 'nullable|string',
+                    'kriteria_8' => 'nullable|string',
+                    'kriteria_9' => 'nullable|string',
+                    'kriteria_10' => 'nullable|string',
+                    'kriteria_11' => 'nullable|string',
                 ];
                 break;
             case 3: // Mobile Development
                 $criteriaFields = [
-                    'kriteria_12' => 'nullable|numeric',
-                    'kriteria_13' => 'nullable|numeric',
-                    'kriteria_14' => 'nullable|numeric',
-                    'kriteria_15' => 'nullable|numeric',
+                    'kriteria_12' => 'nullable|string',
+                    'kriteria_13' => 'nullable|string',
+                    'kriteria_14' => 'nullable|string',
+                    'kriteria_15' => 'nullable|string',
                 ];
                 break;
             case 4: // UI/UX
                 $criteriaFields = [
-                    'kriteria_16' => 'nullable|numeric',
-                    'kriteria_17' => 'nullable|numeric',
-                    'kriteria_18' => 'nullable|numeric',
-                    'kriteria_19' => 'nullable|numeric',
-                    'kriteria_20' => 'nullable|numeric',
-                    'kriteria_21' => 'nullable|numeric',
+                    'kriteria_16' => 'nullable|string',
+                    'kriteria_17' => 'nullable|string',
+                    'kriteria_18' => 'nullable|string',
+                    'kriteria_19' => 'nullable|string',
+                    'kriteria_20' => 'nullable|string',
+                    'kriteria_21' => 'nullable|string',
                 ];
                 break;
             case 5: // System Analyst
                 $criteriaFields = [
-                    'kriteria_22' => 'nullable|numeric',
-                    'kriteria_23' => 'nullable|numeric',
-                    'kriteria_24' => 'nullable|numeric',
-                    'kriteria_25' => 'nullable|numeric',
-                    'kriteria_26' => 'nullable|numeric',
-                    'kriteria_27' => 'nullable|numeric',
+                    'kriteria_22' => 'nullable|string',
+                    'kriteria_23' => 'nullable|string',
+                    'kriteria_24' => 'nullable|string',
+                    'kriteria_25' => 'nullable|string',
+                    'kriteria_26' => 'nullable|string',
+                    'kriteria_27' => 'nullable|string',
                 ];
                 break;
             case 6: // Management
                 $criteriaFields = [
-                    'kriteria_28' => 'nullable|numeric',
-                    'kriteria_29' => 'nullable|numeric',
-                    'kriteria_30' => 'nullable|numeric',
-                    'kriteria_31' => 'nullable|numeric',
-                    'kriteria_32' => 'nullable|numeric',
-                    'kriteria_33' => 'nullable|numeric',
-                    'kriteria_34' => 'nullable|numeric',
+                    'kriteria_28' => 'nullable|string',
+                    'kriteria_29' => 'nullable|string',
+                    'kriteria_30' => 'nullable|string',
+                    'kriteria_31' => 'nullable|string',
+                    'kriteria_32' => 'nullable|string',
+                    'kriteria_33' => 'nullable|string',
+                    'kriteria_34' => 'nullable|string',
                 ];
                 break;
             case 7: // Media & Advertising
                 $criteriaFields = [
-                    'kriteria_35' => 'nullable|numeric',
-                    'kriteria_36' => 'nullable|numeric',
-                    'kriteria_37' => 'nullable|numeric',
-                    'kriteria_38' => 'nullable|numeric',
-                    'kriteria_39' => 'nullable|numeric',
-                    'kriteria_40' => 'nullable|numeric',
+                    'kriteria_35' => 'nullable|string',
+                    'kriteria_36' => 'nullable|string',
+                    'kriteria_37' => 'nullable|string',
+                    'kriteria_38' => 'nullable|string',
+                    'kriteria_39' => 'nullable|string',
+                    'kriteria_40' => 'nullable|string',
                 ];
                 break;
             case 8: // Icon and Illustration
                 $criteriaFields = [
-                    'kriteria_41' => 'nullable|numeric',
-                    'kriteria_42' => 'nullable|numeric',
-                    'kriteria_43' => 'nullable|numeric',
-                    'kriteria_44' => 'nullable|numeric',
-                    'kriteria_45' => 'nullable|numeric',
-                    'kriteria_46' => 'nullable|numeric',
+                    'kriteria_41' => 'nullable|string',
+                    'kriteria_42' => 'nullable|string',
+                    'kriteria_43' => 'nullable|string',
+                    'kriteria_44' => 'nullable|string',
                 ];
                 break;
             default:
@@ -272,15 +268,33 @@ class NilaiPendaftarController extends Controller
         $nilai->pendaftar_id = $request->pendaftar_id;
         $nilai->status = 'Sudah Dinilai';
 
-        // Assign criteria values dynamically
+        // Assign criteria values dynamically with condition
         foreach ($criteriaFields as $field => $rules) {
-            $nilai->{$field} = $request->input($field);
+            $nilai->{$field} = $this->convertToNumeric($request->input($field));
         }
 
         $nilai->save();
 
         return redirect()->route('list-nilai.index', ['divisi_id' => $request->divisi_id])
             ->with('success', 'Nilai pendaftar berhasil ditambahkan.');
+    }
+
+    private function convertToNumeric($value)
+    {
+        switch ($value) {
+            case 'kurang':
+                return 60;
+            case 'cukup':
+                return 70;
+            case 'memuaskan':
+                return 80;
+            case 'baik sekali':
+                return 90;
+            case 'luar biasa':
+                return 100;
+            default:
+                return null;
+        }
     }
 
     /**
