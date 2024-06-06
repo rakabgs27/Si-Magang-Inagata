@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             DivisiSeeder::class,
             PendaftarSeeder::class,
             DivisiMentorSeeder::class,
-            // SoalSeeder::class,
+            SoalSeeder::class,
+            FileMateriSeeder::class
         ]);
     }
 }

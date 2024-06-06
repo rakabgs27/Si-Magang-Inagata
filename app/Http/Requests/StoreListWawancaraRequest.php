@@ -13,7 +13,7 @@ class StoreListWawancaraRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreListWawancaraRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'divisi' => 'required|exists:divisis,id',
+            'mentor' => 'required|exists:users,id',
+            'pendaftar' => 'required|exists:pendaftars,id',
+            'deskripsi' => 'nullable|string',
+            'tanggal_wawancara' => 'required|date',
         ];
     }
 }

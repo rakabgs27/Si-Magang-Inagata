@@ -16,10 +16,9 @@ class SoalSeeder extends Seeder
     public function run()
     {
         Soal::create([
-            'user_id' => 1,
-            'divisi_id' => 2,
+            'user_id' => 3,
+            'divisi_id' => 1,
             'judul_soal' => 'Sample Question',
-            'file_soal' => 'sample_file.pdf',
             'deskripsi_soal' => 'This is a sample question description.',
             'tanggal_upload' => now(),
         ]);

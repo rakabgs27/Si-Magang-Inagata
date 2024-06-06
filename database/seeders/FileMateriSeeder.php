@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FileMateri;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class FileMateriSeeder extends Seeder
      */
     public function run()
     {
-        //
+        FileMateri::create([
+            'soal_id' => 1,
+            'files' => 'sample_file.pdf'
+        ]);
     }
 }

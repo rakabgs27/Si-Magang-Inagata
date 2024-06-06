@@ -70,7 +70,10 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item['pendaftar']->user->name }}</td>
                                                 <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
-                                                <td>{{ $item['status'] }}</td>
+                                                <td
+                                                        class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                        {{ $item['status'] }}
+                                                    </td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="#" class="btn btn-sm btn-info btn-icon"

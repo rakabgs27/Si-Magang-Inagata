@@ -58,6 +58,14 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('list-jawaban', JawabanPendaftarController::class);
     });
+
+    Route::prefix('wawancara-management')->group(function () {
+        Route::resource('list-wawancara', ListWawancaraController::class);
+        Route::get('get-mentors-by-divisi', [ListWawancaraController::class, 'getMentorsByDivisi'])->name('get-mentors-by-divisi');
+        Route::get('get-pendaftar-by-divisi', [ListWawancaraController::class, 'getPendaftarByDivisi'])->name('get-pendaftar-by-divisi');
+
+        // Route::resource('jadwal-wawancara', JadwaWawancaraController::class);
+    });
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:manager|mentor']], function () {
@@ -100,9 +108,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
     Route::prefix('divisi-management')->group(function () {
         Route::resource('list-divisi', DivisiController::class);
     });
-    Route::prefix('wawancara-management')->group(function () {
-        Route::resource('list-wawancara', ListWawancaraController::class);
-    });
+
     Route::prefix('menu-management')->group(function () {
         Route::resource('menu-group', MenuGroupController::class);
         Route::resource('menu-item', MenuItemController::class);

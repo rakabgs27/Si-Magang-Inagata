@@ -16,6 +16,7 @@ class ListWawancara extends Model
         'divisi_mentor_id',
         'deskripsi',
         'tanggal_wawancara',
+        'status'
     ];
 
     public function pendaftar()

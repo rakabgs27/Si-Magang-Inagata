@@ -18,71 +18,84 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <h4>List Wawancara</h4>
-                            <div class="d-flex flex-row-reverse card-header-action">
-                                <div class="card-header-actions">
-                                    <a class="btn btn-icon icon-left btn-primary"
-                                        href="#">Tambah
-                                        Baru Wawancara</a>
-                                </div>
-                                <h4></h4>
-                                <form class="card-header-form" id="search" method="GET"
-                                    action="#">
-                                    <div class="input-group">
-                                        <input type="text" name="nama_divisi" class="form-control"
-                                            placeholder="Cari Nama Divisi" value="#">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-primary btn-icon"><i class="fas fa-search"
-                                                    type="submit"></i></button>
-                                        </div>
+                            @role('manager')
+                                <div class="d-flex flex-row-reverse card-header-action">
+                                    <div class="card-header-actions">
+                                        <a class="btn btn-icon icon-left btn-primary"
+                                            href="{{ route('list-wawancara.create') }}">Tambah Baru Wawancara</a>
                                     </div>
-                                </form>
-                            </div>
+                                    <h4></h4>
+                                    <form class="card-header-form" id="search" method="GET"
+                                        action="{{ route('list-wawancara.index') }}">
+                                        <div class="input-group">
+                                            <input type="text" name="name" class="form-control"
+                                                placeholder="Cari Nama Pendaftar" value="{{ $pendaftarNameSearch }}">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-primary btn-icon"><i class="fas fa-search"
+                                                        type="submit"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            @endrole
                         </div>
                         <div class="card-body">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="dataTable" class="table table-bordered table-md">
-                                        <tbody>
+                            <div class="table-responsive">
+                                <table id="dataTable" class="table table-bordered table-md">
+                                    <tbody>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Divisi</th>
+                                            <th>Nama Mentor</th>
+                                            <th>Nama Pendaftar</th>
+                                            <th>Tanggal Wawancara</th>
+                                            <th>Status</th>
+                                            <th class="text-right">Action</th>
+                                        </tr>
+                                        @if ($listWawancara->isEmpty())
                                             <tr>
-                                                <th>No</th>
-                                                <th>Divisi</th>
-                                                <th>Nama Mentor</th>
-                                                <th>Nama Pendaftar</th>
-                                                <th>Tanggal Wawancara</th>
-                                                <th>Status</th>
-                                                <th class="text-right">Action</th>
+                                                <td colspan="8" class="text-center">Tidak Ada Data</td>
                                             </tr>
-                                            {{-- @foreach ($listDivisi as $key => $listItem)
+                                        @else
+                                            @foreach ($listWawancara as $key => $listItem)
                                                 <tr>
-                                                    <td>{{ $listDivisi->firstItem() + $key }}</td>
-                                                    <td>{{ $listItem->nama_divisi }}</td>
+                                                    <td>{{ $listWawancara->firstItem() + $key }}</td>
+                                                    <td>{{ $listItem->divisiMentor->divisi->nama_divisi }}</td>
+                                                    <td>{{ $listItem->divisiMentor->user->name }}</td>
+                                                    <td>{{ $listItem->pendaftar->user->name }}</td>
+                                                    <td>{{ $listItem->tanggal_wawancara }}</td>
+                                                    <td
+                                                        class="status {{ $listItem->status === 'Belum Selesai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                        {{ $listItem->status }}
+                                                    </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
-                                                            <a href="{{ route('list-divisi.edit', $listItem->id) }}"
-                                                                class="btn btn-sm btn-info btn-icon "><i
-                                                                    class="fas fa-edit"></i>
-                                                                Edit</a>
-                                                            <form action="{{ route('list-divisi.destroy', $listItem->id) }}"
-                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <input type="hidden" name="_token"
-                                                                    value="{{ csrf_token() }}">
-                                                                <button type="submit" id="#submit"
-                                                                    class="btn btn-sm btn-danger btn-icon "
-                                                                    data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
-                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
-                                                                    data-id="del-{{ $listItem->id }}">
-                                                                    <i class="fas fa-times"> </i> Delete </button>
-                                                            </form>
+                                                            @role('manager')
+                                                                <a href="{{ route('list-divisi.edit', $listItem->id) }}"
+                                                                    class="btn btn-sm btn-info btn-icon"><i
+                                                                        class="fas fa-edit"></i> Edit</a>
+                                                                <form
+                                                                    action="{{ route('list-divisi.destroy', $listItem->id) }}"
+                                                                    method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" id="#submit"
+                                                                        class="btn btn-sm btn-danger btn-icon"
+                                                                        data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
+                                                                        data-confirm-yes="submitDel(<?= $listItem->id ?>)"
+                                                                        data-id="del-{{ $listItem->id }}">
+                                                                        <i class="fas fa-times"> </i> Delete</button>
+                                                                </form>
+                                                            @endrole
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach --}}
-                                        </tbody>
-                                    </table>
-                                    <div class="d-flex justify-content-center">
-                                        {{-- {{ $listDivisi->withQueryString()->links() }} --}}
-                                    </div>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center">
+                                    {{ $listWawancara->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
@@ -91,6 +104,7 @@
             </div>
     </section>
 @endsection
+
 @push('customScript')
     <script>
         $(document).ready(function() {

@@ -20,4 +20,11 @@ class DivisiMentor extends Model
     {
         return $this->belongsTo(Divisi::class, 'divisi_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
 }
