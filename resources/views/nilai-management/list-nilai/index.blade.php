@@ -66,32 +66,25 @@
                                             <th class="text-right">Action</th>
                                         </tr>
                                         @foreach ($data as $key => $item)
-                                            <tr data-toggle="collapse" data-target="#collapse-{{ $key }}"
-                                                class="accordion-toggle">
+                                            <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item['pendaftar']->user->name }}</td>
                                                 <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                 <td>{{ $item['status'] }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
-                                                        <a href="#" class="btn btn-sm btn-info btn-icon"><i
+                                                        <a href="#" class="btn btn-sm btn-info btn-icon"
+                                                            data-toggle="collapse"
+                                                            data-target="#collapse-{{ $key }}"><i
                                                                 class="fas fa-eye"></i> View Detail</a>
-                                                        <a href="#" class="btn btn-sm btn-info btn-icon ml-2"><i
+                                                        <a href="{{ route('list-nilai.edit', $item['pendaftar']->id) }}"
+                                                            class="btn btn-sm btn-warning btn-icon ml-2"><i
                                                                 class="fas fa-edit"></i> Edit</a>
-                                                        <form action="#" method="POST" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger btn-icon"
-                                                                data-confirm="Hapus Data Pendaftar?|Apakah Kamu Yakin?"
-                                                                data-confirm-yes="submitDel({{ $item['pendaftar']->id }})">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
-                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4" class="hiddenRow">
+                                                <td colspan="5" class="hiddenRow">
                                                     <div id="collapse-{{ $key }}" class="collapse p-3">
                                                         <div class="card border-primary">
                                                             <div class="card-body">

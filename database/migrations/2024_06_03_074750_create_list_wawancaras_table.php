@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('divisi_mentor_id');
             $table->string('deskripsi')->nullable();
             $table->dateTime('tanggal_wawancara');
+            $table->enum('status', ['Belum Selesai', 'Selesai']);
             $table->foreign('pendaftar_id')->references('id')->on('pendaftars')->onDelete('cascade');
             $table->foreign('divisi_mentor_id')->references('id')->on('divisi_mentors')->onDelete('cascade');
             $table->timestamps();

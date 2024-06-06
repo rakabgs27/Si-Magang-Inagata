@@ -1,9 +1,13 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <a href="#">SiMagang</a>
+        <a href="#">
+            <img src="{{ asset('assets/img/images.png') }}" alt="SiMagang Logo"
+                style="height: 45px; vertical-align: middle; margin-right: 8px;">
+            SiMagang Inagata
+        </a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="index.html">St</a>
+        <a href="index.html">SIM</a>
     </div>
     <ul class="sidebar-menu">
         @foreach ($menuGroups as $item)
