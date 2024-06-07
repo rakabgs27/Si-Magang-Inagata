@@ -3,11 +3,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Wawancara Management</h1>
+            <h1>Pengelolaan Wawancara</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Wawancara</h2>
-
             <div class="card">
                 <div class="card-header">
                     <h4>Validasi Tambah Data</h4>

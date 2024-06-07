@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>List Assign Soal</h1>
+            <h1>Daftar Soal Pendaftar</h1>
         </div>
         <div class="section-body">
             <h2 class="section-title">{{ $assignSoal->soal->judul_soal  }}</h2>

@@ -2,10 +2,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Tabel Divisi</h1>
+            <h1>Pengelolaan Divisi</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Edit Divisi</h2>
             <div class="card">
                 <form action="{{ route('list-divisi.update', $list_divisi) }}" method="POST">
                     <div class="card-header">

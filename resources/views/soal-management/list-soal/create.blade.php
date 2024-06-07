@@ -3,11 +3,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>List Soal</h1>
+            <h1>Daftar Soal</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Soal</h2>
-
             <div class="card">
                 <div class="card-header">
                     <h4>Validasi Tambah Soal</h4>

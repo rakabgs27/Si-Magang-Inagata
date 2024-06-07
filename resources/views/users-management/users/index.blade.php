@@ -4,11 +4,9 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>User List</h1>
+            <h1>Daftar Pengguna</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">User Management</h2>
-
             <div class="row">
                 <div class="col-12">
                     @include('layouts.alert')

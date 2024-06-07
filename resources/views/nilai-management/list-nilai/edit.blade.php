@@ -6,7 +6,6 @@
             <h1>Edit Nilai Pendaftar</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Edit Nilai</h2>
             <div class="card">
                 <div class="card-header">
                     <h4>Validasi Edit Data</h4>

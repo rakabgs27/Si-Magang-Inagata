@@ -3,11 +3,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>List Nilai Management</h1>
+            <h1>Daftar Nilai</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Nilai Management</h2>
-
             <div class="row">
                 <div class="col-12">
                     @include('layouts.alert')

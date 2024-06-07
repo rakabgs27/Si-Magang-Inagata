@@ -4,10 +4,9 @@
     <!-- Main Content -->
     <section class="section">
         <div class="section-header">
-            <h1>List Jawaban Pendaftar</h1>
+            <h1>Daftar Jawaban Pendaftar</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Jawaban Management</h2>
             <div class="row">
                 <div class="col-12">
                     @include('layouts.alert')

@@ -3,11 +3,9 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Tabel Divisi</h1>
+            <h1>Pengelolaan Divisi</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Divisi</h2>
-
             <div class="card">
                 <div class="card-header">
                     <h4>Validasi Tambah Data</h4>
