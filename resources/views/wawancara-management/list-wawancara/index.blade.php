@@ -48,13 +48,12 @@
                                             <th>Divisi</th>
                                             <th>Nama Mentor</th>
                                             <th>Nama Pendaftar</th>
-                                            <th>Tanggal Wawancara</th>
                                             <th>Status</th>
                                             <th class="text-right">Action</th>
                                         </tr>
                                         @if ($listWawancara->isEmpty())
                                             <tr>
-                                                <td colspan="8" class="text-center">Tidak Ada Data</td>
+                                                <td colspan="6" class="text-center">Tidak Ada Data</td>
                                             </tr>
                                         @else
                                             @foreach ($listWawancara as $key => $listItem)
@@ -63,31 +62,56 @@
                                                     <td>{{ $listItem->divisiMentor->divisi->nama_divisi }}</td>
                                                     <td>{{ $listItem->divisiMentor->user->name }}</td>
                                                     <td>{{ $listItem->pendaftar->user->name }}</td>
-                                                    <td>{{ $listItem->tanggal_wawancara }}</td>
                                                     <td
                                                         class="status {{ $listItem->status === 'Belum Selesai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $listItem->status }}
                                                     </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
+                                                            <button class="btn btn-sm btn-info btn-icon toggle-detail"
+                                                                data-id="{{ $listItem->id }}"><i
+                                                                    class="fas fa-chevron-down"></i> View Detail</button>
                                                             @role('manager')
-                                                                <a href="{{ route('list-divisi.edit', $listItem->id) }}"
-                                                                    class="btn btn-sm btn-info btn-icon"><i
+                                                                <a href="{{ route('list-wawancara.edit', $listItem->id) }}"
+                                                                    class="btn btn-sm btn-warning btn-icon ml-2"><i
                                                                         class="fas fa-edit"></i> Edit</a>
                                                                 <form
-                                                                    action="{{ route('list-divisi.destroy', $listItem->id) }}"
-                                                                    method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                                    action="{{ route('list-wawancara.destroy', $listItem->id) }}"
+                                                                    method="POST" class="ml-2" id="del-{{ $listItem->id }}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" id="#submit"
                                                                         class="btn btn-sm btn-danger btn-icon"
-                                                                        data-confirm="Hapus Data Siswa ?|Apakah Kamu Yakin?"
-                                                                        data-confirm-yes="submitDel(<?= $listItem->id ?>)"
+                                                                        data-confirm="Hapus Data Wawancara Pendaftar ?|Apakah Kamu Yakin?"
+                                                                        data-confirm-yes="submitDel({{ $listItem->id }})"
                                                                         data-id="del-{{ $listItem->id }}">
                                                                         <i class="fas fa-times"> </i> Delete</button>
                                                                 </form>
                                                             @endrole
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                                <tr id="detail-{{ $listItem->id }}" class="detail-row"
+                                                    style="display: none;">
+                                                    <td colspan="6">
+                                                        <fieldset class="detail-box">
+                                                            <legend>Detail Wawancara</legend>
+                                                            <div class="d-flex justify-content-around p-3">
+                                                                <div>
+                                                                    <strong style="font-size: 16px;">
+                                                                        <i class="fas fa-calendar-week"></i> Tanggal
+                                                                        Wawancara:
+                                                                    </strong>
+                                                                    <span
+                                                                        style="font-size: 16px;">{{ $listItem->tanggal_wawancara }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <strong style="font-size: 16px;">Deskripsi:</strong>
+                                                                    <span
+                                                                        style="font-size: 16px;">{{ strip_tags($listItem->deskripsi) }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -124,6 +148,12 @@
                 var file = $('#file-upload')[0].files[0].name;
                 $(this).prev('label').text(file);
             });
+
+            $('.toggle-detail').click(function() {
+                var id = $(this).data('id');
+                $('#detail-' + id).toggle();
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
         });
 
         function submitDel(id) {
@@ -135,4 +165,34 @@
 
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <style>
+        .detail-box {
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .detail-box legend {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+            padding: 0 10px;
+            margin-bottom: 10px;
+        }
+
+        .detail-box .p-3 {
+            font-size: 16px;
+        }
+
+        @media (max-width: 767px) {
+            .detail-box {
+                margin: 5px 0;
+                padding: 10px;
+            }
+        }
+    </style>
 @endpush

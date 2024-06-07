@@ -13,7 +13,7 @@ class UpdateListWawancaraRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true; // Pastikan user memiliki izin untuk melakukan update
     }
 
     /**
@@ -24,7 +24,33 @@ class UpdateListWawancaraRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'divisi' => 'required|exists:divisis,id',
+            'mentor' => 'required|exists:divisi_mentors,id',
+            'pendaftar' => 'required|exists:pendaftars,id',
+            'deskripsi' => 'required|string|max:255',
+            'tanggal_wawancara' => 'required|date',
+        ];
+    }
+
+    /**
+     * Get the custom messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'divisi.required' => 'Divisi harus dipilih.',
+            'divisi.exists' => 'Divisi yang dipilih tidak valid.',
+            'mentor.required' => 'Mentor harus dipilih.',
+            'mentor.exists' => 'Mentor yang dipilih tidak valid.',
+            'pendaftar.required' => 'Pendaftar harus dipilih.',
+            'pendaftar.exists' => 'Pendaftar yang dipilih tidak valid.',
+            'deskripsi.required' => 'Deskripsi harus diisi.',
+            'deskripsi.string' => 'Deskripsi harus berupa teks.',
+            'deskripsi.max' => 'Deskripsi tidak boleh lebih dari 255 karakter.',
+            'tanggal_wawancara.required' => 'Tanggal wawancara harus diisi.',
+            'tanggal_wawancara.date' => 'Tanggal wawancara harus berupa tanggal yang valid.',
         ];
     }
 }

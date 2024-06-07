@@ -10,7 +10,7 @@ use App\Models\DivisiMentor;
 use App\Models\NilaiPendaftar;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class ListWawancaraController extends Controller
 {
@@ -98,7 +98,7 @@ class ListWawancaraController extends Controller
             return redirect()->back()->with('error', 'Divisi Mentor tidak ditemukan.');
         }
 
-        $listWawancara = ListWawancara::create([
+        ListWawancara::create([
             'pendaftar_id' => $validated['pendaftar'],
             'divisi_mentor_id' => $divisiMentor->id,
             'deskripsi' => $validated['deskripsi'],
@@ -128,7 +128,32 @@ class ListWawancaraController extends Controller
      */
     public function edit(ListWawancara $listWawancara)
     {
-        //
+        $divisi = Divisi::all();
+
+        $mentors = DivisiMentor::where('divisi_id', $listWawancara->pendaftar->divisi_id)
+            ->with('user')
+            ->get()
+            ->map(function ($divisiMentor) {
+                return [
+                    'id' => $divisiMentor->id,
+                    'name' => $divisiMentor->user->name,
+                ];
+            });
+
+        $pendaftarSudahDinilai = NilaiPendaftar::where('status', 'Sudah Dinilai')
+            ->whereHas('pendaftar.divisi', function ($query) use ($listWawancara) {
+                $query->where('divisi_id', $listWawancara->pendaftar->divisi_id);
+            })
+            ->with('pendaftar.user')
+            ->get()
+            ->map(function ($nilaiPendaftar) {
+                return [
+                    'id' => $nilaiPendaftar->pendaftar->id,
+                    'name' => $nilaiPendaftar->pendaftar->user->name,
+                ];
+            });
+
+        return view('wawancara-management.list-wawancara.edit', compact('listWawancara', 'divisi', 'mentors', 'pendaftarSudahDinilai'));
     }
 
     /**
@@ -140,7 +165,55 @@ class ListWawancaraController extends Controller
      */
     public function update(UpdateListWawancaraRequest $request, ListWawancara $listWawancara)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+
+            $listWawancara->pendaftar_id = $validatedData['pendaftar'];
+            $listWawancara->divisi_mentor_id = $validatedData['mentor'];
+            $listWawancara->deskripsi = $validatedData['deskripsi'];
+            $listWawancara->tanggal_wawancara = $validatedData['tanggal_wawancara'];
+
+            $listWawancara->save();
+
+            return redirect()->route('list-wawancara.index')->with('success', 'Data Wawancara berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Update failed: ' . $e->getMessage());
+
+            return redirect()->route('list-wawancara.edit', $listWawancara->id)->with('error', 'Terjadi kesalahan saat memperbarui data');
+        }
+    }
+
+    public function getEditMentorsByDivisi(Request $request)
+    {
+        $mentors = DivisiMentor::where('divisi_id', $request->divisi_id)
+            ->with('user')
+            ->get()
+            ->map(function ($divisiMentor) {
+                return [
+                    'id' => $divisiMentor->id,
+                    'name' => $divisiMentor->user->name,
+                ];
+            });
+
+        return response()->json(['mentors' => $mentors]);
+    }
+
+    public function getEditPendaftarByDivisi(Request $request)
+    {
+        $pendaftarSudahDinilai = NilaiPendaftar::where('status', 'Sudah Dinilai')
+            ->whereHas('pendaftar', function ($query) use ($request) {
+                $query->where('divisi_id', $request->divisi_id);
+            })
+            ->with('pendaftar.user')
+            ->get()
+            ->map(function ($nilaiPendaftar) {
+                return [
+                    'id' => $nilaiPendaftar->pendaftar->id,
+                    'name' => $nilaiPendaftar->pendaftar->user->name,
+                ];
+            });
+
+        return response()->json(['pendaftar' => $pendaftarSudahDinilai]);
     }
 
     /**
@@ -150,7 +223,15 @@ class ListWawancaraController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(ListWawancara $listWawancara)
-    {
-        //
+    {   
+        try {
+            $listWawancara->delete();
+
+            return redirect()->route('list-wawancara.index')->with('success', 'Data wawancara berhasil dihapus.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting ListWawancara: ' . $e->getMessage());
+
+            return redirect()->route('list-wawancara.index')->with('error', 'Terjadi kesalahan saat menghapus data.');
+        }
     }
 }

@@ -126,7 +126,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -177,7 +177,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -226,7 +226,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -275,7 +275,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -324,7 +324,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -373,7 +373,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -422,7 +422,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -471,7 +471,7 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>< 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>

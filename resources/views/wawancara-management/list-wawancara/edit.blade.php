@@ -6,22 +6,26 @@
             <h1>Wawancara Management</h1>
         </div>
         <div class="section-body">
-            <h2 class="section-title">Tambah Wawancara</h2>
+            <h2 class="section-title">Edit Wawancara</h2>
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Validasi Tambah Data</h4>
+                    <h4>Validasi Edit Data</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('list-wawancara.store') }}" method="post">
+                    <form action="{{ route('list-wawancara.update', $listWawancara->id) }}" method="post">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label for="divisi">Pilih Divisi</label>
                             <select class="form-control select2 @error('divisi') is-invalid @enderror" id="divisi"
                                 name="divisi" placeholder="Pilih Divisi">
                                 <option value="" selected>Pilih Divisi</option>
                                 @foreach ($divisi as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_divisi }}</option>
+                                    <option value="{{ $item->id }}"
+                                        {{ $item->id == $listWawancara->pendaftar->divisi_id ? 'selected' : '' }}>
+                                        {{ $item->nama_divisi }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('divisi')
@@ -31,12 +35,17 @@
                             @enderror
                         </div>
                         <div class="row">
-                            <div class="form-group col-md-6" id="mentor-group" style="display:none;">
+                            <div class="form-group col-md-6" id="mentor-group">
                                 <label for="mentor">Pilih Mentor</label>
                                 <select class="form-control select2 @error('mentor') is-invalid @enderror" id="mentor"
-                                    name="mentor" placeholder="Pilih Mentor">
+                                    name="mentor">
                                     <option value="" selected>Pilih Mentor</option>
-                                    <!-- Options will be loaded dynamically using JavaScript -->
+                                    @foreach ($mentors as $mentor)
+                                        <option value="{{ $mentor['id'] }}"
+                                            {{ $mentor['id'] == $listWawancara->divisi_mentor_id ? 'selected' : '' }}>
+                                            {{ $mentor['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('mentor')
                                     <div class="invalid-feedback">
@@ -44,12 +53,17 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-6" id="pendaftar-group" style="display:none;">
+                            <div class="form-group col-md-6" id="pendaftar-group">
                                 <label for="pendaftar">Pilih Pendaftar</label>
                                 <select class="form-control select2 @error('pendaftar') is-invalid @enderror" id="pendaftar"
                                     name="pendaftar" placeholder="Pilih Pendaftar">
                                     <option value="" selected>Pilih Pendaftar</option>
-                                    <!-- Options will be loaded dynamically using JavaScript -->
+                                    @foreach ($pendaftarSudahDinilai as $pendaftarItem)
+                                        <option value="{{ $pendaftarItem['id'] }}"
+                                            {{ $pendaftarItem['id'] == $listWawancara->pendaftar_id ? 'selected' : '' }}>
+                                            {{ $pendaftarItem['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('pendaftar')
                                     <div class="invalid-feedback">
@@ -61,7 +75,7 @@
                         <div class="form-group">
                             <label for="deskripsi">Deskripsi</label>
                             <textarea name="deskripsi" id="deskripsi" class="form-control summernote @error('deskripsi') is-invalid @enderror"
-                                placeholder="Masukkan Deskripsi">{{ old('deskripsi') }}</textarea>
+                                placeholder="Masukkan Deskripsi">{{ old('deskripsi', $listWawancara->deskripsi) }}</textarea>
                             @error('deskripsi')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -72,7 +86,9 @@
                             <label for="tanggal_wawancara">Tanggal Wawancara</label>
                             <input type="datetime-local"
                                 class="form-control @error('tanggal_wawancara') is-invalid @enderror" id="tanggal_wawancara"
-                                name="tanggal_wawancara" placeholder="Pilih Tanggal Wawancara">
+                                name="tanggal_wawancara"
+                                value="{{ old('tanggal_wawancara', $listWawancara->tanggal_wawancara) }}"
+                                placeholder="Pilih Tanggal Wawancara">
                             @error('tanggal_wawancara')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -81,7 +97,7 @@
                         </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary">Update</button>
                     <a class="btn btn-secondary" href="{{ route('list-wawancara.index') }}">Cancel</a>
                 </div>
                 </form>
@@ -95,14 +111,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     <script>
         $(document).ready(function() {
-            function resetSelect(selectElement, placeholder) {
-                selectElement.val(null).trigger('change');
-                selectElement.html('<option value="" selected>' + placeholder + '</option>');
-            }
-
             $('.select2').select2({
                 placeholder: function() {
-                    return $(this).data('placeholder');
+                    return $(this).attr('placeholder');
                 },
                 allowClear: true
             });
@@ -118,49 +129,50 @@
                 ]
             });
 
+            // Event change untuk dropdown divisi
             $('#divisi').change(function() {
                 var divisiId = $(this).val();
-                if (divisiId) {
-                    $('#mentor-group').show();
-                    $('#pendaftar-group').show();
 
+                if (divisiId) {
+                    // Ambil mentor berdasarkan divisi
                     $.ajax({
-                        url: '{{ route('get-mentors-by-divisi') }}',
-                        type: 'GET',
-                        data: {
-                            divisi_id: divisiId
-                        },
+                        url: "{{ route('mentors-by-divisi') }}",
+                        data: { divisi_id: divisiId },
+                        dataType: 'json',
                         success: function(data) {
-                            resetSelect($('#mentor'), 'Pilih Mentor');
+                            $('#mentor').empty().append('<option value="">Pilih Mentor</option>');
                             $.each(data.mentors, function(key, mentor) {
-                                $('#mentor').append(new Option(mentor.name, mentor.id));
+                                $('#mentor').append('<option value="' + mentor.id + '">' + mentor.name + '</option>');
                             });
+                            $('#mentor').select2().trigger('change');
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error fetching mentors: ' + error);
                         }
                     });
 
+                    // Ambil pendaftar berdasarkan divisi
                     $.ajax({
-                        url: '{{ route('get-pendaftar-by-divisi') }}',
-                        type: 'GET',
-                        data: {
-                            divisi_id: divisiId
-                        },
+                        url: "{{ route('pendaftar-by-divisi') }}",
+                        data: { divisi_id: divisiId },
+                        dataType: 'json',
                         success: function(data) {
-                            resetSelect($('#pendaftar'), 'Pilih Pendaftar');
+                            $('#pendaftar').empty().append('<option value="">Pilih Pendaftar</option>');
                             $.each(data.pendaftar, function(key, pendaftar) {
-                                $('#pendaftar').append(new Option(pendaftar.name,
-                                    pendaftar.id));
+                                $('#pendaftar').append('<option value="' + pendaftar.id + '">' + pendaftar.name + '</option>');
                             });
+                            $('#pendaftar').select2().trigger('change');
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error fetching pendaftar: ' + error);
                         }
                     });
                 } else {
-                    $('#mentor-group').hide();
-                    $('#pendaftar-group').hide();
+                    $('#mentor').empty().append('<option value="">Pilih Mentor</option>');
+                    $('#pendaftar').empty().append('<option value="">Pilih Pendaftar</option>');
+                    $('#mentor').select2().trigger('change');
+                    $('#pendaftar').select2().trigger('change');
                 }
-            });
-
-            $('#divisi, #mentor, #pendaftar').on('select2:clear', function() {
-                var selectElement = $(this);
-                resetSelect(selectElement, selectElement.attr('placeholder'));
             });
         });
     </script>
