@@ -241,4 +241,13 @@ class ListWawancaraController extends Controller
             return redirect()->route('list-wawancara.index')->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $listWawancara = ListWawancara::findOrFail($id);
+        $listWawancara->status = 'Selesai';
+        $listWawancara->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
+    }
 }

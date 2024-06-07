@@ -55,7 +55,8 @@
                                             </tr>
                                         @else
                                             @foreach ($listWawancara as $key => $listItem)
-                                                <tr>
+                                                <tr data-end-date="{{ $listItem->tanggal_wawancara }}"
+                                                    data-id="{{ $listItem->id }}">
                                                     <td>{{ $listWawancara->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->divisiMentor->divisi->nama_divisi }}</td>
                                                     <td>{{ $listItem->divisiMentor->user->name }}</td>
@@ -130,6 +131,39 @@
 @push('customScript')
     <script>
         $(document).ready(function() {
+            var intervalId = setInterval(function() {
+                var now = new Date();
+                var allCompleted = true;
+
+                $('tr[data-end-date]').each(function() {
+                    var endDate = new Date($(this).data('end-date'));
+                    if (now > endDate && $(this).find('.status').text().trim() !== 'Selesai') {
+                        allCompleted = false; // If any item is not completed, set flag to false
+                        var row = $(this);
+                        var id = row.data('id');
+                        $.ajax({
+                            url: "{{ route('list-wawancara.update-status', '') }}/" + id,
+                            type: 'PATCH',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function(response) {
+                                row.find('.status').text('Selesai').removeClass(
+                                    'text-danger').addClass('text-success');
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+                if (allCompleted) {
+                    clearInterval(intervalId);
+                }
+            }, 1000); // Check every minute
+
+            // Existing script to handle other functionalities
             $('.import').click(function(event) {
                 event.stopPropagation();
                 $(".show-import").slideToggle("fast");
@@ -155,10 +189,9 @@
         });
 
         function submitDel(id) {
-            $('#del-' + id).submit()
+            $('#del-' + id).submit();
         }
     </script>
-    <script src="/assets/js/select2.min.js"></script>
 @endpush
 
 @push('customStyle')

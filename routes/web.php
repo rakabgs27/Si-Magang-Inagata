@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
         Route::get('get-pendaftar-by-divisi', [ListWawancaraController::class, 'getPendaftarByDivisi'])->name('get-pendaftar-by-divisi');
         Route::get('mentors-by-divisi', [ListWawancaraController::class, 'getEditMentorsByDivisi'])->name('mentors-by-divisi');
         Route::get('pendaftar-by-divisi', [ListWawancaraController::class, 'getEditPendaftarByDivisi'])->name('pendaftar-by-divisi');
+        Route::patch('/list-wawancara/update-status/{id}', [ListWawancaraController::class, 'updateStatus'])->name('list-wawancara.update-status');
+
     });
 });
 

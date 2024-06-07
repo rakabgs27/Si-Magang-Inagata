@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\JawabanPendaftar;
+use Carbon\Carbon;
 
 class JawabanPendaftarSeeder extends Seeder
 {
@@ -14,6 +16,11 @@ class JawabanPendaftarSeeder extends Seeder
      */
     public function run()
     {
-        //
+        JawabanPendaftar::create([
+            'soal_pendaftar_id' => 1,
+            'link_jawaban' => 'https://example.com/link-jawaban',
+            'file_jawaban' => 'jawaban.pdf',
+            'tanggal_pengumpulan' => Carbon::now(),
+        ]);
     }
 }
