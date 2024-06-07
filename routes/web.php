@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
         Route::get('get-pendaftar-by-divisi', [ListWawancaraController::class, 'getPendaftarByDivisi'])->name('get-pendaftar-by-divisi');
         Route::get('mentors-by-divisi', [ListWawancaraController::class, 'getEditMentorsByDivisi'])->name('mentors-by-divisi');
         Route::get('pendaftar-by-divisi', [ListWawancaraController::class, 'getEditPendaftarByDivisi'])->name('pendaftar-by-divisi');
-        // Route::resource('jadwal-wawancara', JadwaWawancaraController::class);
+        Route::resource('jadwal-wawancara', JadwalWawancaraController::class);
     });
 });
 

@@ -22,19 +22,26 @@ class ListWawancaraController extends Controller
     public function index(Request $request)
     {
         $pendaftarNameSearch = $request->input('name');
+        $user = auth()->user();
+        $mentorId = $user->divisiMentor ? $user->divisiMentor->pluck('id')->toArray() : null;
 
         $listWawancara = ListWawancara::with(['pendaftar.user', 'divisiMentor'])
             ->when($pendaftarNameSearch, function ($query, $pendaftarNameSearch) {
                 return $query->whereHas('pendaftar.user', function ($subQuery) use ($pendaftarNameSearch) {
                     $subQuery->where('name', 'like', '%' . $pendaftarNameSearch . '%');
                 });
-            })->paginate(10);
+            })
+            ->when($mentorId, function ($query) use ($mentorId) {
+                return $query->whereIn('divisi_mentor_id', $mentorId);
+            })
+            ->paginate(10);
 
         return view('wawancara-management.list-wawancara.index', [
             'listWawancara' => $listWawancara,
             'pendaftarNameSearch' => $pendaftarNameSearch,
         ]);
     }
+
 
 
     /**
@@ -223,7 +230,7 @@ class ListWawancaraController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(ListWawancara $listWawancara)
-    {   
+    {
         try {
             $listWawancara->delete();
 
