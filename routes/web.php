@@ -3,6 +3,7 @@
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
+use App\Http\Controllers\JadwalWawancaraController;
 use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\ListWawancaraController;
 use App\Http\Controllers\Menu\MenuGroupController;
@@ -65,7 +66,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
         Route::get('get-pendaftar-by-divisi', [ListWawancaraController::class, 'getPendaftarByDivisi'])->name('get-pendaftar-by-divisi');
         Route::get('mentors-by-divisi', [ListWawancaraController::class, 'getEditMentorsByDivisi'])->name('mentors-by-divisi');
         Route::get('pendaftar-by-divisi', [ListWawancaraController::class, 'getEditPendaftarByDivisi'])->name('pendaftar-by-divisi');
-        Route::resource('jadwal-wawancara', JadwalWawancaraController::class);
     });
 });
 
@@ -88,6 +88,11 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('test-jawaban', TestJawabanController::class);
     });
+    Route::prefix('wawancara-management')->group(function () {
+        Route::resource('jadwal-wawancara', JadwalWawancaraController::class);
+    });
+
+
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () {
