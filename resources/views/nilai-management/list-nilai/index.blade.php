@@ -69,9 +69,9 @@
                                                 <td>{{ $item['pendaftar']->user->name }}</td>
                                                 <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                 <td
-                                                        class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
-                                                        {{ $item['status'] }}
-                                                    </td>
+                                                    class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                    {{ $item['status'] }}
+                                                </td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="#" class="btn btn-sm btn-info btn-icon"
@@ -81,6 +81,14 @@
                                                         <a href="{{ route('list-nilai.edit', $item['pendaftar']->id) }}"
                                                             class="btn btn-sm btn-warning btn-icon ml-2"><i
                                                                 class="fas fa-edit"></i> Edit</a>
+                                                        @if ($item['wawancara_selesai'])
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-primary btn-icon ml-2"
+                                                                data-toggle="modal"
+                                                                data-target="#nilaiWawancaraModal-{{ $key }}">
+                                                                <i class="fas fa-plus"></i> Input Nilai Wawancara
+                                                            </button>
+                                                        @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -435,6 +443,43 @@
             </div>
         </div>
     </section>
+    @foreach ($data as $key => $item)
+        @if ($item['wawancara_selesai'])
+            <div class="modal fade" id="nilaiWawancaraModal-{{ $key }}" tabindex="-1" role="dialog"
+                aria-labelledby="nilaiWawancaraModalLabel-{{ $key }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="nilaiWawancaraModalLabel-{{ $key }}">Input Nilai
+                                Wawancara</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="#">
+                                @csrf
+                                <input type="hidden" name="pendaftar_id" value="{{ $item['pendaftar']->id }}">
+                                <div class="form-group">
+                                    <label for="nilai_wawancara"
+                                        style="margin-bottom: 20px; font-size: 14px;">Nilai</label>
+                                    <div class="radio-container">
+                                        @foreach (['Kurang', 'Cukup', 'Memuaskan', 'Baik Sekali', 'Luar Biasa'] as $nilai)
+                                            <input type="radio" id="nilai_wawancara_{{ $loop->index + 1 }}"
+                                                name="nilai_wawancara" value="{{ $nilai }}">
+                                            <label
+                                                for="nilai_wawancara_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
 @endsection
 
 @push('customScript')
@@ -468,4 +513,43 @@
 
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <style>
+        .radio-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .radio-container input[type="radio"] {
+            display: none;
+        }
+
+        .radio-container label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+            height: 40px;
+            min-width: 100px;
+        }
+
+        .radio-container input[type="radio"]:checked+label {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .radio-container label:hover {
+            background-color: #0056b3;
+            color: white;
+            border-color: #0056b3;
+        }
+    </style>
 @endpush
