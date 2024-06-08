@@ -128,6 +128,8 @@ class NilaiPendaftarController extends Controller
                         break;
                 }
 
+                $status_wawancara_label = ($nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai') ? $nilaiWawancara->status : 'Menunggu';
+
                 $data[] = [
                     'pendaftar' => $pendaftar,
                     'kriteria' => $kriteria,
@@ -135,15 +137,15 @@ class NilaiPendaftarController extends Controller
                     'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
                     'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                     'nilai_wawancara_label' => $nilaiWawancara ? $this->convertNilaiToLabel($nilaiWawancara->nilai_wawancara) : null,
+                    'status_wawancara_label' => $status_wawancara_label,
                     'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
-                    'status_wawancara_label' => $nilaiWawancara->status,
-
                 ];
             }
         }
 
         return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId', 'mentorDivisiId'));
     }
+
 
     private function convertNilaiToLabel($nilai)
     {

@@ -6,11 +6,11 @@
         <div class="section-header">
             <h1>Daftar Jawaban Pendaftar</h1>
         </div>
-        @if (!$mentorDivisiId)
+        @if (!$mentorDivisiId  && !$userManager)
             <div class="alert alert-warning" role="alert">
                 Mentor tidak memiliki divisi.
             </div>
-        @elseif ($mentorDivisiId)
+        @elseif ($mentorDivisiId || $userManager)
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h4>List Soal</h4>
+                                <h4>Daftar Jawaban Pendaftar</h4>
                                 <div class="d-flex flex-row-reverse card-header-action">
                                     <div class="card-header-actions">
                                         <a class="btn btn-info btn-primary active import">

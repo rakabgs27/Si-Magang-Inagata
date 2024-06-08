@@ -66,7 +66,9 @@
                                                 <th>Nama Pendaftar</th>
                                                 <th>Divisi Pendaftar</th>
                                                 <th>Status Nilai Tes</th>
-                                                <th>Status Nilai Wawancara</th>
+                                                @if (collect($data)->contains('status_wawancara', true))
+                                                    <th>Status Nilai Wawancara</th>
+                                                @endif
                                                 <th class="text-right">Action</th>
                                             </tr>
                                             @foreach ($data as $key => $item)
@@ -78,10 +80,12 @@
                                                         class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $item['status'] }}
                                                     </td>
-                                                    <td
-                                                        class="status_wawancara_label {{ $item['status_wawancara_label'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
-                                                        {{ $item['status_wawancara_label'] }}
-                                                    </td>
+                                                    @if ($item['status_wawancara'])
+                                                        <td
+                                                            class="status_wawancara_label {{ $item['status_wawancara_label'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                            {{ $item['status_wawancara_label'] }}
+                                                        </td>
+                                                    @endif
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
                                                             <a href="#" class="btn btn-sm btn-info btn-icon"
@@ -619,8 +623,8 @@
             });
 
             $('.modal').on('hidden.bs.modal', function() {
-            $(this).find('form')[0].reset(); // Reset form input values
-        });
+                $(this).find('form')[0].reset(); // Reset form input values
+            });
         });
 
         function submitDel(id) {

@@ -5,11 +5,11 @@
         <div class="section-header">
             <h1>Pengelolaan Wawancara</h1>
         </div>
-        @if (!$mentorDivisiId)
+        @if (!$mentorDivisiId  && !$userManager)
             <div class="alert alert-warning" role="alert">
                 Mentor tidak memiliki divisi.
             </div>
-        @elseif ($mentorDivisiId)
+        @elseif ($mentorDivisiId || $userManager)
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">

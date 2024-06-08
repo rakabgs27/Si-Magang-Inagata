@@ -32,9 +32,8 @@ class SoalController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+        $userManager = $user->hasRole('manager');
         $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
-
-        // dd($mentorDivisiId);
 
         try {
             $judulSoalSearch = $request->input('judul_soal');
@@ -65,21 +64,26 @@ class SoalController extends Controller
             return back()->withErrors(['error' => $e->getMessage()]);
         }
 
-        if (!$mentorDivisiId) {
+        if ($userManager || $mentorDivisiId) {
+            return view('soal-management.list-soal.index', [
+                'listSoal' => $listSoal,
+                'judulSoalSearch' => $judulSoalSearch,
+                'divisis' => $divisis,
+                'selectedDivisi' => $divisiFilter,
+                'mentorDivisiId' => $mentorDivisiId,
+                'userManager' => $userManager
+            ]);
+
+        }else{
             return view('soal-management.list-soal.index')->with([
                 'mentorDivisiId' => $mentorDivisiId,
-                'error'=>'Mentor does not have an associated division.'
+                'error'=>'Mentor does not have an associated division.',
+                'userManager' => $userManager
             ]);
         }
 
-        return view('soal-management.list-soal.index', [
-            'listSoal' => $listSoal,
-            'judulSoalSearch' => $judulSoalSearch,
-            'divisis' => $divisis,
-            'selectedDivisi' => $divisiFilter,
-            'mentorDivisiId' => $mentorDivisiId
-        ]);
     }
+
 
 
     /**

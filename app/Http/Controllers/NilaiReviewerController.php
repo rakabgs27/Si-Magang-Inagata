@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NilaiReviewer;
-use App\Http\Requests\StoreNilaiReviewerRequest;
-use App\Http\Requests\UpdateNilaiReviewerRequest;
+use Illuminate\Http\Request;
 
 class NilaiReviewerController extends Controller
 {
@@ -31,10 +29,10 @@ class NilaiReviewerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreNilaiReviewerRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreNilaiReviewerRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -42,10 +40,10 @@ class NilaiReviewerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\NilaiReviewer  $nilaiReviewer
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(NilaiReviewer $nilaiReviewer)
+    public function show($id)
     {
         //
     }
@@ -53,10 +51,10 @@ class NilaiReviewerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\NilaiReviewer  $nilaiReviewer
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(NilaiReviewer $nilaiReviewer)
+    public function edit($id)
     {
         //
     }
@@ -64,11 +62,11 @@ class NilaiReviewerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateNilaiReviewerRequest  $request
-     * @param  \App\Models\NilaiReviewer  $nilaiReviewer
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNilaiReviewerRequest $request, NilaiReviewer $nilaiReviewer)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -76,10 +74,10 @@ class NilaiReviewerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\NilaiReviewer  $nilaiReviewer
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(NilaiReviewer $nilaiReviewer)
+    public function destroy($id)
     {
         //
     }
