@@ -23,6 +23,8 @@ class ListWawancaraController extends Controller
     {
         $pendaftarNameSearch = $request->input('name');
         $user = auth()->user();
+        // Retrieve the division ID associated with the authenticated mentor
+        $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
         $mentorId = $user->divisiMentor ? $user->divisiMentor->pluck('id')->toArray() : null;
 
         $listWawancara = ListWawancara::with(['pendaftar.user', 'divisiMentor'])
@@ -35,10 +37,17 @@ class ListWawancaraController extends Controller
                 return $query->whereIn('divisi_mentor_id', $mentorId);
             })
             ->paginate(10);
+        if (!$mentorDivisiId) {
+            return view('wawancara-management.list-wawancara.index')->with([
+                'mentorDivisiId' => $mentorDivisiId,
+                'error' => 'Mentor does not have an associated division.'
+            ]);
+        }
 
         return view('wawancara-management.list-wawancara.index', [
             'listWawancara' => $listWawancara,
             'pendaftarNameSearch' => $pendaftarNameSearch,
+            'mentorDivisiId' => $mentorDivisiId
         ]);
     }
 

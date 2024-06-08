@@ -25,8 +25,14 @@ class NilaiPendaftarController extends Controller
         $userId = Auth::id();
         $divisiMentors = DivisiMentor::where('user_id', $userId)->with('divisi')->get();
 
-        if ($divisiMentors->isEmpty()) {
-            return redirect()->back()->withErrors(['error' => 'Mentor does not have an associated division.']);
+        // Retrieve the division ID associated with the authenticated mentor
+        $mentorDivisiId = DivisiMentor::where('user_id', $userId)->first()->divisi_id ?? null;
+
+        if (!$mentorDivisiId) {
+            return view('nilai-management.list-nilai.index')->with([
+                'mentorDivisiId' => $mentorDivisiId,
+                'error' => 'Mentor does not have an associated division.'
+            ]);
         }
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
@@ -128,12 +134,30 @@ class NilaiPendaftarController extends Controller
                     'status' => $nilai->status,
                     'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
                     'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
+                    'nilai_wawancara_label' => $nilaiWawancara ? $this->convertNilaiToLabel($nilaiWawancara->nilai_wawancara) : null,
                     'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
+                    'status_wawancara_label' => $nilaiWawancara->status,
+
                 ];
             }
         }
 
-        return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId'));
+        return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId', 'mentorDivisiId'));
+    }
+
+    private function convertNilaiToLabel($nilai)
+    {
+        if ($nilai <= 60) {
+            return 'Kurang';
+        } elseif ($nilai <= 70) {
+            return 'Cukup';
+        } elseif ($nilai <= 80) {
+            return 'Memuaskan';
+        } elseif ($nilai <= 90) {
+            return 'Baik Sekali';
+        } else {
+            return 'Luar Biasa';
+        }
     }
 
 

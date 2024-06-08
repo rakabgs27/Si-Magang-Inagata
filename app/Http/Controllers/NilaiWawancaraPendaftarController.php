@@ -36,18 +36,23 @@ class NilaiWawancaraPendaftarController extends Controller
      */
     public function store(StoreNilaiWawancaraPendaftarRequest $request)
     {
-        // Validasi data yang dikirimkan
         $validated = $request->validated();
 
-        // Konversi nilai wawancara ke nilai numerik
         $nilaiNumeric = $this->convertToNumeric($validated['nilai_wawancara']);
 
-        // Simpan data nilai wawancara ke database
-        $nilaiWawancara = new NilaiWawancaraPendaftar();
-        $nilaiWawancara->pendaftar_id = $validated['pendaftar_id'];
-        $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
-        $nilaiWawancara->status = 'Sudah Dinilai';
-        $nilaiWawancara->save();
+        $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $validated['pendaftar_id'])->first();
+
+        if ($nilaiWawancara) {
+            $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+            $nilaiWawancara->status = 'Sudah Dinilai';
+            $nilaiWawancara->save();
+        } else {
+            $nilaiWawancara = new NilaiWawancaraPendaftar();
+            $nilaiWawancara->pendaftar_id = $validated['pendaftar_id'];
+            $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+            $nilaiWawancara->status = 'Sudah Dinilai';
+            $nilaiWawancara->save();
+        }
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Nilai wawancara berhasil disimpan.');

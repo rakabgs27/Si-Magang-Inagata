@@ -41,8 +41,6 @@ class JawabanPendaftarController extends Controller
         // Retrieve the division ID associated with the authenticated mentor
         $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
 
-
-
         // Input search filters
         $namaUserSearch = $request->input('name');
         $divisiId = $request->input('divisi_id');
@@ -71,19 +69,17 @@ class JawabanPendaftarController extends Controller
         }
         if (!$mentorDivisiId) {
             return view('jawaban-management.list-jawaban.index')->with([
-                'jawabanPendaftar' => $jawabanPendaftar,
-                'namaUserSearch' => $namaUserSearch,
-                'divisiId' => $divisiId,
-                'divisis' => $divisis,
+                'mentorDivisiId' => $mentorDivisiId,
                 'error'=>'Mentor does not have an associated division.'
             ]);
         }
+
         return view('jawaban-management.list-jawaban.index', [
             'jawabanPendaftar' => $jawabanPendaftar,
             'namaUserSearch' => $namaUserSearch,
             'divisiId' => $divisiId,
             'divisis' => $divisis,
-            'error'=>'Mentor does not have an associated division.'
+            'mentorDivisiId' => $mentorDivisiId
         ]);
     }
 
