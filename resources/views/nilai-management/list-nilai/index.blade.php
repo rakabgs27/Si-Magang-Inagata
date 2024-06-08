@@ -181,6 +181,13 @@
                                                                                         {{ $item['kriteria']['kriteria_11'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_11']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -210,6 +217,13 @@
                                                                                         {{ $item['kriteria']['kriteria_15'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_15']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -253,6 +267,13 @@
                                                                                         {{ $item['kriteria']['kriteria_21'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_21']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -299,6 +320,13 @@
                                                                                         {{ $item['kriteria']['kriteria_27'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_27']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -345,6 +373,13 @@
                                                                                         {{ $item['kriteria']['kriteria_34'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_34']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -391,6 +426,13 @@
                                                                                         {{ $item['kriteria']['kriteria_40'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_40']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
@@ -421,6 +463,13 @@
                                                                                         {{ $item['kriteria']['kriteria_44'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_44']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
