@@ -176,96 +176,98 @@ class NilaiPendaftarController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'pendaftar_id' => 'required|exists:pendaftars,id',
             'divisi_id' => 'required|exists:divisis,id',
+            'kriteria_.*' => 'required|string',
         ]);
 
         // Determine the criteria fields to validate based on the division
         $criteriaFields = [];
-        switch ($request->divisi_id) {
-            case 1: // Backend
-                $criteriaFields = [
-                    'kriteria_1' => 'nullable|string',
-                    'kriteria_2' => 'nullable|string',
-                    'kriteria_3' => 'nullable|string',
-                    'kriteria_4' => 'nullable|string',
-                    'kriteria_5' => 'nullable|string',
-                    'kriteria_6' => 'nullable|string',
-                ];
-                break;
-            case 2: // Frontend
-                $criteriaFields = [
-                    'kriteria_7' => 'nullable|string',
-                    'kriteria_8' => 'nullable|string',
-                    'kriteria_9' => 'nullable|string',
-                    'kriteria_10' => 'nullable|string',
-                    'kriteria_11' => 'nullable|string',
-                ];
-                break;
-            case 3: // Mobile Development
-                $criteriaFields = [
-                    'kriteria_12' => 'nullable|string',
-                    'kriteria_13' => 'nullable|string',
-                    'kriteria_14' => 'nullable|string',
-                    'kriteria_15' => 'nullable|string',
-                ];
-                break;
-            case 4: // UI/UX
-                $criteriaFields = [
-                    'kriteria_16' => 'nullable|string',
-                    'kriteria_17' => 'nullable|string',
-                    'kriteria_18' => 'nullable|string',
-                    'kriteria_19' => 'nullable|string',
-                    'kriteria_20' => 'nullable|string',
-                    'kriteria_21' => 'nullable|string',
-                ];
-                break;
-            case 5: // System Analyst
-                $criteriaFields = [
-                    'kriteria_22' => 'nullable|string',
-                    'kriteria_23' => 'nullable|string',
-                    'kriteria_24' => 'nullable|string',
-                    'kriteria_25' => 'nullable|string',
-                    'kriteria_26' => 'nullable|string',
-                    'kriteria_27' => 'nullable|string',
-                ];
-                break;
-            case 6: // Management
-                $criteriaFields = [
-                    'kriteria_28' => 'nullable|string',
-                    'kriteria_29' => 'nullable|string',
-                    'kriteria_30' => 'nullable|string',
-                    'kriteria_31' => 'nullable|string',
-                    'kriteria_32' => 'nullable|string',
-                    'kriteria_33' => 'nullable|string',
-                    'kriteria_34' => 'nullable|string',
-                ];
-                break;
-            case 7: // Media & Advertising
-                $criteriaFields = [
-                    'kriteria_35' => 'nullable|string',
-                    'kriteria_36' => 'nullable|string',
-                    'kriteria_37' => 'nullable|string',
-                    'kriteria_38' => 'nullable|string',
-                    'kriteria_39' => 'nullable|string',
-                    'kriteria_40' => 'nullable|string',
-                ];
-                break;
-            case 8: // Icon and Illustration
-                $criteriaFields = [
-                    'kriteria_41' => 'nullable|string',
-                    'kriteria_42' => 'nullable|string',
-                    'kriteria_43' => 'nullable|string',
-                    'kriteria_44' => 'nullable|string',
-                ];
-                break;
-            default:
-                $criteriaFields = [];
-                break;
-        }
+        // switch ($request->divisi_id) {
+        //     case 1: // Backend
+        //         $criteriaFields = [
+        //             'kriteria_1' => 'nullable|string',
+        //             'kriteria_2' => 'nullable|string',
+        //             'kriteria_3' => 'nullable|string',
+        //             'kriteria_4' => 'nullable|string',
+        //             'kriteria_5' => 'nullable|string',
+        //             'kriteria_6' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 2: // Frontend
+        //         $criteriaFields = [
+        //             'kriteria_7' => 'nullable|string',
+        //             'kriteria_8' => 'nullable|string',
+        //             'kriteria_9' => 'nullable|string',
+        //             'kriteria_10' => 'nullable|string',
+        //             'kriteria_11' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 3: // Mobile Development
+        //         $criteriaFields = [
+        //             'kriteria_12' => 'nullable|string',
+        //             'kriteria_13' => 'nullable|string',
+        //             'kriteria_14' => 'nullable|string',
+        //             'kriteria_15' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 4: // UI/UX
+        //         $criteriaFields = [
+        //             'kriteria_16' => 'nullable|string',
+        //             'kriteria_17' => 'nullable|string',
+        //             'kriteria_18' => 'nullable|string',
+        //             'kriteria_19' => 'nullable|string',
+        //             'kriteria_20' => 'nullable|string',
+        //             'kriteria_21' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 5: // System Analyst
+        //         $criteriaFields = [
+        //             'kriteria_22' => 'nullable|string',
+        //             'kriteria_23' => 'nullable|string',
+        //             'kriteria_24' => 'nullable|string',
+        //             'kriteria_25' => 'nullable|string',
+        //             'kriteria_26' => 'nullable|string',
+        //             'kriteria_27' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 6: // Management
+        //         $criteriaFields = [
+        //             'kriteria_28' => 'nullable|string',
+        //             'kriteria_29' => 'nullable|string',
+        //             'kriteria_30' => 'nullable|string',
+        //             'kriteria_31' => 'nullable|string',
+        //             'kriteria_32' => 'nullable|string',
+        //             'kriteria_33' => 'nullable|string',
+        //             'kriteria_34' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 7: // Media & Advertising
+        //         $criteriaFields = [
+        //             'kriteria_35' => 'nullable|string',
+        //             'kriteria_36' => 'nullable|string',
+        //             'kriteria_37' => 'nullable|string',
+        //             'kriteria_38' => 'nullable|string',
+        //             'kriteria_39' => 'nullable|string',
+        //             'kriteria_40' => 'nullable|string',
+        //         ];
+        //         break;
+        //     case 8: // Icon and Illustration
+        //         $criteriaFields = [
+        //             'kriteria_41' => 'nullable|string',
+        //             'kriteria_42' => 'nullable|string',
+        //             'kriteria_43' => 'nullable|string',
+        //             'kriteria_44' => 'nullable|string',
+        //         ];
+        //         break;
+        //     default:
+        //         $criteriaFields = [];
+        //         break;
+        // }
 
-        $request->validate($criteriaFields);
+        // $request->validate($criteriaFields);
 
         $nilai = new NilaiPendaftar();
         $nilai->pendaftar_id = $request->pendaftar_id;

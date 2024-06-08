@@ -125,6 +125,12 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 8,
                 ],
                 [
+                    'name' => 'Reviewer',
+                    'route' => 'nilai-management/reviewer',
+                    'permission_name' => 'reviewer.index',
+                    'menu_group_id' => 8,
+                ],
+                [
                     'name' => 'List Wawancara',
                     'route' => 'wawancara-management/list-wawancara',
                     'permission_name' => 'list-wawancara.index',

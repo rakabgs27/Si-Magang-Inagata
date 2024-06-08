@@ -35,29 +35,57 @@
                     </ul>
                 </form>
                 <ul class="navbar-nav navbar-right">
-                    <li class="dropdown"><a href="#" data-toggle="dropdown"
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-
                             <a href="{{ route('profile.index') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
+                            <div class="dropdown-divider"></div>
+                            @if (auth()->user()->hasRole('manager'))
+                                <form action="{{ route('switch.role') }}" method="POST" id="switch-role-form-reviewer"
+                                    style="display: none;">
+                                    @csrf
+                                    <input type="hidden" name="role" value="reviewer">
+                                </form>
+                                <a href="#"
+                                    onclick="event.preventDefault(); document.getElementById('switch-role-form-reviewer').submit();"
+                                    class="dropdown-item has-icon">
+                                    <i class="fas fa-user-tag"></i> Switch to Reviewer
+                                </a>
+                            @elseif (auth()->user()->hasRole('reviewer'))
+                                <form action="{{ route('switch.role') }}" method="POST" id="switch-role-form-manager"
+                                    style="display: none;">
+                                    @csrf
+                                    <input type="hidden" name="role" value="manager">
+                                </form>
+                                <a href="#"
+                                    onclick="event.preventDefault(); document.getElementById('switch-role-form-manager').submit();"
+                                    class="dropdown-item has-icon">
+                                    <i class="fas fa-user-tag"></i> Switch to Manager
+                                </a>
+                            @else
+                            @endif
+
+
+
                             <div class="dropdown-divider"></div>
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                style="display: none;">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </div>
                     </li>
                 </ul>
+
             </nav>
             <div class="main-sidebar">
                 <x-sidebar title="Test" />

@@ -65,6 +65,7 @@ return [
     'home-user' => RouteServiceProvider::HOME_USER,
     'home-manager' => RouteServiceProvider::HOME_MANAGER,
     'home-mentor' => RouteServiceProvider::HOME_MENTOR,
+    'home-reviewer' => RouteServiceProvider::HOME_REVIEWER,
 
     /*
     |--------------------------------------------------------------------------

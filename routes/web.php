@@ -67,7 +67,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
         Route::get('mentors-by-divisi', [ListWawancaraController::class, 'getEditMentorsByDivisi'])->name('mentors-by-divisi');
         Route::get('pendaftar-by-divisi', [ListWawancaraController::class, 'getEditPendaftarByDivisi'])->name('pendaftar-by-divisi');
         Route::patch('/list-wawancara/update-status/{id}', [ListWawancaraController::class, 'updateStatus'])->name('list-wawancara.update-status');
-
     });
 });
 
@@ -93,13 +92,20 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::prefix('wawancara-management')->group(function () {
         Route::resource('jadwal-wawancara', JadwalWawancaraController::class);
     });
-
-
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () {
     Route::prefix('nilai-management')->group(function () {
         Route::resource('list-nilai', NilaiPendaftarController::class);
+    });
+});
+
+Route::group(['middleware' => ['auth', 'verified', 'role:reviewer|manager']], function () {
+    Route::post('/switch-role', [RoleController::class, 'switchRole'])->name('switch.role');
+    Route::prefix('nilai-management')->group(function () {
+        Route::get('reviewer', function () {
+            return view('nilai-management/reviewer/index');
+        })->name('reviewer.index');
     });
 });
 

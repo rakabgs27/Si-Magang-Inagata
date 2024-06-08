@@ -46,6 +46,11 @@ class FortifyServiceProvider extends ServiceProvider
                             ? response()->json(['two_factor' => false])
                             : redirect()->intended(config('fortify.home-mentor'));
                     }
+                    if (Auth::user()->hasRole('reviewer')) {
+                        return $request->wantsJson()
+                            ? response()->json(['two_factor' => false])
+                            : redirect()->intended(config('fortify.home-reviewer'));
+                    }
                 }
             }
         );

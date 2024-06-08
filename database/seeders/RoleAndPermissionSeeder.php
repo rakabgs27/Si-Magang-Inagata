@@ -78,6 +78,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'menu-item.edit']);
         Permission::create(['name' => 'menu-item.destroy']);
 
+        Permission::create(['name' => 'reviewer.index']);
         $seeders = [
             'divisi-mentor',
             'list-pendaftar',
@@ -124,30 +125,30 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo([
             'dashboard',
             'user.management',
-            'user.index','user.create','user.edit','user.destroy',
-            'divisi-mentor.index','divisi-mentor.create','divisi-mentor.edit','divisi-mentor.destroy',
-            'list-pendaftar.index','list-pendaftar.create','list-pendaftar.edit','list-pendaftar.destroy',
+            'user.index', 'user.create', 'user.edit', 'user.destroy',
+            'divisi-mentor.index', 'divisi-mentor.create', 'divisi-mentor.edit', 'divisi-mentor.destroy',
+            'list-pendaftar.index', 'list-pendaftar.create', 'list-pendaftar.edit', 'list-pendaftar.destroy',
             'role.permission.management',
-            'role.index','role.create','role.edit','role.destroy',
-            'permission.index','permission.index','permission.create','permission.edit','permission.destroy',
-            'assign.user.index','assign.user.create','assign.user.edit',
-            'assign.index','assign.create','assign.edit','assign.destroy',
+            'role.index', 'role.create', 'role.edit', 'role.destroy',
+            'permission.index', 'permission.index', 'permission.create', 'permission.edit', 'permission.destroy',
+            'assign.user.index', 'assign.user.create', 'assign.user.edit',
+            'assign.index', 'assign.create', 'assign.edit', 'assign.destroy',
             'menu.management',
-            'menu-group.index','menu-group.create','menu-group.edit','menu-group.destroy',
-            'menu-item.index','menu-item.create','menu-item.edit','menu-item.destroy',
+            'menu-group.index', 'menu-group.create', 'menu-group.edit', 'menu-group.destroy',
+            'menu-item.index', 'menu-item.create', 'menu-item.edit', 'menu-item.destroy',
             'divisi.management',
-            'list-divisi.index','list-divisi.create','list-divisi.edit','list-divisi.destroy',
+            'list-divisi.index', 'list-divisi.create', 'list-divisi.edit', 'list-divisi.destroy',
             'soal.management',
-            'list-soal.index','list-soal.create','list-soal.edit','list-soal.destroy',
-            'assign-soal.index','assign-soal.create','assign-soal.edit','assign-soal.destroy',
+            'list-soal.index', 'list-soal.create', 'list-soal.edit', 'list-soal.destroy',
+            'assign-soal.index', 'assign-soal.create', 'assign-soal.edit', 'assign-soal.destroy',
             'jawaban.management',
-            'list-jawaban.index','list-jawaban.create','list-jawaban.edit','list-jawaban.destroy',
+            'list-jawaban.index', 'list-jawaban.create', 'list-jawaban.edit', 'list-jawaban.destroy',
             'nilai.management',
-            'hasil-akhir.index','hasil-akhir.create','hasil-akhir.edit','hasil-akhir.destroy',
+            'hasil-akhir.index', 'hasil-akhir.create', 'hasil-akhir.edit', 'hasil-akhir.destroy',
             'wawancara.management',
-            'list-wawancara.index','list-wawancara.create','list-wawancara.edit','list-wawancara.destroy',
+            'list-wawancara.index', 'list-wawancara.create', 'list-wawancara.edit', 'list-wawancara.destroy',
             'pengumuman.management',
-            'list-pengumuman.index','list-pengumuman.create','list-pengumuman.edit','list-pengumuman.destroy',
+            'list-pengumuman.index', 'list-pengumuman.create', 'list-pengumuman.edit', 'list-pengumuman.destroy',
         ]);
 
         // create mentor
@@ -155,20 +156,28 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo([
             'dashboard',
             'soal.management',
-            'list-soal.index','list-soal.create','list-soal.edit','list-soal.destroy',
+            'list-soal.index', 'list-soal.create', 'list-soal.edit', 'list-soal.destroy',
             'jawaban.management',
-            'list-jawaban.index','list-jawaban.create','list-jawaban.edit','list-jawaban.destroy',
+            'list-jawaban.index', 'list-jawaban.create', 'list-jawaban.edit', 'list-jawaban.destroy',
             'nilai.management',
-            'list-nilai.index','list-nilai.create','list-nilai.edit','list-nilai.destroy',
+            'list-nilai.index', 'list-nilai.create', 'list-nilai.edit', 'list-nilai.destroy',
             'wawancara.management',
-            'list-wawancara.index','list-wawancara.create','list-wawancara.edit','list-wawancara.destroy',
+            'list-wawancara.index', 'list-wawancara.create', 'list-wawancara.edit', 'list-wawancara.destroy',
         ]);
 
+        $roleReviewer = Role::create(['name' => 'reviewer']);
+        $roleReviewer->givePermissionTo([
+            'nilai.management',
+            'reviewer.index'
+        ]);
+
+
         //assign user id 1 ke manager
-        $user = User::find(1);
-        $user->assignRole('manager');
+        $userManager = User::find(1);
+        $userManager->assignRole('manager');
+        $userManager->assignRole('reviewer');
         $user = User::find(2);
-        $user->assignRole('user');
+        $user->assignRole('manager');
         $user = User::find(3);
         $user->assignRole('mentor');
         $user = User::find(4);
