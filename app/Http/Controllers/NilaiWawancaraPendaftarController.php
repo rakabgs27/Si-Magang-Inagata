@@ -36,8 +36,40 @@ class NilaiWawancaraPendaftarController extends Controller
      */
     public function store(StoreNilaiWawancaraPendaftarRequest $request)
     {
-        //
+        // Validasi data yang dikirimkan
+        $validated = $request->validated();
+
+        // Konversi nilai wawancara ke nilai numerik
+        $nilaiNumeric = $this->convertToNumeric($validated['nilai_wawancara']);
+
+        // Simpan data nilai wawancara ke database
+        $nilaiWawancara = new NilaiWawancaraPendaftar();
+        $nilaiWawancara->pendaftar_id = $validated['pendaftar_id'];
+        $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+        $nilaiWawancara->save();
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Nilai wawancara berhasil disimpan.');
     }
+
+    private function convertToNumeric($value)
+    {
+        switch (strtolower($value)) {
+            case 'kurang':
+                return 60;
+            case 'cukup':
+                return 70;
+            case 'memuaskan':
+                return 80;
+            case 'baik sekali':
+                return 90;
+            case 'luar biasa':
+                return 100;
+            default:
+                return null;
+        }
+    }
+
 
     /**
      * Display the specified resource.

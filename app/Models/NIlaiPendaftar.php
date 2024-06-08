@@ -9,18 +9,8 @@ class NilaiPendaftar extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'nilai_pendaftars';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'pendaftar_id',
         'kriteria_1', 'kriteria_2', 'kriteria_3', 'kriteria_4', 'kriteria_5', 'kriteria_6',
@@ -32,9 +22,6 @@ class NilaiPendaftar extends Model
         'kriteria_37', 'kriteria_38', 'kriteria_39', 'kriteria_40',
     ];
 
-    /**
-     * Get the pendaftar that owns the nilai.
-     */
     public function pendaftar()
     {
         return $this->belongsTo(Pendaftar::class);

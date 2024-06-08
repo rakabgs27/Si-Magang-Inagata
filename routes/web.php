@@ -9,6 +9,7 @@ use App\Http\Controllers\ListWawancaraController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\NilaiPendaftarController;
+use App\Http\Controllers\NilaiWawancaraPendaftarController;
 use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -98,6 +99,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () 
     Route::prefix('nilai-management')->group(function () {
         Route::resource('list-nilai', NilaiPendaftarController::class);
     });
+    Route::post('/nilai-wawancara/store', [NilaiWawancaraPendaftarController::class, 'store'])->name('nilai-wawancara.store');
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:reviewer|manager']], function () {

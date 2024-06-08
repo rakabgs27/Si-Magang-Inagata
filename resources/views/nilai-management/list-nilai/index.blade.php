@@ -450,19 +450,19 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="nilaiWawancaraModalLabel-{{ $key }}">Input Nilai
+                            <h5 class="modal-title" id="nilaiWawancaraModalLabel-{{ $key }}">Masukkan Nilai
                                 Wawancara</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ route('nilai-wawancara.store') }}">
                                 @csrf
                                 <input type="hidden" name="pendaftar_id" value="{{ $item['pendaftar']->id }}">
                                 <div class="form-group">
-                                    <label for="nilai_wawancara"
-                                        style="margin-bottom: 20px; font-size: 14px;">Nilai</label>
+                                    <label for="nilai_wawancara" style="margin-bottom: 20px; font-size: 14px;">Nilai
+                                        Wawancara</label>
                                     <div class="radio-container">
                                         @foreach (['Kurang', 'Cukup', 'Memuaskan', 'Baik Sekali', 'Luar Biasa'] as $nilai)
                                             <input type="radio" id="nilai_wawancara_{{ $loop->index + 1 }}"
