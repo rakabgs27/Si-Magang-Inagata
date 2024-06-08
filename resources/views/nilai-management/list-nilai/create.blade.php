@@ -19,11 +19,14 @@
                             <select name="pendaftar_id" id="pendaftar_id" class="form-control select2" required>
                                 <option value="">Pilih Pendaftar</option>
                                 @foreach ($pendaftars as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}">
-                                        {{ $pendaftar->user->name }}</option>
+                                    <option value="{{ $pendaftar->id }}"
+                                        {{ old('pendaftar_id') == $pendaftar->id ? 'selected' : '' }}>
+                                        {{ $pendaftar->user->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
+
 
                         @php
                             $kriteria = [
@@ -108,14 +111,21 @@
                                                             @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
                                                                 <input type="radio"
                                                                     id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}" value="{{ $nilai }}">
+                                                                    name="kriteria_{{ $indexCounter }}" value="{{ $nilai }}"
+                                                                    @if (old("kriteria_$indexCounter") == $nilai) checked @endif>
                                                                 <label
                                                                     for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
                                                             @endforeach
                                                         </div>
+                                                        @if ($errors->has("kriteria_$indexCounter"))
+                                                            <div class="invalid-feedback" style="display: block;">
+                                                                {{ $errors->first("kriteria_$indexCounter") }}
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </section>
                                             @endforeach
+
                                         </div>
                                         <div class="col-md-4 grading-scale">
                                             <div class="form-group" style="font-size: 14px;">
@@ -125,7 +135,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -176,7 +187,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -225,7 +237,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -274,7 +287,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -323,7 +337,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -372,7 +387,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -421,7 +437,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -470,7 +487,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>< 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>

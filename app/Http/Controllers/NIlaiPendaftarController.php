@@ -148,7 +148,6 @@ class NilaiPendaftarController extends Controller
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
 
-        // Retrieve Pendaftar IDs who have submitted their answers based on the divisi ID
         $pendaftarIds = JawabanPendaftar::with('soalPendaftar.pendaftar')
             ->whereHas('soalPendaftar', function ($query) use ($divisiId) {
                 $query->whereHas('pendaftar', function ($subQuery) use ($divisiId) {
@@ -157,7 +156,6 @@ class NilaiPendaftarController extends Controller
             })
             ->pluck('soal_pendaftar_id');
 
-        // Retrieve Pendaftars based on the IDs
         $pendaftars = Pendaftar::whereIn('id', function ($query) use ($pendaftarIds) {
             $query->select('pendaftar_id')
                 ->from('soal_pendaftars')
@@ -176,105 +174,59 @@ class NilaiPendaftarController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        $request->validate([
+        $messages = [
+            'pendaftar_id.required' => 'Field pendaftar_id wajib diisi.',
+            'pendaftar_id.exists' => 'Field pendaftar_id tidak valid.',
+            'divisi_id.required' => 'Field divisi_id wajib diisi.',
+            'divisi_id.exists' => 'Field divisi_id tidak valid.',
+        ];
+
+        $criteriaFields = [];
+
+        switch ($request->divisi_id) {
+            case 1: // Backend
+                $criteriaFields = ['kriteria_1', 'kriteria_2', 'kriteria_3', 'kriteria_4', 'kriteria_5', 'kriteria_6'];
+                break;
+            case 2: // Frontend
+                $criteriaFields = ['kriteria_7', 'kriteria_8', 'kriteria_9', 'kriteria_10', 'kriteria_11'];
+                break;
+            case 3: // Mobile Development
+                $criteriaFields = ['kriteria_12', 'kriteria_13', 'kriteria_14', 'kriteria_15'];
+                break;
+            case 4: // UI/UX
+                $criteriaFields = ['kriteria_16', 'kriteria_17', 'kriteria_18', 'kriteria_19', 'kriteria_20', 'kriteria_21'];
+                break;
+            case 5: // System Analyst
+                $criteriaFields = ['kriteria_22', 'kriteria_23', 'kriteria_24', 'kriteria_25', 'kriteria_26', 'kriteria_27'];
+                break;
+            case 6: // Management
+                $criteriaFields = ['kriteria_28', 'kriteria_29', 'kriteria_30', 'kriteria_31', 'kriteria_32', 'kriteria_33', 'kriteria_34'];
+                break;
+            case 7: // Media & Advertising
+                $criteriaFields = ['kriteria_35', 'kriteria_36', 'kriteria_37', 'kriteria_38', 'kriteria_39', 'kriteria_40'];
+                break;
+            case 8: // Icon and Illustration
+                $criteriaFields = ['kriteria_41', 'kriteria_42', 'kriteria_43', 'kriteria_44'];
+                break;
+            default:
+                return redirect()->back()->withErrors(['divisi_id' => 'Divisi tidak valid.']);
+        }
+
+        foreach ($criteriaFields as $field) {
+            $messages["$field.required"] = 'Field ini wajib diisi untuk divisi ini.';
+            $messages["$field.string"] = 'Field ini harus berupa string.';
+        }
+
+        $request->validate(array_merge([
             'pendaftar_id' => 'required|exists:pendaftars,id',
             'divisi_id' => 'required|exists:divisis,id',
-            'kriteria_.*' => 'required|string',
-        ]);
-
-        // Determine the criteria fields to validate based on the division
-        $criteriaFields = [];
-        // switch ($request->divisi_id) {
-        //     case 1: // Backend
-        //         $criteriaFields = [
-        //             'kriteria_1' => 'nullable|string',
-        //             'kriteria_2' => 'nullable|string',
-        //             'kriteria_3' => 'nullable|string',
-        //             'kriteria_4' => 'nullable|string',
-        //             'kriteria_5' => 'nullable|string',
-        //             'kriteria_6' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 2: // Frontend
-        //         $criteriaFields = [
-        //             'kriteria_7' => 'nullable|string',
-        //             'kriteria_8' => 'nullable|string',
-        //             'kriteria_9' => 'nullable|string',
-        //             'kriteria_10' => 'nullable|string',
-        //             'kriteria_11' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 3: // Mobile Development
-        //         $criteriaFields = [
-        //             'kriteria_12' => 'nullable|string',
-        //             'kriteria_13' => 'nullable|string',
-        //             'kriteria_14' => 'nullable|string',
-        //             'kriteria_15' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 4: // UI/UX
-        //         $criteriaFields = [
-        //             'kriteria_16' => 'nullable|string',
-        //             'kriteria_17' => 'nullable|string',
-        //             'kriteria_18' => 'nullable|string',
-        //             'kriteria_19' => 'nullable|string',
-        //             'kriteria_20' => 'nullable|string',
-        //             'kriteria_21' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 5: // System Analyst
-        //         $criteriaFields = [
-        //             'kriteria_22' => 'nullable|string',
-        //             'kriteria_23' => 'nullable|string',
-        //             'kriteria_24' => 'nullable|string',
-        //             'kriteria_25' => 'nullable|string',
-        //             'kriteria_26' => 'nullable|string',
-        //             'kriteria_27' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 6: // Management
-        //         $criteriaFields = [
-        //             'kriteria_28' => 'nullable|string',
-        //             'kriteria_29' => 'nullable|string',
-        //             'kriteria_30' => 'nullable|string',
-        //             'kriteria_31' => 'nullable|string',
-        //             'kriteria_32' => 'nullable|string',
-        //             'kriteria_33' => 'nullable|string',
-        //             'kriteria_34' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 7: // Media & Advertising
-        //         $criteriaFields = [
-        //             'kriteria_35' => 'nullable|string',
-        //             'kriteria_36' => 'nullable|string',
-        //             'kriteria_37' => 'nullable|string',
-        //             'kriteria_38' => 'nullable|string',
-        //             'kriteria_39' => 'nullable|string',
-        //             'kriteria_40' => 'nullable|string',
-        //         ];
-        //         break;
-        //     case 8: // Icon and Illustration
-        //         $criteriaFields = [
-        //             'kriteria_41' => 'nullable|string',
-        //             'kriteria_42' => 'nullable|string',
-        //             'kriteria_43' => 'nullable|string',
-        //             'kriteria_44' => 'nullable|string',
-        //         ];
-        //         break;
-        //     default:
-        //         $criteriaFields = [];
-        //         break;
-        // }
-
-        // $request->validate($criteriaFields);
+        ], array_fill_keys($criteriaFields, 'required|string')), $messages);
 
         $nilai = new NilaiPendaftar();
         $nilai->pendaftar_id = $request->pendaftar_id;
         $nilai->status = 'Sudah Dinilai';
 
-        // Assign criteria values dynamically with condition
-        foreach ($criteriaFields as $field => $rules) {
+        foreach ($criteriaFields as $field) {
             $nilai->{$field} = $this->convertToNumeric($request->input($field));
         }
 
