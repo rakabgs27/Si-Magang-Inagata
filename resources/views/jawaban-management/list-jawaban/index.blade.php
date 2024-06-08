@@ -78,7 +78,7 @@
                                             <th>File Jawaban</th>
                                             <th>Tanggal Pengumpulan</th>
                                             <th>Preview</th>
-                                            <th class="text-right">Action</th>
+                                            {{-- <th class="text-right">Action</th> --}}
                                         </tr>
                                         @if ($jawabanPendaftar->isEmpty())
                                             <tr>
@@ -98,14 +98,6 @@
                                                     <td>
                                                         <button class="btn btn-info btn-sm"
                                                             onclick="previewFile('{{ Storage::url($listItem->file_jawaban) }}', '{{ pathinfo($listItem->file_jawaban, PATHINFO_EXTENSION) }}')">Preview</button>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="d-flex justify-content-end">
-                                                            <span class="mr-2"></span>
-                                                            <a href="#" class="btn btn-sm btn-warning btn-icon">
-                                                                <i class="fas fa-edit"></i> Detail
-                                                            </a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

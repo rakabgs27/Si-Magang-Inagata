@@ -6,6 +6,7 @@ use App\Models\JawabanPendaftar;
 use App\Http\Requests\StoreJawabanPendaftarRequest;
 use App\Http\Requests\UpdateJawabanPendaftarRequest;
 use App\Models\Divisi;
+use App\Models\DivisiMentor;
 use App\Models\SoalPendaftar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,9 +30,24 @@ class JawabanPendaftarController extends Controller
      */
     public function index(Request $request)
     {
+        // Get the authenticated user
+        $user = auth()->user();
+
+        // Ensure the user has the 'mentor' role
+        if (!$user->hasRole('mentor')) {
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        // Retrieve the division ID associated with the authenticated mentor
+        $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
+
+
+
+        // Input search filters
         $namaUserSearch = $request->input('name');
         $divisiId = $request->input('divisi_id');
 
+        // Fetch all divisions
         $divisis = Divisi::all();
 
         try {
@@ -41,23 +57,36 @@ class JawabanPendaftarController extends Controller
                         $query->where('name', 'like', '%' . $namaUserSearch . '%');
                     }
                 })
-                ->whereHas('soalPendaftar.pendaftar.divisi', function ($query) use ($divisiId) {
+                ->whereHas('soalPendaftar.pendaftar.divisi', function ($query) use ($divisiId, $mentorDivisiId) {
+                    // Filter by division, either by search filter or mentor's division
                     if (!empty($divisiId)) {
                         $query->where('id', $divisiId);
+                    } else {
+                        $query->where('id', $mentorDivisiId);
                     }
                 })
                 ->paginate(10);
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
         }
-
+        if (!$mentorDivisiId) {
+            return view('jawaban-management.list-jawaban.index')->with([
+                'jawabanPendaftar' => $jawabanPendaftar,
+                'namaUserSearch' => $namaUserSearch,
+                'divisiId' => $divisiId,
+                'divisis' => $divisis,
+                'error'=>'Mentor does not have an associated division.'
+            ]);
+        }
         return view('jawaban-management.list-jawaban.index', [
             'jawabanPendaftar' => $jawabanPendaftar,
             'namaUserSearch' => $namaUserSearch,
             'divisiId' => $divisiId,
             'divisis' => $divisis,
+            'error'=>'Mentor does not have an associated division.'
         ]);
     }
+
 
 
 
