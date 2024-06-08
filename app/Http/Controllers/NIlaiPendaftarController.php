@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateNIlaiPendaftarRequest;
 use App\Models\DivisiMentor;
 use App\Models\JawabanPendaftar;
 use App\Models\ListWawancara;
+use App\Models\NilaiWawancaraPendaftar;
 use App\Models\Pendaftar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,7 @@ class NilaiPendaftarController extends Controller
         foreach ($pendaftars as $pendaftar) {
             $nilai = NilaiPendaftar::where('pendaftar_id', $pendaftar->id)->first();
             $listWawancara = ListWawancara::where('pendaftar_id', $pendaftar->id)->first();
+            $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $pendaftar->id)->first();
 
             if ($nilai) {
                 switch ($divisiId) {
@@ -125,12 +127,15 @@ class NilaiPendaftarController extends Controller
                     'kriteria' => $kriteria,
                     'status' => $nilai->status,
                     'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
+                    'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
+                    'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
                 ];
             }
         }
 
         return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId'));
     }
+
 
     /**
      * Show the form for creating a new resource.

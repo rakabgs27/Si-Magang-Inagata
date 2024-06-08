@@ -46,6 +46,7 @@ class NilaiWawancaraPendaftarController extends Controller
         $nilaiWawancara = new NilaiWawancaraPendaftar();
         $nilaiWawancara->pendaftar_id = $validated['pendaftar_id'];
         $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+        $nilaiWawancara->status = 'Sudah Dinilai';
         $nilaiWawancara->save();
 
         // Redirect kembali dengan pesan sukses

@@ -138,6 +138,13 @@
                                                                                         {{ $item['kriteria']['kriteria_6'] ?? 'N/A' }}
                                                                                         ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_6']) }})
                                                                                     </li>
+                                                                                    @if ($item['status_wawancara'])
+                                                                                        <li class="list-group-item">
+                                                                                            <strong>Nilai Tes Wawancara:</strong>
+                                                                                            {{ $item['nilai_wawancara'] ?? 'N/A' }}
+                                                                                            ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
+                                                                                        </li>
+                                                                                    @endif
                                                                                 </ul>
                                                                             @break
 
