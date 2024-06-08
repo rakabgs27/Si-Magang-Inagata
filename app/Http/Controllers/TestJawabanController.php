@@ -61,28 +61,28 @@ class TestJawabanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(SoalPendaftar $testJawaban)
-{
-    try {
-        $soal = SoalPendaftar::with(['soal.divisi', 'pendaftar.user'])->findOrFail($testJawaban->id)->soal;
+    {
+        try {
+            $soal = SoalPendaftar::with(['soal.divisi', 'pendaftar.user'])->findOrFail($testJawaban->id)->soal;
 
-        $files = FileMateri::where('soal_id', $soal->id)->get();
+            $files = FileMateri::where('soal_id', $soal->id)->get();
 
-        $fileData = $files->map(function ($file) {
-            $fileName = basename($file->files);
-            return [
-                'url' => Storage::url($file->files),
-                'name' => $fileName
-            ];
-        });
+            $fileData = $files->map(function ($file) {
+                $fileName = basename($file->files);
+                return [
+                    'url' => Storage::url($file->files),
+                    'name' => $fileName
+                ];
+            });
 
-        // Periksa apakah jawaban pendaftar sudah ada
-        $jawabanPendaftar = JawabanPendaftar::where('soal_pendaftar_id', $testJawaban->id)->first();
+            // Periksa apakah jawaban pendaftar sudah ada
+            $jawabanPendaftar = JawabanPendaftar::where('soal_pendaftar_id', $testJawaban->id)->first();
 
-        return view('jawaban-management.test-jawaban.show', compact('testJawaban', 'soal', 'fileData', 'jawabanPendaftar'));
-    } catch (\Exception $e) {
-        return redirect()->route('test-soal.index')->with('error', 'Gagal Untuk Mengambil Data Assign Soal: ' . $e->getMessage());
+            return view('jawaban-management.test-jawaban.show', compact('testJawaban', 'soal', 'fileData', 'jawabanPendaftar'));
+        } catch (\Exception $e) {
+            return redirect()->route('test-soal.index')->with('error', 'Gagal Untuk Mengambil Data Assign Soal: ' . $e->getMessage());
+        }
     }
-}
 
 
 

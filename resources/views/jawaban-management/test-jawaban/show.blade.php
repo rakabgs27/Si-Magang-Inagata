@@ -104,7 +104,14 @@
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdown").innerHTML = "EXPIRED";
-                document.getElementById("submitBtn").disabled = true;
+                var submitBtn = document.getElementById("submitBtn");
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                }
+                var updateBtn = document.getElementById("updateBtn");
+                if (updateBtn) {
+                    updateBtn.disabled = true;
+                }
             }
         }, 1000);
     </script>
