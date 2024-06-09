@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => "Manager",
-            'email' => "rakabgs2000@gmail.com",
+            'email' => "superadmin@gmail.com",
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
@@ -116,6 +116,41 @@ class UserSeeder extends Seeder
         User::create([
             'name' => "Pendaftar 5",
             'email' => "pendaftar5@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => "Pendaftar 6",
+            'email' => "pendaftar6@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => "Pendaftar 7",
+            'email' => "pendaftar7@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => "Pendaftar 8",
+            'email' => "pendaftar8@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => "Pendaftar 9",
+            'email' => "pendaftar9@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => "Pendaftar 10",
+            'email' => "pendaftar10@gmail.com",
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);

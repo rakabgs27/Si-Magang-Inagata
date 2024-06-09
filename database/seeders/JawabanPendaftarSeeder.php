@@ -16,18 +16,20 @@ class JawabanPendaftarSeeder extends Seeder
      */
     public function run()
     {
-        JawabanPendaftar::create([
-            'soal_pendaftar_id' => 1,
-            'link_jawaban' => 'https://example.com/link-jawaban',
-            'file_jawaban' => 'jawaban.pdf',
-            'tanggal_pengumpulan' => Carbon::now(),
-        ]);
+        for ($i = 1; $i <= 10; $i++) {
+            JawabanPendaftar::create([
+                'soal_pendaftar_id' => $i,
+                'link_jawaban' => 'https://example.com/link-jawaban-' . $i,
+                'file_jawaban' => 'jawaban' . $i . '.pdf',
+                'tanggal_pengumpulan' => Carbon::now(),
+            ]);
+        }
 
-        JawabanPendaftar::create([
-            'soal_pendaftar_id' => 2,
-            'link_jawaban' => 'https://example.com/link-jawaban',
-            'file_jawaban' => 'jawaban.pdf',
-            'tanggal_pengumpulan' => Carbon::now(),
-        ]);
+        // JawabanPendaftar::create([
+        //     'soal_pendaftar_id' => 2,
+        //     'link_jawaban' => 'https://example.com/link-jawaban',
+        //     'file_jawaban' => 'jawaban.pdf',
+        //     'tanggal_pengumpulan' => Carbon::now(),
+        // ]);
     }
 }

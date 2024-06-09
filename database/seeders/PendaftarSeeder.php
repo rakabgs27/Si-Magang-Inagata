@@ -16,15 +16,15 @@ class PendaftarSeeder extends Seeder
     public function run()
     {
         $startUserId = 11;
-        $divisiIds = [1, 2, 3, 4, 5];
+        // $divisiIds = [1, 2, 3, 4, 5];
+        $divisiIds = 1;
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $userId = $startUserId + $i;
-            $divisiId = $divisiIds[$i];
 
             Pendaftar::create([
                 'user_id' => $userId,
-                'divisi_id' => $divisiId,
+                'divisi_id' => $divisiIds,
                 'nomor_hp' => '08123456789',
                 'nama_instansi' => 'Instansi ' . ($i + 1),
                 'nama_jurusan' => 'Jurusan ' . ($i + 1),

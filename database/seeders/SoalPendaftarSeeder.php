@@ -16,22 +16,24 @@ class SoalPendaftarSeeder extends Seeder
      */
     public function run()
     {
-        SoalPendaftar::create([
-            'soal_id' => 1,
-            'pendaftar_id' => 1,
-            'deskripsi_tugas' => 'Deskripsi tugas contoh',
-            'tanggal_mulai' => Carbon::now()->subDays(10),
-            'tanggal_akhir' => Carbon::now()->subDays(5),
-            'status' => 'Selesai Dikerjakan',
-        ]);
-        
-        SoalPendaftar::create([
-            'soal_id' => 2,
-            'pendaftar_id' => 2,
-            'deskripsi_tugas' => 'Deskripsi tugas contoh',
-            'tanggal_mulai' => Carbon::now()->subDays(10),
-            'tanggal_akhir' => Carbon::now()->subDays(5),
-            'status' => 'Selesai Dikerjakan',
-        ]);
+        for ($i = 1; $i <= 10; $i++) {
+            SoalPendaftar::create([
+                'soal_id' => 1,
+                'pendaftar_id' => $i,
+                'deskripsi_tugas' => 'Deskripsi tugas contoh',
+                'tanggal_mulai' => Carbon::now()->subDays(10),
+                'tanggal_akhir' => Carbon::now()->subDays(5),
+                'status' => 'Selesai Dikerjakan',
+            ]);
+        }
+
+        // SoalPendaftar::create([
+        //     'soal_id' => 2,
+        //     'pendaftar_id' => 2,
+        //     'deskripsi_tugas' => 'Deskripsi tugas contoh',
+        //     'tanggal_mulai' => Carbon::now()->subDays(10),
+        //     'tanggal_akhir' => Carbon::now()->subDays(5),
+        //     'status' => 'Selesai Dikerjakan',
+        // ]);
     }
 }

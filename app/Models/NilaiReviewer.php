@@ -15,6 +15,7 @@ class NilaiReviewer extends Model
         'nilai_wawancara_pendaftars_id',
         'nilai_pendaftars_id',
         'status',
+        'tanggal_verifikasi',
     ];
 
     public function nilaiWawancaraPendaftars()
@@ -27,5 +28,11 @@ class NilaiReviewer extends Model
         return $this->belongsTo(NilaiPendaftar::class, 'nilai_pendaftars_id');
     }
 
-
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->tanggal_verifikasi = now();
+        });
+    }
 }

@@ -26,7 +26,11 @@ class DatabaseSeeder extends Seeder
             SoalSeeder::class,
             FileMateriSeeder::class,
             SoalPendaftarSeeder::class,
-            JawabanPendaftarSeeder::class
+            JawabanPendaftarSeeder::class,
+            NilaiPendaftarSeeder::class,
+            ListWawancaraSeeder::class,
+            NilaiWawancaraPendaftarSeeder::class,
+            NilaiReviewerSeeder::class,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
+use App\Http\Controllers\HasilAkhirController;
 use App\Http\Controllers\JadwalWawancaraController;
 use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\ListWawancaraController;
@@ -112,6 +113,11 @@ Route::group(['middleware' => ['auth', 'verified', 'role:reviewer|manager']], fu
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function () {
+
+    Route::prefix('nilai-management')->group(function () {
+        Route::resource('hasil-akhir', HasilAkhirController::class);
+    });
+
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::resource('list-pendaftar', PendaftarController::class);
@@ -154,4 +160,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
         Route::get('assing-user/{user}/edit', [AssignUserToRoleController::class, 'edit'])->name('assign.user.edit');
         Route::put('assign-user/{user}', [AssignUserToRoleController::class, 'update'])->name('assign.user.update');
     });
+
+
 });
