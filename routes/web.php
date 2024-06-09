@@ -9,6 +9,7 @@ use App\Http\Controllers\ListWawancaraController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\NilaiPendaftarController;
+use App\Http\Controllers\NilaiReviewerController;
 use App\Http\Controllers\NilaiWawancaraPendaftarController;
 use App\Http\Controllers\PendaftarController;
 use App\Http\Controllers\ProfileController;
@@ -105,9 +106,8 @@ Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () 
 Route::group(['middleware' => ['auth', 'verified', 'role:reviewer|manager']], function () {
     Route::post('/switch-role', [RoleController::class, 'switchRole'])->name('switch.role');
     Route::prefix('nilai-management')->group(function () {
-        Route::get('reviewer', function () {
-            return view('nilai-management/reviewer/index');
-        })->name('reviewer.index');
+        Route::resource('reviewer', NilaiReviewerController::class);
+        Route::post('/reviewer/change-status', [NilaiReviewerController::class, 'changeStatus'])->name('reviewer.changeStatus');
     });
 });
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\NilaiWawancaraPendaftar;
 use App\Http\Requests\StoreNilaiWawancaraPendaftarRequest;
 use App\Http\Requests\UpdateNilaiWawancaraPendaftarRequest;
+use App\Models\NilaiPendaftar;
+use App\Models\NilaiReviewer;
 
 class NilaiWawancaraPendaftarController extends Controller
 {
@@ -41,6 +43,7 @@ class NilaiWawancaraPendaftarController extends Controller
         $nilaiNumeric = $this->convertToNumeric($validated['nilai_wawancara']);
 
         $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $validated['pendaftar_id'])->first();
+        $nilaiPendaftar = NilaiPendaftar::where('pendaftar_id', $validated['pendaftar_id'])->first();
 
         if ($nilaiWawancara) {
             $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
@@ -53,6 +56,12 @@ class NilaiWawancaraPendaftarController extends Controller
             $nilaiWawancara->status = 'Sudah Dinilai';
             $nilaiWawancara->save();
         }
+
+        NilaiReviewer::create([
+            'nilai_pendaftars_id' => $nilaiPendaftar->id,
+            'nilai_wawancara_pendaftars_id' => $nilaiWawancara->id,
+            'status' => 'Belum Diverifikasi',
+        ]);
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Nilai wawancara berhasil disimpan.');

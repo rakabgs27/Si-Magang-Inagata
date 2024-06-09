@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('nilai_wawancara_pendaftars_id');
             $table->unsignedBigInteger('nilai_pendaftars_id');
-            $table->enum('status',['Belum Diverifikasi','Terverifikasi','Tertolak']);
-            $table->foreign('nilai_wawancara_pendaftars_id')->references('id')->on('nilai_wawancara_pendaftars')->onDelete('cascade');
-            $table->foreign('nilai_pendaftars_id')->references('id')->on('nilai_pendaftars')->onDelete('cascade');
+            $table->enum('status',['Belum Diverifikasi','Terverifikasi','Tertolak'])->default('Belum Diverifikasi');
+            $table->foreign('nilai_wawancara_pendaftars_id')->references('id')->on('nilai_wawancara_pendaftars')->restrictOnDelete();
+            $table->foreign('nilai_pendaftars_id')->references('id')->on('nilai_pendaftars')->restrictOnDelete();
             $table->timestamps();
         });
     }
