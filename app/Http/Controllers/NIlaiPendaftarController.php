@@ -37,7 +37,7 @@ class NilaiPendaftarController extends Controller
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
 
-        $pendaftars = Pendaftar::where('divisi_id', $divisiId)->get();
+        $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->get();
         $data = [];
 
         foreach ($pendaftars as $pendaftar) {

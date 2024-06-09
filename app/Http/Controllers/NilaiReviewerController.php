@@ -22,12 +22,12 @@ class NilaiReviewerController extends Controller
         $divisis = Divisi::all();
 
         $divisiId = $request->input('divisi_id');
-        $pendaftars = Pendaftar::where('divisi_id', $divisiId)->get();
+        $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->get();
         $data = [];
 
         foreach ($pendaftars as $pendaftar) {
             // Mendapatkan nilai dari tabel nilai_reviewers
-            $nilaiReviewer = NilaiReviewer::whereHas('nilaiPendaftars', function ($query) use ($pendaftar) {
+            $nilaiReviewer = NilaiReviewer::with('nilaiPendaftars')->whereHas('nilaiPendaftars', function ($query) use ($pendaftar) {
                 $query->where('pendaftar_id', $pendaftar->id);
             })->first();
 
