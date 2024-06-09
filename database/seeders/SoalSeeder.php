@@ -22,5 +22,12 @@ class SoalSeeder extends Seeder
             'deskripsi_soal' => 'This is a sample question description.',
             'tanggal_upload' => now(),
         ]);
+        Soal::create([
+            'user_id' => 4,
+            'divisi_id' => 2,
+            'judul_soal' => 'Sample Question',
+            'deskripsi_soal' => 'This is a sample question description.',
+            'tanggal_upload' => now(),
+        ]);
     }
 }

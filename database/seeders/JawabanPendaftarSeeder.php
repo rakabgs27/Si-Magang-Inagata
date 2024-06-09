@@ -22,5 +22,12 @@ class JawabanPendaftarSeeder extends Seeder
             'file_jawaban' => 'jawaban.pdf',
             'tanggal_pengumpulan' => Carbon::now(),
         ]);
+
+        JawabanPendaftar::create([
+            'soal_pendaftar_id' => 2,
+            'link_jawaban' => 'https://example.com/link-jawaban',
+            'file_jawaban' => 'jawaban.pdf',
+            'tanggal_pengumpulan' => Carbon::now(),
+        ]);
     }
 }

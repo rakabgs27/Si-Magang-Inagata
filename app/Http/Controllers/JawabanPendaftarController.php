@@ -34,8 +34,8 @@ class JawabanPendaftarController extends Controller
         $user = auth()->user();
         $userManager = $user->hasRole('manager');
 
-        // Retrieve the division ID associated with the authenticated mentor
-        $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
+        // Retrieve all division IDs associated with the authenticated mentor
+        $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->pluck('divisi_id')->toArray();
 
         // Input search filters
         $namaUserSearch = $request->input('name');
@@ -52,11 +52,11 @@ class JawabanPendaftarController extends Controller
                     }
                 })
                 ->whereHas('soalPendaftar.pendaftar.divisi', function ($query) use ($divisiId, $mentorDivisiId, $userManager) {
-                    // Filter by division, either by search filter or mentor's division, or show all for manager
+                    // Filter by division, either by search filter or mentor's divisions, or show all for manager
                     if (!empty($divisiId)) {
                         $query->where('id', $divisiId);
                     } elseif (!$userManager && !empty($mentorDivisiId)) {
-                        $query->where('id', $mentorDivisiId);
+                        $query->whereIn('id', $mentorDivisiId);
                     }
                 })
                 ->paginate(10);
@@ -64,7 +64,7 @@ class JawabanPendaftarController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat mengambil data.');
         }
 
-        if ($userManager || $mentorDivisiId) {
+        if ($userManager || !empty($mentorDivisiId)) {
             return view('jawaban-management.list-jawaban.index', [
                 'jawabanPendaftar' => $jawabanPendaftar,
                 'namaUserSearch' => $namaUserSearch,
@@ -76,11 +76,12 @@ class JawabanPendaftarController extends Controller
         } else {
             return view('jawaban-management.list-jawaban.index')->with([
                 'mentorDivisiId' => $mentorDivisiId,
-                'error' => 'Mentor does not have an associated division.',
+                'error' => 'Mentor does not have any associated divisions.',
                 'userManager' => $userManager
             ]);
         }
     }
+
 
 
 

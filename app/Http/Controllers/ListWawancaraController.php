@@ -28,7 +28,7 @@ class ListWawancaraController extends Controller
         $mentorDivisiId = DivisiMentor::where('user_id', $user->id)->first()->divisi_id ?? null;
         $mentorId = $user->divisiMentor ? $user->divisiMentor->pluck('id')->toArray() : null;
 
-        $listWawancara = ListWawancara::with(['pendaftar.user', 'divisiMentor'])
+        $listWawancara = ListWawancara::with(['pendaftar.user', 'divisiMentor.user', 'divisiMentor.divisi'])
             ->when($pendaftarNameSearch, function ($query, $pendaftarNameSearch) {
                 return $query->whereHas('pendaftar.user', function ($subQuery) use ($pendaftarNameSearch) {
                     $subQuery->where('name', 'like', '%' . $pendaftarNameSearch . '%');
