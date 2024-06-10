@@ -42,9 +42,28 @@ class ListPengumumanController extends Controller
     }
 
 
-    public function cetakPengumuman(){
+    public function cetakPengumuman()
+    {
+        $hasilAkhirPengumuman = SimpanHasilAkhir::where('status', 'Sudah Selesai')->paginate(10);
+        return view('pengumuman-management.cetak-pengumuman.index')->with([
+            'hasilAkhirPengumuman' => $hasilAkhirPengumuman,
+        ]);
+    }
 
-        return view('pengumuman-management.cetak-pengumuman.index');
+    public function showCetakPengumuman($id)
+    {
+        $pendaftarIds = SimpanHasilAkhir::select('hasil')->where('id', $id)->get()->flatMap(function ($item) {
+            return collect(json_decode($item->hasil))->pluck('pendaftar_id');
+        });
+        $listPengumuman = ListPengumuman::with(['pendaftar.user', 'pendaftar.divisi'])->whereIn('id_pendaftar', $pendaftarIds)->get();
+
+
+        $simpanHasilAkhirRecords = SimpanHasilAkhir::where('id', $id)->first();
+
+        return view('pengumuman-management.cetak-pengumuman.show')->with([
+            'listPengumuman' => $listPengumuman,
+            'simpanHasilAkhirRecords' => $simpanHasilAkhirRecords,
+        ]);
     }
 
 

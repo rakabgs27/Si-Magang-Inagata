@@ -156,6 +156,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
     Route::prefix('pengumuman-management')->group(function () {
         Route::resource('list-pengumuman', ListPengumumanController::class);
         Route::get('cetak-pengumuman', [ListPengumumanController::class, 'cetakPengumuman'])->name('cetak-pengumuman.index');
+        Route::get('cetak-pengumuman/{id}', [ListPengumumanController::class, 'showCetakPengumuman'])->name('cetak-pengumuman.show');
     });
 
     Route::prefix('user-management')->group(function () {

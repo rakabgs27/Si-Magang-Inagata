@@ -15,17 +15,7 @@
                 <div class="col-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h4>List Wawancara</h4>
-                            {{-- @role('manager')
-                                <div class="d-flex flex-row-reverse card-header-action">
-                                    <div class="card-header-actions">
-                                        <a class="btn btn-icon icon-left btn-primary" data-toggle="modal"
-                                            data-target="#pendaftarModal">
-                                            Tambah Baru Pengumuman
-                                        </a>
-                                    </div>
-                                </div>
-                            @endrole --}}
+                            <h4>Daftar Cetak Pengumuman</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -33,79 +23,43 @@
                                     <tbody>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Pendaftar</th>
-                                            <th>Divisi</th>
-                                            <th>Status</th>
+                                            <th>Tanggal Periode</th>
+                                            <th>Status Periode </th>
                                             <th class="text-right">Action</th>
                                         </tr>
-                                        {{-- @if ($listPengumuman->isEmpty()) --}}
+                                        @if ($hasilAkhirPengumuman->isEmpty())
                                             <tr>
                                                 <td colspan="6" class="text-center">Tidak Ada Data</td>
                                             </tr>
-                                        {{-- @else --}}
-                                            {{-- @foreach ($listPengumuman as $key => $listItem)
+                                        @else
+                                            @foreach ($hasilAkhirPengumuman as $key => $listItem)
                                                 <tr>
-                                                    <td>{{ $listPengumuman->firstItem() + $key }}</td>
-                                                    <td>{{ $listItem->pendaftar->user->name }}</td>
-                                                    <td>{{ $listItem->pendaftar->divisi->nama_divisi }}</td>
+                                                    <td>{{ $hasilAkhirPengumuman->firstItem() + $key }}</td>
+                                                    <td>{{ $listItem->created_at }}</td>
                                                     <td
-                                                        class="status {{ $listItem->status === 'Tidak Lolos' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                        class="status {{ $listItem->status === 'Belum Selesai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $listItem->status }}
                                                     </td>
+                                                    <td class="text-right">
+                                                        <a href="{{ route('cetak-pengumuman.show', $listItem->id) }}"
+                                                            class="btn btn-primary">Cetak</a>
+                                                    </td>
                                                 </tr>
-                                            @endforeach --}}
-                                        {{-- @endif --}}
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                                 <div class="d-flex justify-content-center">
-                                    {{-- {{ $listPengumuman->withQueryString()->links() }} --}}
+                                    {{ $hasilAkhirPengumuman->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- @endif --}}
         </div>
     </section>
 
-{{--
-    <div class="modal fade" id="pendaftarModal" tabindex="-1" role="dialog" aria-labelledby="pendaftarModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pendaftarModalLabel">Select Pendaftar</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="pendaftarForm" action="{{ route('list-pengumuman.store') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="pendaftarSelect">Pendaftar</label>
-                            <select class="form-control select2-multiple" id="pendaftarSelect" name="pendaftar[]"
-                                multiple="multiple">
-                                @foreach ($pendaftars as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}">{{ $pendaftar->user->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="statusSelect">Status</label>
-                            <select class="form-control select2" id="statusSelect" name="status">
-                                <option value="">Pilih Status</option>
-                                <option value="Lolos">Lolos</option>
-                                <option value="Tidak Lolos">Tidak Lolos</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
 
 @push('customScript')
