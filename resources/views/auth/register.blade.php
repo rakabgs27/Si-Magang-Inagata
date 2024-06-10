@@ -40,7 +40,7 @@
                         <div class="card card-primary">
                             <div class="card-header" style="justify-content:space-between">
                                 <h4>Register</h4>
-                                <a href="{{ route('login') }}" class="btn btn-secondary btn-ellipse">Back</a>
+                                <a href="{{ route('landing-page') }}" class="btn btn-secondary btn-ellipse">Back</a>
                             </div>
                             <div class="card-body">
                                 <form action="{{ route('register') }}" method="POST">

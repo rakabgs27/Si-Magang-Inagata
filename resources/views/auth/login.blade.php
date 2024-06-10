@@ -32,8 +32,9 @@
                                 class="shadow-light rounded-circle">
                         </div>
                         <div class="card card-primary">
-                            <div class="card-header">
+                            <div class="card-header" style="justify-content:space-between">
                                 <h4>Login</h4>
+                                <a href="{{ route('landing-page') }}" class="btn btn-secondary btn-ellipse">Back</a>
                             </div>
                             <div class="card-body">
                                 @if (session('status'))

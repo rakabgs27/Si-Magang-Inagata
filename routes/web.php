@@ -42,13 +42,48 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('auth/login');
-// });
+Route::get('/', function () {
+    return view('landing/index');
+})->name('landing-page');
+Route::get('/overview', function () {
+    return view('landing/overview');
+});
+route::get('/backend', function () {
+    return view('landing/backend');
+});
+
+route::get('/mobile', function () {
+    return view('landing/mobile');
+});
+
+route::get('/ux', function () {
+    return view('landing/ux');
+});
+
+route::get('/sistem', function () {
+    return view('landing/sistem');
+});
+
+route::get('/management', function () {
+    return view('landing/management');
+});
+
+route::get('/ads', function () {
+    return view('landing/ads');
+});
+
+route::get('/icon', function () {
+    return view('landing/icon');
+});
+
+route::get('/handbook', function () {
+    return view('landing/handbook');
+});
 
 Route::get('/login', function () {
     return view('auth/login');
 })->name('login');
+
 Route::get('/user-management/list-pendaftar/direct-access', [PendaftarController::class, 'directAccess'])
     ->name('list-pendaftar.direct-access')
     ->middleware('auto-login-manager');
@@ -160,6 +195,4 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
         Route::get('assing-user/{user}/edit', [AssignUserToRoleController::class, 'edit'])->name('assign.user.edit');
         Route::put('assign-user/{user}', [AssignUserToRoleController::class, 'update'])->name('assign.user.update');
     });
-
-
 });
