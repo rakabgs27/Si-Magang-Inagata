@@ -175,7 +175,6 @@ class RoleAndPermissionSeeder extends Seeder
         //assign user id 1 ke manager
         $userManager = User::find(1);
         $userManager->assignRole('manager');
-        $userManager->assignRole('reviewer');
         $user = User::find(2);
         $user->assignRole('manager');
         $user = User::find(3);
