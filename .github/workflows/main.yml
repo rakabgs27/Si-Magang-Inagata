@@ -16,6 +16,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           script: |
             cd /var/www/magang-inagata/
-            git pull
-            composer install --no-interaction --prefer-dist --optimize-autoloader
-            php artisan optimize
+            sudo git pull
+            sudo composer install --no-interaction --prefer-dist --optimize-autoloader
+            sudo php artisan migrate:fresh --seed
+            sudo php artisan optimize
