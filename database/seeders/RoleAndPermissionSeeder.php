@@ -89,6 +89,7 @@ class RoleAndPermissionSeeder extends Seeder
             'test-jawaban',
             'list-pengumuman',
             'hasil-pengumuman',
+            'cetak-pengumuman',
             'list-nilai',
             'hasil-akhir',
             'list-divisi',
@@ -149,6 +150,7 @@ class RoleAndPermissionSeeder extends Seeder
             'list-wawancara.index', 'list-wawancara.create', 'list-wawancara.edit', 'list-wawancara.destroy',
             'pengumuman.management',
             'list-pengumuman.index', 'list-pengumuman.create', 'list-pengumuman.edit', 'list-pengumuman.destroy',
+            'cetak-pengumuman.index',
         ]);
 
         // create mentor

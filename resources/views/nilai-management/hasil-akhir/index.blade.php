@@ -22,9 +22,10 @@
                             <form method="GET" action="{{ route('hasil-akhir.index') }}" class="mb-4">
                                 <div class="form-group">
                                     <label for="divisi_id">Divisi</label>
+
                                     <select class="form-control select2" id="divisi_id" name="divisi_id"
                                         onchange="this.form.submit()">
-                                        <option value="" disabled selected>Pilih Divisi</option>
+                                        <option value="" selected>Pilih Divisi</option>
                                         @foreach ($divisis as $divisi)
                                             <option value="{{ $divisi->id }}"
                                                 {{ $divisiId == $divisi->id ? 'selected' : '' }}>

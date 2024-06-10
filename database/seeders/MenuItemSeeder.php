@@ -154,6 +154,12 @@ class MenuItemSeeder extends Seeder
                     'permission_name' => 'hasil-pengumuman.index',
                     'menu_group_id' => 10,
                 ],
+                [
+                    'name' => 'Cetak Hasil Pengumuman',
+                    'route' => 'pengumuman-management/cetak-pengumuman',
+                    'permission_name' => 'cetak-pengumuman.index',
+                    'menu_group_id' => 10,
+                ],
             ]
         );
     }

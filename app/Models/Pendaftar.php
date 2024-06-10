@@ -31,4 +31,9 @@ class Pendaftar extends Model
     {
         return $this->belongsTo(Divisi::class);
     }
+
+    public function listPengumuman()
+    {
+        return $this->hasOne(ListPengumuman::class);
+    }
 }

@@ -24,7 +24,47 @@ class HasilAkhirController extends Controller
         $divisiId = $request->input('divisi_id');
 
         if ($divisiId) {
-            $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->get();
+            $nilaiReviewers = NilaiReviewer::where('status', '=', 'Terverifikasi')
+                ->pluck('nilai_pendaftars_id');
+
+            $simpanHasilAkhir = SimpanHasilAkhir::all();
+
+            if ($simpanHasilAkhir->isEmpty()) {
+                $nilaiPendaftarIds = NilaiPendaftar::whereIn('id', $nilaiReviewers)
+                    ->pluck('pendaftar_id');
+
+                $pendaftars = Pendaftar::with('user', 'divisi')
+                    ->where('divisi_id', $divisiId)
+                    ->whereIn('id', $nilaiPendaftarIds)
+                    ->get();
+            } else {
+                $pendaftarIds = SimpanHasilAkhir::select('hasil')
+                    ->where('status', '=', 'Sudah Selesai')->get()->flatMap(function ($item) {
+                        return collect(json_decode($item->hasil))->pluck('pendaftar_id');
+                    })->map(function ($id) {
+                        return (int) $id;
+                    })->all();
+
+                $nilaiReviewers = NilaiReviewer::where('status', '=', 'Terverifikasi')
+                    ->pluck('nilai_pendaftars_id')->map(function ($id) {
+                        return (int) $id;
+                    })->all();
+
+                $nilaiPendaftarIds = NilaiPendaftar::whereIn('id', $nilaiReviewers)
+                    ->pluck('pendaftar_id')->map(function ($id) {
+                        return (int) $id;
+                    })->all();
+
+                $differentPendaftarIds = array_diff($nilaiPendaftarIds, $pendaftarIds);
+
+                $pendaftars = Pendaftar::with('user', 'divisi')
+                    ->where('divisi_id', $divisiId)
+                    ->whereIn('id', $differentPendaftarIds)
+                    ->get();
+            }
+
+
+
             $data = [];
             $weights = [];
             $wawancaraWeight = 0.20; // Define the weight for nilai_wawancara
@@ -301,7 +341,8 @@ class HasilAkhirController extends Controller
 
             return view('nilai-management.hasil-akhir.index', compact('data', 'divisis', 'divisiId'));
         } else {
-            return view('nilai-management.hasil-akhir.index', compact('divisis', 'divisiId'))->with('message', 'Silahkan pilih divisi terlebih dahulu.');
+            return view('nilai-management.hasil-akhir.index', compact('divisis', 'divisiId'))
+                ->with('message', 'Silahkan pilih divisi terlebih dahulu.');
         }
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\HasilAkhirController;
 use App\Http\Controllers\JadwalWawancaraController;
 use App\Http\Controllers\JawabanPendaftarController;
+use App\Http\Controllers\ListPengumumanController;
 use App\Http\Controllers\ListWawancaraController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
@@ -151,6 +152,10 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
 
     Route::prefix('nilai-management')->group(function () {
         Route::resource('hasil-akhir', HasilAkhirController::class);
+    });
+    Route::prefix('pengumuman-management')->group(function () {
+        Route::resource('list-pengumuman', ListPengumumanController::class);
+        Route::get('cetak-pengumuman', [ListPengumumanController::class, 'cetakPengumuman'])->name('cetak-pengumuman.index');
     });
 
     Route::prefix('user-management')->group(function () {
