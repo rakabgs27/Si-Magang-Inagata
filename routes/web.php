@@ -4,6 +4,7 @@ use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
 use App\Http\Controllers\HasilAkhirController;
+use App\Http\Controllers\HasilPengumumanController;
 use App\Http\Controllers\JadwalWawancaraController;
 use App\Http\Controllers\JawabanPendaftarController;
 use App\Http\Controllers\ListPengumumanController;
@@ -131,6 +132,11 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user']], function () {
     Route::prefix('wawancara-management')->group(function () {
         Route::resource('jadwal-wawancara', JadwalWawancaraController::class);
     });
+
+    Route::prefix('pengumuman-management')->group(function () {
+        Route::resource('hasil-pengumuman', HasilPengumumanController::class);
+    });
+
 });
 
 Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () {
@@ -153,6 +159,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:manager']], function ()
     Route::prefix('nilai-management')->group(function () {
         Route::resource('hasil-akhir', HasilAkhirController::class);
     });
+
     Route::prefix('pengumuman-management')->group(function () {
         Route::resource('list-pengumuman', ListPengumumanController::class);
         Route::get('cetak-pengumuman', [ListPengumumanController::class, 'cetakPengumuman'])->name('cetak-pengumuman.index');
