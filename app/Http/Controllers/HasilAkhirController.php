@@ -67,9 +67,8 @@ class HasilAkhirController extends Controller
 
             $data = [];
             $weights = [];
-            $wawancaraWeight = 0.20; // Define the weight for nilai_wawancara
+            $wawancaraWeight = 0.20;
 
-            // Assign weights based on divisiId
             switch ($divisiId) {
                 case 1: // Backend
                     $weights = [
@@ -160,10 +159,8 @@ class HasilAkhirController extends Controller
                     break;
             }
 
-            // Retrieve all NilaiPendaftar records for the given divisi_id
             $allNilaiPendaftar = NilaiPendaftar::whereIn('pendaftar_id', $pendaftars->pluck('id'))->get();
 
-            // Determine the maximum value for each criterion
             $maxValues = [];
             foreach ($weights as $key => $weight) {
                 $maxValues[$key] = $allNilaiPendaftar->max($key);
@@ -273,17 +270,24 @@ class HasilAkhirController extends Controller
                             break;
                     }
 
-                    // Normalize criteria values
+                    foreach ($weights as $key => $weight) {
+                        if ($key === 'nilai_wawancara') {
+                            $maxNilaiWawancara = NilaiWawancaraPendaftar::max('nilai_wawancara') ?? 1;
+                            $maxValues[$key] = $maxNilaiWawancara;
+                        } else {
+                            $maxValues[$key] = $allNilaiPendaftar->max($key) ?? 1;
+                        }
+                    }
+
                     $normalizedKriteria = [];
                     foreach ($kriteria as $key => $value) {
                         if ($value !== null && $maxValues[$key] > 0) {
                             $normalizedKriteria[$key] = $value / $maxValues[$key];
                         } else {
-                            $normalizedKriteria[$key] = 0; // Default to 0 if max value is 0 to avoid division by zero
+                            $normalizedKriteria[$key] = 0;
                         }
                     }
 
-                    // Calculate weighted sum
                     $score = 0;
                     foreach ($normalizedKriteria as $key => $value) {
                         if ($value !== null) {
@@ -309,29 +313,26 @@ class HasilAkhirController extends Controller
                 }
             }
 
-            // Sort data by score in descending order
             usort($data, function ($a, $b) {
                 return $b['score'] <=> $a['score'];
             });
 
-            // Add ranking
             $rank = 1;
             $hasil = [];
             foreach ($data as &$item) {
                 $item['rank'] = $rank++;
                 $hasil[] = [
                     'pendaftar_id' => $item['pendaftar']->id,
+                    'rank' => $item['rank'],
                 ];
             }
 
             if (!empty($hasil)) {
-                // Check if the same result already exists in the database by comparing decoded JSON arrays
                 $existingRecord = SimpanHasilAkhir::all()->filter(function ($record) use ($hasil) {
                     return json_decode($record->hasil, true) == $hasil;
                 })->first();
 
                 if (!$existingRecord) {
-                    // Save the ranking result to the database if it doesn't already exist
                     SimpanHasilAkhir::create([
                         'status' => 'Belum Selesai',
                         'hasil' => json_encode($hasil),
@@ -346,9 +347,6 @@ class HasilAkhirController extends Controller
         }
     }
 
-
-
-    // Convert numeric nilai to label
     private function convertNilaiToLabel($nilai)
     {
         if ($nilai >= 90) {
