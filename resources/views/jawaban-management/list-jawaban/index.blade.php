@@ -6,7 +6,7 @@
         <div class="section-header">
             <h1>Daftar Jawaban Pendaftar</h1>
         </div>
-        @if (!$mentorDivisiId  && !$userManager)
+        @if (!$mentorDivisiId && !$userManager)
             <div class="alert alert-warning" role="alert">
                 Mentor tidak memiliki divisi.
             </div>
@@ -48,15 +48,29 @@
                                         <form action="{{ route('list-jawaban.index') }}" method="GET">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <select class="form-control select2" name="divisi_id">
-                                                        <option value="">Select Divisi</option>
-                                                        @foreach ($divisis as $divisi)
-                                                            <option value="{{ $divisi->id }}"
-                                                                {{ $divisiId == $divisi->id ? 'selected' : '' }}>
-                                                                {{ $divisi->nama_divisi }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @role('manager')
+                                                        <select class="form-control select2" name="divisi_id">
+                                                            <option value="">Select Divisi</option>
+                                                            @foreach ($divisis as $divisi)
+                                                                <option value="{{ $divisi->id }}"
+                                                                    {{ $divisiId == $divisi->id ? 'selected' : '' }}>
+                                                                    {{ $divisi->nama_divisi }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endrole
+
+                                                    @role('mentor')
+                                                        <select class="form-control select2" name="divisi_id">
+                                                            <option value="">Select Divisi</option>
+                                                            @foreach ($divisis as $divisi)
+                                                                <option value="{{ $divisi->id }}"
+                                                                    {{ $divisiId == $divisi->id ? 'selected' : '' }}>
+                                                                    {{ $divisi->nama_divisi }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endrole
                                                 </div>
                                             </div>
                                             <div class="form-row justify-content-end">
@@ -119,8 +133,8 @@
                     </div>
                 </div>
             </div>
-        </section>
-        @endif
+    </section>
+    @endif
     <!-- Modal Structure -->
     <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel"
         aria-hidden="true">

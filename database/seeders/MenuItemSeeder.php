@@ -89,7 +89,7 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 6,
                 ],
                 [
-                    'name' => 'Assign Soal',
+                    'name' => 'Assign Soal To Pendaftar',
                     'route' => 'soal-management/assign-soal',
                     'permission_name' => 'assign-soal.index',
                     'menu_group_id' => 6,

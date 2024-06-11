@@ -76,15 +76,17 @@
                                                                 class="btn btn-sm btn-warning btn-icon">
                                                                 <i class="fas fa-edit"></i> Detail
                                                             </a>
-                                                            <form
-                                                                action="{{ route('assign-soal.destroy', $listItem->id) }}"
-                                                                method="POST" class="ml-2" id="del-{{ $listItem->id }}">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-danger btn-icon">
-                                                                    <i class="fas fa-times"></i> Delete
-                                                                </button>
+                                                            <form action="{{ route('assign-soal.destroy', $listItem->id) }}"
+                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="_token"
+                                                                    value="{{ csrf_token() }}">
+                                                                <button type="submit" id="#submit"
+                                                                    class="btn btn-sm btn-danger btn-icon "
+                                                                    data-confirm="Hapus Data Assign Soal Pendaftar ?|Apakah Kamu Yakin?"
+                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
+                                                                    data-id="del-{{ $listItem->id }}">
+                                                                    <i class="fas fa-times"> </i> Delete </button>
                                                             </form>
                                                         </div>
                                                     </td>

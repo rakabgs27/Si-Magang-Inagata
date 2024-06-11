@@ -41,8 +41,8 @@ class JawabanPendaftarController extends Controller
         $namaUserSearch = $request->input('name');
         $divisiId = $request->input('divisi_id');
 
-        // Fetch all divisions
-        $divisis = Divisi::all();
+        // Fetch all divisions for manager and mentor specific divisions
+        $divisis = $userManager ? Divisi::all() : Divisi::whereIn('id', $mentorDivisiId)->get();
 
         try {
             $jawabanPendaftar = JawabanPendaftar::with(['soalPendaftar.pendaftar.user', 'soalPendaftar.pendaftar.divisi'])
@@ -71,7 +71,7 @@ class JawabanPendaftarController extends Controller
                 'divisiId' => $divisiId,
                 'divisis' => $divisis,
                 'mentorDivisiId' => $mentorDivisiId,
-                'userManager' => $userManager
+                'userManager' => $userManager,
             ]);
         } else {
             return view('jawaban-management.list-jawaban.index')->with([
@@ -81,10 +81,6 @@ class JawabanPendaftarController extends Controller
             ]);
         }
     }
-
-
-
-
 
 
     /**

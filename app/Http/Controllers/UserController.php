@@ -67,7 +67,7 @@ class UserController extends Controller
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
         ]);
-        return redirect(route('users-management.users.index'))->with('success', 'Data Berhasil Ditambahkan');;
+        return redirect(route('user.index'))->with('success', 'Data Berhasil Ditambahkan');
     }
 
     /**
@@ -106,7 +106,7 @@ class UserController extends Controller
         $validate = $request->validated();
 
         $user->update($validate);
-        return redirect()->route('users-management.users.index')->with('success', 'User Berhasil Diupdate');
+        return redirect()->route('user.index')->with('success', 'User Berhasil Diupdate');
     }
 
     /**
@@ -117,9 +117,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //delete data
-        $user->delete();
-        return redirect()->route('users-management.users.index')->with('success', 'User Deleted Successfully');
+        try {
+            $user->delete();
+            return redirect()->route('user.index')
+                ->with('success', 'User berhasil dihapus.');
+        } catch (\Exception $exception) {
+            return redirect()->route('user.index')
+                ->with('error', 'Terjadi kesalahan saat menghapus user.');
+        }
     }
 
     public function export()

@@ -19,10 +19,12 @@
                             @role('manager')
                                 <div class="d-flex flex-row-reverse card-header-action">
                                     <div class="card-header-actions">
-                                        <a class="btn btn-icon icon-left btn-primary" data-toggle="modal"
-                                            data-target="#pendaftarModal">
-                                            Tambah Baru Pengumuman
-                                        </a>
+                                        @if ($statusSimpan)
+                                            <a class="btn btn-icon icon-left btn-primary text-white" data-toggle="modal"
+                                                data-target="#pendaftarModal">
+                                                Tambah Baru Pengumuman
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             @endrole
@@ -36,7 +38,7 @@
                                             <th>Nama Pendaftar</th>
                                             <th>Divisi</th>
                                             <th>Status</th>
-                                            <th class="text-right">Action</th>
+                                            {{-- <th class="text-right">Action</th> --}}
                                         </tr>
                                         @if ($listPengumuman->isEmpty())
                                             <tr>
@@ -52,31 +54,6 @@
                                                         class="status {{ $listItem->status === 'Tidak Lolos' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $listItem->status }}
                                                     </td>
-                                                    {{-- <td class="text-right">
-                                                        <div class="d-flex justify-content-end">
-                                                            <button class="btn btn-sm btn-info btn-icon toggle-detail"
-                                                                data-id="{{ $listItem->id }}"><i
-                                                                    class="fas fa-chevron-down"></i> View
-                                                                Detail</button>
-                                                            @role('manager')
-                                                                <a href="{{ route('list-wawancara.edit', $listItem->id) }}"
-                                                                    class="btn btn-sm btn-warning btn-icon ml-2"><i
-                                                                        class="fas fa-edit"></i> Edit</a>
-                                                                <form
-                                                                    action="{{ route('list-wawancara.destroy', $listItem->id) }}"
-                                                                    method="POST" class="ml-2" id="del-{{ $listItem->id }}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" id="#submit"
-                                                                        class="btn btn-sm btn-danger btn-icon"
-                                                                        data-confirm="Hapus Data Wawancara Pendaftar ?|Apakah Kamu Yakin?"
-                                                                        data-confirm-yes="submitDel({{ $listItem->id }})"
-                                                                        data-id="del-{{ $listItem->id }}">
-                                                                        <i class="fas fa-times"> </i> Delete</button>
-                                                                </form>
-                                                            @endrole
-                                                        </div>
-                                                    </td> --}}
                                                 </tr>
                                             @endforeach
                                         @endif
@@ -90,10 +67,8 @@
                     </div>
                 </div>
             </div>
-            {{-- @endif --}}
         </div>
     </section>
-
 
     <div class="modal fade" id="pendaftarModal" tabindex="-1" role="dialog" aria-labelledby="pendaftarModalLabel"
         aria-hidden="true">
@@ -109,21 +84,20 @@
                     <form id="pendaftarForm" action="{{ route('list-pengumuman.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="pendaftarSelect">Pendaftar</label>
-                            <select class="form-control select2-multiple" id="pendaftarSelect" name="pendaftar[]"
-                                multiple="multiple">
-                                @foreach ($pendaftars as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}">{{ $pendaftar->user->name }}</option>
-                                @endforeach
-                            </select>
+                            <label for="rankStart">Rank Start</label>
+                            <input type="number" class="form-control @error('rank_start') is-invalid @enderror"
+                                id="rankStart" name="rank_start" min="1" required>
+                            @error('rank_start')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <label for="statusSelect">Status</label>
-                            <select class="form-control select2" id="statusSelect" name="status">
-                                <option value="">Pilih Status</option>
-                                <option value="Lolos">Lolos</option>
-                                <option value="Tidak Lolos">Tidak Lolos</option>
-                            </select>
+                            <label for="rankEnd">Rank End</label>
+                            <input type="number" class="form-control @error('rank_end') is-invalid @enderror"
+                                id="rankEnd" name="rank_end" min="1" required>
+                            @error('rank_end')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
@@ -135,6 +109,7 @@
 
 @push('customScript')
     <script src="/assets/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <script>
         $(document).ready(function() {
             // Initialize Select2
@@ -177,9 +152,37 @@
         function submitDel(id) {
             $('#del-' + id).submit();
         }
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                iziToast.error({
+                    title: 'Error',
+                    message: '{{ $error }}',
+                    position: 'topRight'
+                });
+            @endforeach
+        @endif
     </script>
+    @if (Session::has('success'))
+        <script>
+            iziToast.success({
+                title: 'Success',
+                message: '{{ Session::get('success') }}',
+                position: 'topRight'
+            });
+        </script>
+    @elseif (Session::has('error'))
+        <script>
+            iziToast.error({
+                title: 'Error',
+                message: '{{ Session::get('error') }}',
+                position: 'topRight'
+            });
+        </script>
+    @endif
 @endpush
 
 @push('customStyle')
     <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
 @endpush

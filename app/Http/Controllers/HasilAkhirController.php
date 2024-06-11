@@ -70,7 +70,7 @@ class HasilAkhirController extends Controller
             $wawancaraWeight = 0.20;
 
             switch ($divisiId) {
-                case 1: // Backend
+                case 1:
                     $weights = [
                         'kriteria_1' => 0.12,
                         'kriteria_2' => 0.12,
@@ -81,7 +81,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 2: // Frontend
+                case 2:
                     $weights = [
                         'kriteria_7' => 0.16,
                         'kriteria_8' => 0.16,
@@ -91,7 +91,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 3: // Mobile Development
+                case 3:
                     $weights = [
                         'kriteria_12' => 0.20,
                         'kriteria_13' => 0.20,
@@ -100,7 +100,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 4: // UI/UX
+                case 4:
                     $weights = [
                         'kriteria_16' => 0.08,
                         'kriteria_17' => 0.08,
@@ -111,7 +111,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 5: // System Analyst
+                case 5:
                     $weights = [
                         'kriteria_22' => 0.12,
                         'kriteria_23' => 0.12,
@@ -122,7 +122,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 6: // Management
+                case 6:
                     $weights = [
                         'kriteria_28' => 0.08,
                         'kriteria_29' => 0.08,
@@ -134,7 +134,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 7: // Media & Advertising
+                case 7:
                     $weights = [
                         'kriteria_35' => 0.12,
                         'kriteria_36' => 0.12,
@@ -145,7 +145,7 @@ class HasilAkhirController extends Controller
                         'nilai_wawancara' => $wawancaraWeight,
                     ];
                     break;
-                case 8: // Icon and Illustration
+                case 8:
                     $weights = [
                         'kriteria_41' => 0.20,
                         'kriteria_42' => 0.20,
@@ -181,7 +181,7 @@ class HasilAkhirController extends Controller
                     $nilai = $nilaiReviewer->nilaiPendaftars;
 
                     switch ($divisiId) {
-                        case 1: // Backend
+                        case 1:
                             $kriteria = [
                                 'kriteria_1' => $nilai->kriteria_1,
                                 'kriteria_2' => $nilai->kriteria_2,
@@ -192,7 +192,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 2: // Frontend
+                        case 2:
                             $kriteria = [
                                 'kriteria_7' => $nilai->kriteria_7,
                                 'kriteria_8' => $nilai->kriteria_8,
@@ -202,7 +202,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 3: // Mobile Development
+                        case 3:
                             $kriteria = [
                                 'kriteria_12' => $nilai->kriteria_12,
                                 'kriteria_13' => $nilai->kriteria_13,
@@ -211,7 +211,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 4: // UI/UX
+                        case 4:
                             $kriteria = [
                                 'kriteria_16' => $nilai->kriteria_16,
                                 'kriteria_17' => $nilai->kriteria_17,
@@ -222,7 +222,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 5: // System Analyst
+                        case 5:
                             $kriteria = [
                                 'kriteria_22' => $nilai->kriteria_22,
                                 'kriteria_23' => $nilai->kriteria_23,
@@ -233,7 +233,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 6: // Management
+                        case 6:
                             $kriteria = [
                                 'kriteria_28' => $nilai->kriteria_28,
                                 'kriteria_29' => $nilai->kriteria_29,
@@ -245,7 +245,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 7: // Media & Advertising
+                        case 7:
                             $kriteria = [
                                 'kriteria_35' => $nilai->kriteria_35,
                                 'kriteria_36' => $nilai->kriteria_36,
@@ -256,7 +256,7 @@ class HasilAkhirController extends Controller
                                 'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                             ];
                             break;
-                        case 8: // Icon and Illustration
+                        case 8:
                             $kriteria = [
                                 'kriteria_41' => $nilai->kriteria_41,
                                 'kriteria_42' => $nilai->kriteria_42,
@@ -328,17 +328,34 @@ class HasilAkhirController extends Controller
             }
 
             if (!empty($hasil)) {
-                $existingRecord = SimpanHasilAkhir::all()->filter(function ($record) use ($hasil) {
-                    return json_decode($record->hasil, true) == $hasil;
-                })->first();
+                $existingRecord = SimpanHasilAkhir::where('status', 'Belum Selesai')->first();
+                if ($existingRecord) {
+                    $existingHasil = json_decode($existingRecord->hasil, true);
+                    foreach ($hasil as $newItem) {
+                        $found = false;
+                        foreach ($existingHasil as &$existingItem) {
+                            if ($existingItem['pendaftar_id'] == $newItem['pendaftar_id']) {
+                                $existingItem['rank'] = $newItem['rank'];
+                                $found = true;
+                                break;
+                            }
+                        }
+                        if (!$found) {
+                            $existingHasil[] = $newItem;
+                        }
+                    }
+                    $existingRecord->update([
+                        'hasil' => json_encode($existingHasil),
+                    ]);
+                } else {
 
-                if (!$existingRecord) {
                     SimpanHasilAkhir::create([
                         'status' => 'Belum Selesai',
                         'hasil' => json_encode($hasil),
                     ]);
                 }
             }
+
 
             return view('nilai-management.hasil-akhir.index', compact('data', 'divisis', 'divisiId'));
         } else {
@@ -369,7 +386,6 @@ class HasilAkhirController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -380,7 +396,6 @@ class HasilAkhirController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -391,7 +406,6 @@ class HasilAkhirController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -402,7 +416,6 @@ class HasilAkhirController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -414,7 +427,6 @@ class HasilAkhirController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
@@ -425,6 +437,5 @@ class HasilAkhirController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }

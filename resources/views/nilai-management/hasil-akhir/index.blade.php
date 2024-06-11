@@ -106,6 +106,7 @@
                                                         </td>
                                                         <td class="text-right">
                                                             <div class="d-flex justify-content-end">
+                                                                @role('reviiewer')
                                                                 @if ($item['status_reviewer'] === 'Belum Diverifikasi')
                                                                     <button
                                                                         class="btn btn-sm btn-success btn-icon mb-2 mb-md-0"
@@ -128,6 +129,7 @@
                                                                         <i class="fas fa-check"></i> Verifikasi Ulang
                                                                     </button>
                                                                 @endif
+                                                                @endrole
                                                                 <div class="mx-2"></div>
                                                                 <a href="#" class="btn btn-sm btn-info btn-icon"
                                                                     data-toggle="collapse"

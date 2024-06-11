@@ -27,15 +27,6 @@
                             <div class="card-header-action">
                                 <a class="btn btn-icon icon-left btn-primary" href="{{ route('role.create') }}">Create New
                                     Role</a>
-                                <a class="btn btn-info btn-primary active import">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    Import Role</a>
-                                <a class="btn btn-info btn-primary active" href="{{ route('role.export') }}">
-                                    <i class="fa fa-upload" aria-hidden="true"></i>
-                                    Export Role</a>
-                                <a class="btn btn-info btn-primary active search">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                    Search Role</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -87,14 +78,18 @@
                                                             class="btn btn-sm btn-info btn-icon "><i
                                                                 class="fas fa-edit"></i>
                                                             Edit</a>
-                                                        <form action="{{ route('role.destroy', $role->id) }}"
-                                                            method="POST" class="ml-2">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Delete </button>
-                                                        </form>
+                                                            <form action="{{ route('role.destroy', $role->id) }}"
+                                                                method="POST" class="ml-2" id="del-<?= $role->id ?>">
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="_token"
+                                                                    value="{{ csrf_token() }}">
+                                                                <button type="submit" id="#submit"
+                                                                    class="btn btn-sm btn-danger btn-icon "
+                                                                    data-confirm="Hapus Data Role ?|Apakah Kamu Yakin?"
+                                                                    data-confirm-yes="submitDel(<?= $role->id ?>)"
+                                                                    data-id="del-{{ $role->id }}">
+                                                                    <i class="fas fa-times"> </i> Delete </button>
+                                                            </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -136,6 +131,10 @@
                 $(this).prev('label').text(file);
             });
         });
+
+        function submitDel(id) {
+            $('#del-' + id).submit()
+        }
     </script>
 @endpush
 

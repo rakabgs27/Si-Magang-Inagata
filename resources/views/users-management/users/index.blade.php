@@ -20,12 +20,6 @@
                             <div class="card-header-action">
                                 <a class="btn btn-icon icon-left btn-primary" href="{{ route('user.create') }}">Create New
                                     User</a>
-                                <a class="btn btn-info btn-primary active import">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    Import User</a>
-                                <a class="btn btn-info btn-primary active" href="{{ route('user.export') }}">
-                                    <i class="fa fa-upload" aria-hidden="true"></i>
-                                    Export User</a>
                                 <a class="btn btn-info btn-primary active search">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                     Search User</a>
@@ -83,12 +77,16 @@
                                                                 class="fas fa-edit"></i>
                                                             Edit</a>
                                                         <form action="{{ route('user.destroy', $user->id) }}"
-                                                            method="POST" class="ml-2">
+                                                            method="POST" class="ml-2" id="del-<?= $user->id ?>">
                                                             <input type="hidden" name="_method" value="DELETE">
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}">
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                                <i class="fas fa-times"></i> Delete </button>
+                                                            <button type="submit" id="#submit"
+                                                                class="btn btn-sm btn-danger btn-icon "
+                                                                data-confirm="Hapus Data User ?|Apakah Kamu Yakin?"
+                                                                data-confirm-yes="submitDel(<?= $user->id ?>)"
+                                                                data-id="del-{{ $user->id }}">
+                                                                <i class="fas fa-times"> </i> Delete </button>
                                                         </form>
                                                     </div>
                                                 </td>
@@ -131,6 +129,10 @@
                 $(this).prev('label').text(file);
             });
         });
+
+        function submitDel(id) {
+            $('#del-' + id).submit()
+        }
     </script>
 @endpush
 
