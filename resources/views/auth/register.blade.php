@@ -19,6 +19,12 @@
             border-radius: 50px;
             padding: 5px 20px;
         }
+
+        .custom-rounded-circle {
+            width: 100px; /* Ubah sesuai ukuran yang diinginkan */
+            height: 100px;
+            border-radius: 60%; /* Ubah sesuai ukuran yang diinginkan */
+        }
     </style>
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -34,7 +40,9 @@
                         class="col-12 col-sm-10 offset-sm-1 col-md-8
                         offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                         <div class="login-brand">
-                            <img src="../assets/img/stisla-fill.svg" alt="logo" width="100"
+                            <img src="{{ asset('assets/img/polinema-logo.png') }}" alt="logo" width="100"
+                                class="shadow-light">
+                            <img src="{{ asset('assets/img/images.png') }}" alt="logo" width="100"
                                 class="shadow-light rounded-circle">
                         </div>
                         <div class="card card-primary">
