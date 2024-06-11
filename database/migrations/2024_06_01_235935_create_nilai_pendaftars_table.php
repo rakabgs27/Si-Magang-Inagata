@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('nilai_pendaftars', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pendaftar_id');
-            $table->enum('status',['Belum Dinilai','Sudah Dinilai']);
+            $table->enum('status',['Belum Dinilai','Sudah Dinilai'])->default('Belum Dinilai');
             for ($i = 1; $i <= 44; $i++) {
                 $table->double('kriteria_' . $i)->nullable();
             }

@@ -118,22 +118,20 @@
                                                                                     <ul class="list-group">
                                                                                         <li class="list-group-item">
                                                                                             <strong>Memiliki pengetahuan yang luas
-                                                                                                dalam
-                                                                                                arsitektur software:</strong>
+                                                                                                dalam arsitektur software:</strong>
                                                                                             {{ $item['kriteria']['kriteria_1'] ?? 'N/A' }}
                                                                                             ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_1']) }})
                                                                                         </li>
                                                                                         <li class="list-group-item">
                                                                                             <strong>Memahami cara deployment ke
-                                                                                                server
-                                                                                                menjadi nilai tambah:</strong>
+                                                                                                server menjadi nilai
+                                                                                                tambah:</strong>
                                                                                             {{ $item['kriteria']['kriteria_2'] ?? 'N/A' }}
                                                                                             ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_2']) }})
                                                                                         </li>
                                                                                         <li class="list-group-item">
                                                                                             <strong>Memahami penggunaan kontrol
-                                                                                                versi
-                                                                                                seperti Git:</strong>
+                                                                                                versi seperti Git:</strong>
                                                                                             {{ $item['kriteria']['kriteria_3'] ?? 'N/A' }}
                                                                                             ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_3']) }})
                                                                                         </li>
@@ -146,8 +144,7 @@
                                                                                         </li>
                                                                                         <li class="list-group-item">
                                                                                             <strong>Memahami bahasa pemrograman
-                                                                                                seperti
-                                                                                                PHP, dan NodeJS:</strong>
+                                                                                                seperti PHP, dan NodeJS:</strong>
                                                                                             {{ $item['kriteria']['kriteria_5'] ?? 'N/A' }}
                                                                                             ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['kriteria']['kriteria_5']) }})
                                                                                         </li>
@@ -164,7 +161,6 @@
                                                                                                 ({{ \App\Common\Helpers\ConversionHelper::convertToDescription($item['nilai_wawancara']) }})
                                                                                             </li>
                                                                                         @endif
-
                                                                                     </ul>
                                                                                 @break
 
@@ -544,9 +540,6 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{-- <div class="d-flex justify-content-center">
-                                    {{ $data->links() }}
-                                </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -554,6 +547,7 @@
                 </div>
             </div>
     </section>
+
     @foreach ($data as $key => $item)
         @if ($item['wawancara_selesai'])
             <div class="modal fade" id="nilaiWawancaraModal-{{ $key }}" tabindex="-1" role="dialog"
@@ -577,19 +571,25 @@
                                     <div class="radio-container">
                                         @foreach (['Kurang', 'Cukup', 'Memuaskan', 'Baik Sekali', 'Luar Biasa'] as $nilai)
                                             @php
-                                                // Periksa apakah nilai yang terpilih adalah nilai asli dari database
                                                 $isChecked = $item['nilai_wawancara_label'] == $nilai ? 'checked' : '';
                                             @endphp
-                                            <input type="radio" id="nilai_wawancara_{{ $loop->index + 1 }}"
-                                                name="nilai_wawancara" value="{{ $nilai }}"
-                                                {{ $isChecked }}>
+                                            <input type="radio"
+                                                id="nilai_wawancara_{{ $item['pendaftar']->id }}_{{ $loop->index + 1 }}"
+                                                name="nilai_wawancara" value="{{ $nilai }}" {{ $isChecked }}
+                                                onchange="updateCheckedState(this)">
                                             <label
-                                                for="nilai_wawancara_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
+                                                for="nilai_wawancara_{{ $item['pendaftar']->id }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
                                         @endforeach
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
+                            <!-- Debugging -->
+                            <pre>
+                    Pendaftar ID: {{ $item['pendaftar']->id }}
+                    Nilai Wawancara Label: {{ $item['nilai_wawancara_label'] }}
+                    Nilai Wawancara: {{ $item['nilai_wawancara'] }}
+                </pre>
                         </div>
                     </div>
                 </div>
@@ -597,7 +597,6 @@
         @endif
     @endforeach
     @endif
-
 @endsection
 
 @push('customScript')
@@ -627,8 +626,14 @@
             });
         });
 
-        function submitDel(id) {
-            $('#del-' + id).submit()
+        function updateCheckedState(selectedRadio) {
+            const radioButtons = document.querySelectorAll(`input[name="${selectedRadio.name}"]`);
+            radioButtons.forEach(radio => {
+                if (radio !== selectedRadio) {
+                    radio.checked = false;
+                }
+            });
+            selectedRadio.checked = true;
         }
     </script>
 @endpush
