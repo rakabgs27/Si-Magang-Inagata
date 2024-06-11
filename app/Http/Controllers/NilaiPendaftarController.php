@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateNIlaiPendaftarRequest;
 use App\Models\DivisiMentor;
 use App\Models\JawabanPendaftar;
 use App\Models\ListWawancara;
+use App\Models\NilaiReviewer;
 use App\Models\NilaiWawancaraPendaftar;
 use App\Models\Pendaftar;
 use Illuminate\Http\Request;
@@ -45,6 +46,9 @@ class NilaiPendaftarController extends Controller
             $nilai = NilaiPendaftar::where('pendaftar_id', $pendaftar->id)->first();
             $listWawancara = ListWawancara::where('pendaftar_id', $pendaftar->id)->first();
             $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $pendaftar->id)->first();
+            $nilaiReviewer = NilaiReviewer::where('nilai_wawancara_pendaftars_id', $nilaiWawancara->id ?? null)
+                ->where('nilai_pendaftars_id', $nilai->id ?? null)
+                ->first();
 
             if ($nilai) {
                 switch ($divisiId) {
@@ -140,6 +144,7 @@ class NilaiPendaftarController extends Controller
                     'nilai_wawancara_label' => $nilaiWawancara ? $this->convertNilaiToLabel($nilaiWawancara->nilai_wawancara) : null,
                     'status_wawancara_label' => $status_wawancara_label,
                     'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
+                    'status_verifikasi_reviewer' => $nilaiReviewer ? $nilaiReviewer->status : 'Belum Diverifikasi',
                 ];
             }
         }
@@ -188,7 +193,7 @@ class NilaiPendaftarController extends Controller
             })
             ->pluck('soal_pendaftar_id');
 
-        $pendaftars = Pendaftar::whereIn('id', function ($query) use ($pendaftarIds) {
+        $pendaftars = Pendaftar::with('user')->whereIn('id', function ($query) use ($pendaftarIds) {
             $query->select('pendaftar_id')
                 ->from('soal_pendaftars')
                 ->whereIn('id', $pendaftarIds);

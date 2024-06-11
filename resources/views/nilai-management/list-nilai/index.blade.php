@@ -69,6 +69,7 @@
                                                 @if (collect($data)->contains('status_wawancara', true))
                                                     <th>Status Nilai Wawancara</th>
                                                 @endif
+                                                <th>Status Verifikasi Reviewer</th>
                                                 <th class="text-right">Action</th>
                                             </tr>
                                             @foreach ($data as $key => $item)
@@ -86,6 +87,10 @@
                                                             {{ $item['status_wawancara_label'] }}
                                                         </td>
                                                     @endif
+                                                    <td
+                                                        class="{{ $item['status_verifikasi_reviewer'] === 'Belum Diverifikasi' ? 'text-gray font-weight-bold' : ($item['status_verifikasi_reviewer'] === 'Terverifikasi' ? 'text-success font-weight-bold' : 'text-danger font-weight-bold') }}">
+                                                        {{ $item['status_verifikasi_reviewer'] }}
+                                                    </td>
                                                     <td class="text-right">
                                                         <div class="d-flex justify-content-end">
                                                             <a href="#" class="btn btn-sm btn-info btn-icon"
@@ -582,14 +587,10 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="form-group text-right" style="margin-top: 50px;">
+                                    <button type="submit" class="btn btn-primary-modal">Submit</button>
+                                </div>
                             </form>
-                            <!-- Debugging -->
-                            <pre>
-                    Pendaftar ID: {{ $item['pendaftar']->id }}
-                    Nilai Wawancara Label: {{ $item['nilai_wawancara_label'] }}
-                    Nilai Wawancara: {{ $item['nilai_wawancara'] }}
-                </pre>
                         </div>
                     </div>
                 </div>
@@ -677,6 +678,18 @@
             background-color: #0056b3;
             color: white;
             border-color: #0056b3;
+        }
+
+        .text-gray {
+            color: gray;
+        }
+
+        .btn-primary-modal {
+            color: #fff;
+            box-shadow: 0 2px 6px #acb5f6;
+            background-color: #6777ef;
+            border-color: #6777ef;
+            margin-right: 19px;
         }
     </style>
 @endpush
