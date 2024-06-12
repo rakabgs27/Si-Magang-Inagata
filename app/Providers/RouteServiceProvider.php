@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    // public const HOME = '/dashboard';
     public const HOME_MANAGER = '/dashboard';
     public const HOME_MENTOR = '/dashboard';
     public const HOME_REVIEWER = '/nilai-management/reviewer';
