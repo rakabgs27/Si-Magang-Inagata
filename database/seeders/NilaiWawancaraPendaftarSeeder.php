@@ -69,10 +69,10 @@ class NilaiWawancaraPendaftarSeeder extends Seeder
             'status' => 'Sudah Dinilai'
         ]);
 
-        NilaiWawancaraPendaftar::create([
-            'pendaftar_id' => 10,
-            'nilai_wawancara' => 100,
-            'status' => 'Sudah Dinilai'
-        ]);
+        // NilaiWawancaraPendaftar::create([
+        //     'pendaftar_id' => 10,
+        //     'nilai_wawancara' => 100,
+        //     'status' => 'Sudah Dinilai'
+        // ]);
     }
 }

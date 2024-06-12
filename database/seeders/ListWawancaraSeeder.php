@@ -88,12 +88,12 @@ class ListWawancaraSeeder extends Seeder
             'status' => 'Selesai'
         ]);
 
-        ListWawancara::create([
-            'pendaftar_id' => 10,
-            'divisi_mentor_id' => 1,
-            'deskripsi' => 'Deskripsi wawancara pendaftar 10',
-            'tanggal_wawancara' => Carbon::now()->subDays(1),
-            'status' => 'Selesai'
-        ]);
+        // ListWawancara::create([
+        //     'pendaftar_id' => 10,
+        //     'divisi_mentor_id' => 1,
+        //     'deskripsi' => 'Deskripsi wawancara pendaftar 10',
+        //     'tanggal_wawancara' => Carbon::now()->subDays(1),
+        //     'status' => 'Selesai'
+        // ]);
     }
 }

@@ -78,11 +78,11 @@ class NilaiReviewerSeeder extends Seeder
             'status' => 'Belum Diverifikasi',
             'tanggal_verifikasi' => Carbon::now(),
         ]);
-        NilaiReviewer::create([
-            'nilai_wawancara_pendaftars_id' => 10,
-            'nilai_pendaftars_id' => 10,
-            'status' => 'Belum Diverifikasi',
-            'tanggal_verifikasi' => Carbon::now(),
-        ]);
+        // NilaiReviewer::create([
+        //     'nilai_wawancara_pendaftars_id' => 10,
+        //     'nilai_pendaftars_id' => 10,
+        //     'status' => 'Belum Diverifikasi',
+        //     'tanggal_verifikasi' => Carbon::now(),
+        // ]);
     }
 }

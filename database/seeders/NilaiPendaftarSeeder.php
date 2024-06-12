@@ -114,15 +114,15 @@ class NilaiPendaftarSeeder extends Seeder
             'status' => 'Sudah Dinilai'
         ]);
 
-        NilaiPendaftar::create([
-            'pendaftar_id' => 10,
-            'kriteria_1' => 100,
-            'kriteria_2' => 60,
-            'kriteria_3' => 70,
-            'kriteria_4' => 80,
-            'kriteria_5' => 90,
-            'kriteria_6' => 100,
-            'status' => 'Sudah Dinilai'
-        ]);
+        // NilaiPendaftar::create([
+        //     'pendaftar_id' => 10,
+        //     'kriteria_1' => 100,
+        //     'kriteria_2' => 60,
+        //     'kriteria_3' => 70,
+        //     'kriteria_4' => 80,
+        //     'kriteria_5' => 90,
+        //     'kriteria_6' => 100,
+        //     'status' => 'Sudah Dinilai'
+        // ]);
     }
 }

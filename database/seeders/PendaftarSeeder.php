@@ -31,7 +31,7 @@ class PendaftarSeeder extends Seeder
                 'nim' => 'NIM' . ($i + 1),
                 'link_cv' => 'https://example.com/cv' . ($i + 1),
                 'link_porto' => 'https://example.com/porto' . ($i + 1),
-                'status' => 'Pending',
+                'status' => 'Terverifikasi',
             ]);
         }
     }

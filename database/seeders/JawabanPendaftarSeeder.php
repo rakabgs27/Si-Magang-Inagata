@@ -16,7 +16,7 @@ class JawabanPendaftarSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 9; $i++) {
             JawabanPendaftar::create([
                 'soal_pendaftar_id' => $i,
                 'link_jawaban' => 'https://example.com/link-jawaban-' . $i,
