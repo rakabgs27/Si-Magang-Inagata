@@ -200,5 +200,15 @@ class RoleAndPermissionSeeder extends Seeder
         $user->assignRole('user');
         $user = User::find(15);
         $user->assignRole('user');
+        $user = User::find(16);
+        $user->assignRole('user');
+        $user = User::find(17);
+        $user->assignRole('user');
+        $user = User::find(18);
+        $user->assignRole('user');
+        $user = User::find(19);
+        $user->assignRole('user');
+        $user = User::find(20);
+        $user->assignRole('user');
     }
 }
