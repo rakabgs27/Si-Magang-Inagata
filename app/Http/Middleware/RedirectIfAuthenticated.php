@@ -29,7 +29,10 @@ class RedirectIfAuthenticated
                 if (Auth::user()->hasRole('manager')) {
                     return redirect(RouteServiceProvider::HOME_MANAGER);
                 }
-                return redirect(RouteServiceProvider::HOME);
+                if (Auth::user()->hasRole('mentor')) {
+                    return redirect(RouteServiceProvider::HOME_MENTOR);
+                }
+                // return redirect(RouteServiceProvider::HOME);
             }
 
 
