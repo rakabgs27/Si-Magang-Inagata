@@ -89,28 +89,65 @@ class ListPengumumanController extends Controller
      */
     public function store(Request $request)
     {
-
         $totalCount = SimpanHasilAkhir::select('hasil')->where('status', '=', 'Belum Selesai')->get()->flatMap(function ($item) {
             return collect(json_decode($item->hasil));
         })->count();
 
         $rules = [
-            'rank_start' => 'required|integer|min:1',
-            'rank_end' => "required|integer|min:1|gte:rank_start|max:$totalCount",
+            'rank_start' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    if ($value != 0 && $value != 1) {
+                        $fail('Rank start hanya boleh bernilai 0 atau 1.');
+                    }
+                }
+            ],
+            'rank_end' => [
+                'required',
+                'integer',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request, $totalCount) {
+                    if ($request->rank_start == 0 && $value != 0) {
+                        $fail('Jika rank start adalah 0, maka rank end harus 0.');
+                    }
+                    if ($request->rank_start == 1 && ($value < 1 || $value > $totalCount)) {
+                        $fail("Rank end harus antara 1 dan $totalCount jika rank start adalah 1.");
+                    }
+                    if ($value < $request->rank_start) {
+                        $fail('Rank end harus lebih besar atau sama dengan rank start.');
+                    }
+                },
+            ],
         ];
 
         $messages = [
             'rank_start.required' => 'Field rank start wajib diisi.',
             'rank_end.required' => 'Field rank end wajib diisi.',
-            'rank_end.gte' => 'Rank end harus lebih besar atau sama dengan rank start.',
-            'rank_end.max' => "Rank end tidak boleh lebih besar dari $totalCount.",
         ];
 
         $validated = $request->validate($rules, $messages);
 
-        if ($validated['rank_start'] == $validated['rank_end']) {
+        if ($validated['rank_start'] == $validated['rank_end'] && $validated['rank_start'] != 0) {
             return redirect()->route('list-pengumuman.index')->with('error', 'Rank start dan rank end tidak boleh sama.');
         }
+
+        if ($validated['rank_start'] == 0 && $validated['rank_end'] == 0) {
+            // Semua pendaftar tidak lolos
+            $pendaftarIds = SimpanHasilAkhir::select('hasil')->where('status', '=', 'Belum Selesai')->get()->flatMap(function ($item) {
+                return collect(json_decode($item->hasil))->pluck('pendaftar_id');
+            });
+
+            foreach ($pendaftarIds as $pendaftarId) {
+                ListPengumuman::create([
+                    'id_pendaftar' => $pendaftarId,
+                    'status' => 'Tidak Lolos',
+                ]);
+            }
+
+            return redirect()->route('list-pengumuman.index')->with('success', 'Pengumuman berhasil ditambahkan. Semua pendaftar tidak lolos.');
+        }
+
         $rankStart = $validated['rank_start'];
         $rankEnd = $validated['rank_end'];
 
@@ -142,6 +179,8 @@ class ListPengumumanController extends Controller
 
         return redirect()->route('list-pengumuman.index')->with('success', 'Pengumuman berhasil ditambahkan.');
     }
+
+
 
 
 

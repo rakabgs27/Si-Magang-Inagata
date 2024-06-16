@@ -75,7 +75,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="pendaftarModalLabel">Select Pendaftar</h5>
+                    <h5 class="modal-title" id="pendaftarModalLabel">Masukkan Peringkat Pengumuman</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -86,7 +86,7 @@
                         <div class="form-group">
                             <label for="rankStart">Rank Start</label>
                             <input type="number" class="form-control @error('rank_start') is-invalid @enderror"
-                                id="rankStart" name="rank_start" min="1" required>
+                                id="rankStart" name="rank_start" min="0" required>
                             @error('rank_start')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -94,7 +94,7 @@
                         <div class="form-group">
                             <label for="rankEnd">Rank End</label>
                             <input type="number" class="form-control @error('rank_end') is-invalid @enderror"
-                                id="rankEnd" name="rank_end" min="1" required>
+                                id="rankEnd" name="rank_end" min="0" required>
                             @error('rank_end')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

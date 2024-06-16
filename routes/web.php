@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']],
     Route::get('/dashboard', function () {
         return view('dashboard.index', ['users' => User::get(),]);
     });
+    
     Route::resource('profile', ProfileController::class);
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('list-jawaban', JawabanPendaftarController::class);

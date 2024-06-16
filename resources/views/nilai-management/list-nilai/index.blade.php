@@ -81,12 +81,10 @@
                                                         class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $item['status'] }}
                                                     </td>
-                                                    @if ($item['status_wawancara'])
-                                                        <td
-                                                            class="status_wawancara_label {{ $item['status_wawancara_label'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
-                                                            {{ $item['status_wawancara_label'] }}
-                                                        </td>
-                                                    @endif
+                                                    <td
+                                                        class="status_wawancara_label {{ $item['status_wawancara'] ? 'text-success font-weight-bold' : 'text-danger font-weight-bold' }}">
+                                                        {{ $item['status_wawancara'] ? 'Sudah Dinilai' : 'Belum Dinilai' }}
+                                                    </td>
                                                     <td
                                                         class="{{ $item['status_verifikasi_reviewer'] === 'Belum Diverifikasi' ? 'text-gray font-weight-bold' : ($item['status_verifikasi_reviewer'] === 'Terverifikasi' ? 'text-success font-weight-bold' : 'text-danger font-weight-bold') }}">
                                                         {{ $item['status_verifikasi_reviewer'] }}
@@ -105,9 +103,12 @@
                                                                     class="btn btn-sm btn-primary btn-icon ml-2"
                                                                     data-toggle="modal"
                                                                     data-target="#nilaiWawancaraModal-{{ $key }}">
-                                                                    <i class="fas fa-plus"></i> Input Nilai Wawancara
+                                                                    <i class="fas fa-plus"></i>
+                                                                    {{ $item['nilai_wawancara'] ? 'Update Nilai Wawancara' : 'Input Nilai Wawancara' }}
                                                                 </button>
                                                             @endif
+
+
                                                         </div>
                                                     </td>
                                                 </tr>
