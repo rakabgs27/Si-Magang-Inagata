@@ -130,7 +130,6 @@ class RoleAndPermissionSeeder extends Seeder
             'divisi-mentor.index', 'divisi-mentor.create', 'divisi-mentor.edit', 'divisi-mentor.destroy',
             'list-pendaftar.index', 'list-pendaftar.create', 'list-pendaftar.edit', 'list-pendaftar.destroy',
             'role.permission.management',
-            'role.index', 'role.create', 'role.edit', 'role.destroy',
             'assign.user.index', 'assign.user.create', 'assign.user.edit',
             'divisi.management',
             'list-divisi.index', 'list-divisi.create', 'list-divisi.edit', 'list-divisi.destroy',
