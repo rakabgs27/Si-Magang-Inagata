@@ -109,7 +109,6 @@ class RoleAndPermissionSeeder extends Seeder
         // create roles
         $roleUser = Role::create(['name' => 'user']);
         $roleUser->givePermissionTo([
-            'dashboard',
             'soal.management',
             'test-soal.index',
             'jawaban.management',
@@ -208,6 +207,16 @@ class RoleAndPermissionSeeder extends Seeder
         $user = User::find(19);
         $user->assignRole('user');
         $user = User::find(20);
+        $user->assignRole('user');
+        $user = User::find(21);
+        $user->assignRole('user');
+        $user = User::find(22);
+        $user->assignRole('user');
+        $user = User::find(23);
+        $user->assignRole('user');
+        $user = User::find(24);
+        $user->assignRole('user');
+        $user = User::find(25);
         $user->assignRole('user');
     }
 }

@@ -16,7 +16,6 @@ class PendaftarSeeder extends Seeder
     public function run()
     {
         $startUserId = 11;
-        // $divisiIds = [1, 2, 3, 4, 5];
         $divisiIds = 1;
 
         for ($i = 0; $i < 10; $i++) {
@@ -34,5 +33,61 @@ class PendaftarSeeder extends Seeder
                 'status' => 'Terverifikasi',
             ]);
         }
+
+        Pendaftar::create([
+            'user_id' => 21,
+            'divisi_id' => $divisiIds,
+            'nomor_hp' => '08123456789',
+            'nama_instansi' => 'Instansi ',
+            'nama_jurusan' => 'Jurusan ',
+            'nim' => 'NIM',
+            'link_cv' => 'https://example.com/cv',
+            'link_porto' => 'https://example.com/porto',
+            'status' => 'Pending',
+        ]);
+        Pendaftar::create([
+            'user_id' => 22,
+            'divisi_id' => $divisiIds,
+            'nomor_hp' => '08123456789',
+            'nama_instansi' => 'Instansi ',
+            'nama_jurusan' => 'Jurusan ',
+            'nim' => 'NIM',
+            'link_cv' => 'https://example.com/cv',
+            'link_porto' => 'https://example.com/porto',
+            'status' => 'Pending',
+        ]);
+        Pendaftar::create([
+            'user_id' => 23,
+            'divisi_id' => $divisiIds,
+            'nomor_hp' => '08123456789',
+            'nama_instansi' => 'Instansi ',
+            'nama_jurusan' => 'Jurusan ',
+            'nim' => 'NIM',
+            'link_cv' => 'https://example.com/cv',
+            'link_porto' => 'https://example.com/porto',
+            'status' => 'Pending',
+        ]);
+        Pendaftar::create([
+            'user_id' => 24,
+            'divisi_id' => $divisiIds,
+            'nomor_hp' => '08123456789',
+            'nama_instansi' => 'Instansi ',
+            'nama_jurusan' => 'Jurusan ',
+            'nim' => 'NIM',
+            'link_cv' => 'https://example.com/cv',
+            'link_porto' => 'https://example.com/porto',
+            'status' => 'Tertolak',
+        ]);
+        Pendaftar::create([
+            'user_id' => 25,
+            'divisi_id' => $divisiIds,
+            'nomor_hp' => '08123456789',
+            'nama_instansi' => 'Instansi ',
+            'nama_jurusan' => 'Jurusan ',
+            'nim' => 'NIM',
+            'link_cv' => 'https://example.com/cv',
+            'link_porto' => 'https://example.com/porto',
+            'status' => 'Tertolak',
+        ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\DivisiMentorController;
@@ -92,10 +93,8 @@ Route::get('/user-management/list-pendaftar/direct-access', [PendaftarController
 Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
 Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']], function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.index', ['users' => User::get(),]);
-    });
-    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
     Route::resource('profile', ProfileController::class);
     Route::prefix('jawaban-management')->group(function () {
         Route::resource('list-jawaban', JawabanPendaftarController::class);
