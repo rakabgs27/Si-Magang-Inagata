@@ -73,8 +73,8 @@
                                                         <td>{{ $item['pendaftar']->user->name }}</td>
                                                         <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                         <td
-                                                            class="status {{ $item['status'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
-                                                            {{ $item['status'] }}
+                                                            class="status_nilai {{ $item['status_nilai'] === 'Belum Dinilai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
+                                                            {{ $item['status_nilai'] }}
                                                         </td>
                                                         @if ($item['status_wawancara'])
                                                             <td
@@ -603,9 +603,9 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{-- <div class="d-flex justify-content-center">
-                                    {{ $data->links() }}
-                                </div> --}}
+                                    <div class="d-flex justify-content-center">
+                                        {{ $pendaftars->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

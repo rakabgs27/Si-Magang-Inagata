@@ -25,7 +25,7 @@ class HasilAkhirController extends Controller
 
         if ($divisiId) {
             $nilaiReviewers = NilaiReviewer::where('status', '=', 'Terverifikasi')
-                ->pluck('nilai_pendaftars_id');
+                ->pluck('nilai_pendaftars_id')->toArray(); // Pastikan ini adalah array
 
             $simpanHasilAkhir = SimpanHasilAkhir::all();
 
@@ -40,7 +40,7 @@ class HasilAkhirController extends Controller
             } else {
                 $pendaftarIds = SimpanHasilAkhir::select('hasil')
                     ->where('status', '=', 'Sudah Selesai')->get()->flatMap(function ($item) {
-                        return collect(json_decode($item->hasil))->pluck('pendaftar_id');
+                        return collect(json_decode($item->hasil, true))->pluck('pendaftar_id');
                     })->map(function ($id) {
                         return (int) $id;
                     })->all();
@@ -62,8 +62,6 @@ class HasilAkhirController extends Controller
                     ->whereIn('id', $differentPendaftarIds)
                     ->get();
             }
-
-
 
             $data = [];
             $weights = [];
@@ -331,6 +329,10 @@ class HasilAkhirController extends Controller
                 $existingRecord = SimpanHasilAkhir::where('status', 'Belum Selesai')->first();
                 if ($existingRecord) {
                     $existingHasil = json_decode($existingRecord->hasil, true);
+                    // Menghapus pendaftar yang ditolak dari existingHasil
+                    $existingHasil = array_filter($existingHasil, function ($item) use ($nilaiReviewers) {
+                        return in_array($item['pendaftar_id'], $nilaiReviewers);
+                    });
                     foreach ($hasil as $newItem) {
                         $found = false;
                         foreach ($existingHasil as &$existingItem) {
@@ -344,11 +346,16 @@ class HasilAkhirController extends Controller
                             $existingHasil[] = $newItem;
                         }
                     }
+                    usort($existingHasil, function ($a, $b) {
+                        return $a['rank'] <=> $b['rank'];
+                    });
                     $existingRecord->update([
-                        'hasil' => json_encode($existingHasil),
+                        'hasil' => json_encode(array_values($existingHasil)),
                     ]);
                 } else {
-
+                    usort($hasil, function ($a, $b) {
+                        return $a['rank'] <=> $b['rank'];
+                    });
                     SimpanHasilAkhir::create([
                         'status' => 'Belum Selesai',
                         'hasil' => json_encode($hasil),
@@ -356,13 +363,13 @@ class HasilAkhirController extends Controller
                 }
             }
 
-
             return view('nilai-management.hasil-akhir.index', compact('data', 'divisis', 'divisiId'));
         } else {
             return view('nilai-management.hasil-akhir.index', compact('divisis', 'divisiId'))
                 ->with('message', 'Silahkan pilih divisi terlebih dahulu.');
         }
     }
+
 
     private function convertNilaiToLabel($nilai)
     {
