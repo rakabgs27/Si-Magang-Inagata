@@ -62,9 +62,9 @@
                                                     <td>{{ $listSoalPendaftar->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->pendaftar->user->name }}</td>
                                                     <td>{{ $listItem->soal->judul_soal }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->format('d F Y H:i:s') }}
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->translatedformat('d F Y H:i:s') }}
                                                     </td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->format('d F Y H:i:s') }}
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->translatedformat('d F Y H:i:s') }}
                                                     </td>
                                                     <td
                                                         class="status {{ $listItem->status === 'Sedang Dikerjakan' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
@@ -76,17 +76,20 @@
                                                                 class="btn btn-sm btn-warning btn-icon">
                                                                 <i class="fas fa-edit"></i> Detail
                                                             </a>
-                                                            <form action="{{ route('assign-soal.destroy', $listItem->id) }}"
-                                                                method="POST" class="ml-2" id="del-<?= $listItem->id ?>">
+                                                            <form
+                                                                action="{{ route('assign-soal.destroy', $listItem->id) }}"
+                                                                method="POST" class="ml-2" id="del-{{ $listItem->id }}">
                                                                 <input type="hidden" name="_method" value="DELETE">
                                                                 <input type="hidden" name="_token"
                                                                     value="{{ csrf_token() }}">
                                                                 <button type="submit" id="#submit"
-                                                                    class="btn btn-sm btn-danger btn-icon "
+                                                                    class="btn btn-sm btn-danger btn-icon"
                                                                     data-confirm="Hapus Data Assign Soal Pendaftar ?|Apakah Kamu Yakin?"
-                                                                    data-confirm-yes="submitDel(<?= $listItem->id ?>)"
-                                                                    data-id="del-{{ $listItem->id }}">
-                                                                    <i class="fas fa-times"> </i> Delete </button>
+                                                                    data-confirm-yes="submitDel({{ $listItem->id }})"
+                                                                    data-id="del-{{ $listItem->id }}"
+                                                                    {{ $listItem->status === 'Selesai Dikerjakan' ? 'disabled' : '' }}>
+                                                                    <i class="fas fa-times"></i> Delete
+                                                                </button>
                                                             </form>
                                                         </div>
                                                     </td>
@@ -131,7 +134,7 @@
                             success: function(response) {
                                 row.find('.status').text('Selesai Dikerjakan')
                                     .removeClass('text-danger').addClass(
-                                    'text-success');
+                                        'text-success');
                             },
                             error: function(xhr) {
                                 console.log(xhr.responseText);
@@ -143,7 +146,7 @@
                 if (allCompleted) {
                     clearInterval(intervalId);
                 }
-            }, 60000);
+            }, 1000);
 
             // Event handling lainnya
             $('.import').click(function(event) {

@@ -35,7 +35,7 @@
                                             @foreach ($hasilAkhirPengumuman as $key => $listItem)
                                                 <tr>
                                                     <td>{{ $hasilAkhirPengumuman->firstItem() + $key }}</td>
-                                                    <td>{{ $listItem->created_at }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->created_at)->translatedFormat('d F Y') }}</td>
                                                     <td
                                                         class="status {{ $listItem->status === 'Belum Selesai' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">
                                                         {{ $listItem->status }}

@@ -69,7 +69,7 @@
                                                 <td>{{ ($users->currentPage() - 1) * $users->perPage() + $key + 1 }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
-                                                <td>{{ $user->created_at }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($user->created_at)->translatedformat('d F Y') }}
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="{{ route('user.edit', $user->id) }}"

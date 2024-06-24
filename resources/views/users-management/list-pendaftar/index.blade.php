@@ -55,7 +55,13 @@
                                                 <td>{{ $listItem->user->name }}</td>
                                                 <td>{{ $listItem->user->email }}</td>
                                                 <td>{{ $listItem->divisi->nama_divisi }}</td>
-                                                <td>{{ $listItem->status }}</td>
+                                                <td class="status {{
+                                                    $listItem->status === 'Pending' ? 'text-dark font-weight-bold' :
+                                                    ($listItem->status === 'Terverifikasi' ? 'text-success font-weight-bold' :
+                                                    'text-danger font-weight-bold')
+                                                }}">
+                                                    {{ $listItem->status }}
+                                                </td>
                                                 <td class="text-right">
                                                     <div class="d-flex flex-column flex-md-row justify-content-end">
                                                         @if ($listItem->status == 'Pending')

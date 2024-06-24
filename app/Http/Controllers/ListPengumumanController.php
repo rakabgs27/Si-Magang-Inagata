@@ -128,7 +128,37 @@ class ListPengumumanController extends Controller
 
         $validated = $request->validate($rules, $messages);
 
-        if ($validated['rank_start'] == $validated['rank_end'] && $validated['rank_start'] != 0) {
+        // Kondisi khusus untuk rank start 1 dan rank end 1
+        if ($validated['rank_start'] == 1 && $validated['rank_end'] == 1) {
+            $pendaftarIds = SimpanHasilAkhir::select('hasil')->where('status', '=', 'Belum Selesai')->get()->flatMap(function ($item) {
+                return collect(json_decode($item->hasil))->filter(function ($item) {
+                    return $item->rank == 1;
+                })->pluck('pendaftar_id');
+            });
+
+            foreach ($pendaftarIds as $pendaftarId) {
+                ListPengumuman::create([
+                    'id_pendaftar' => $pendaftarId,
+                    'status' => 'Lolos',
+                ]);
+            }
+
+            // Sisanya (rank selain 1) tidak lolos
+            $notLolosPendaftarIds = SimpanHasilAkhir::select('hasil')->where('status', '=', 'Belum Selesai')->get()->flatMap(function ($item) {
+                return collect(json_decode($item->hasil))->filter(function ($item) {
+                    return $item->rank != 1;
+                })->pluck('pendaftar_id');
+            });
+
+            foreach ($notLolosPendaftarIds as $pendaftarId) {
+                ListPengumuman::create([
+                    'id_pendaftar' => $pendaftarId,
+                    'status' => 'Tidak Lolos',
+                ]);
+            }
+
+            return redirect()->route('list-pengumuman.index')->with('success', 'Pengumuman berhasil ditambahkan. Pendaftar rank 1 diterima.');
+        } elseif ($validated['rank_start'] == $validated['rank_end'] && $validated['rank_start'] != 0) {
             return redirect()->route('list-pengumuman.index')->with('error', 'Rank start dan rank end tidak boleh sama.');
         }
 
@@ -179,10 +209,6 @@ class ListPengumumanController extends Controller
 
         return redirect()->route('list-pengumuman.index')->with('success', 'Pengumuman berhasil ditambahkan.');
     }
-
-
-
-
 
 
     /**

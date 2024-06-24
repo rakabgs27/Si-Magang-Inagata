@@ -25,31 +25,9 @@
                         <div class="card-body">
                             <div class="show-import" style="display: none">
                                 <div class="custom-file">
-                                    {{-- <form action="{{ route('user.import') }}" method="post" enctype="multipart/form-data">
-                                        {{ csrf_field() }}
-                                        <label class="custom-file-label" for="file-upload">Choose File</label>
-                                        <input type="file" id="file-upload" class="custom-file-input" name="import_file">
-                                        <br /> <br />
-                                        <div class="footer text-right">
-                                            <button class="btn btn-primary">Import File</button>
-                                        </div>
-                                    </form> --}}
                                 </div>
                             </div>
                             <div class="show-search mb-3" style="display: none">
-                                {{-- <form id="search" method="GET" action="{{ route('user.index') }}">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4">
-                                            <label for="role">User</label>
-                                            <input type="text" name="name" class="form-control" id="name"
-                                                placeholder="User Name">
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
-                                        <a class="btn btn-secondary" href="{{ route('user.index') }}">Reset</a>
-                                    </div>
-                                </form> --}}
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-md">
@@ -68,7 +46,7 @@
                                                 <td>
                                                     {{ $listItem->divisiMentor->pluck('divisi.nama_divisi')->implode(', ') }}
                                                 </td>
-                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)->format('d F Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($listItem->created_at)->translatedformat('d F Y') }}</td>
                                                 <td class="text-right">
                                                     <div class="d-flex justify-content-end">
                                                         <a href="{{ route('divisi-mentor.edit', $listItem->id) }}"

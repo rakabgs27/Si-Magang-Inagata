@@ -5,7 +5,7 @@
         <div class="section-header">
             <h1>Pengelolaan Wawancara</h1>
         </div>
-        @if (!$mentorDivisiId  && !$userManager)
+        @if (!$mentorDivisiId && !$userManager)
             <div class="alert alert-warning" role="alert">
                 Mentor tidak memiliki divisi.
             </div>
@@ -78,7 +78,7 @@
                                                                     Detail</button>
                                                                 @role('manager')
                                                                     <a href="{{ route('list-wawancara.edit', $listItem->id) }}"
-                                                                        class="btn btn-sm btn-warning btn-icon ml-2"><i
+                                                                        class="btn btn-sm btn-warning btn-icon ml-2 {{ $listItem->status === 'Selesai' ? 'disabled' : '' }}"><i
                                                                             class="fas fa-edit"></i> Edit</a>
                                                                     <form
                                                                         action="{{ route('list-wawancara.destroy', $listItem->id) }}"
@@ -90,7 +90,8 @@
                                                                             class="btn btn-sm btn-danger btn-icon"
                                                                             data-confirm="Hapus Data Wawancara Pendaftar ?|Apakah Kamu Yakin?"
                                                                             data-confirm-yes="submitDel({{ $listItem->id }})"
-                                                                            data-id="del-{{ $listItem->id }}">
+                                                                            data-id="del-{{ $listItem->id }}"
+                                                                            {{ $listItem->status === 'Selesai' ? 'disabled' : '' }}>
                                                                             <i class="fas fa-times"> </i> Delete</button>
                                                                     </form>
                                                                 @endrole
@@ -109,7 +110,7 @@
                                                                             Wawancara:
                                                                         </strong>
                                                                         <span
-                                                                            style="font-size: 16px;">{{ $listItem->tanggal_wawancara }}</span>
+                                                                            style="font-size: 16px;">{{ \Carbon\Carbon::parse($listItem->tanggal_wawancara)->translatedFormat('d F Y') }}</span>
                                                                     </div>
                                                                     <div>
                                                                         <strong style="font-size: 16px;">Deskripsi:</strong>
