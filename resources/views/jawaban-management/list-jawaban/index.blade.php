@@ -113,7 +113,7 @@
                                                         <td><a href="{{ $listItem->link_jawaban }}"
                                                                 target="_blank">{{ $listItem->link_jawaban }}</a></td>
                                                         <td>{{ basename($listItem->file_jawaban) }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($listItem->tanggal_pengumpulan)->translatedformat('d F Y H:i:s') }}
+                                                        <td>{{ \Carbon\Carbon::parse($listItem->tanggal_pengumpulan)->translatedformat('d F Y H:i') }}
                                                         </td>
                                                         <td>
                                                             <button class="btn btn-info btn-sm"

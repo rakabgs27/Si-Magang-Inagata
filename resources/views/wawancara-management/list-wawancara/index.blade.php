@@ -110,7 +110,7 @@
                                                                             Wawancara:
                                                                         </strong>
                                                                         <span
-                                                                            style="font-size: 16px;">{{ \Carbon\Carbon::parse($listItem->tanggal_wawancara)->translatedFormat('d F Y') }}</span>
+                                                                            style="font-size: 16px;">{{ \Carbon\Carbon::parse($listItem->tanggal_wawancara)->translatedFormat('d F Y \J\a\m H:i') }}</span>
                                                                     </div>
                                                                     <div>
                                                                         <strong style="font-size: 16px;">Deskripsi:</strong>

@@ -15,9 +15,9 @@
                     <p><strong>Judul Soal:</strong> {{ $soal->judul_soal }}</p>
                     <p><strong>Deskripsi Tugas:</strong> {{ strip_tags($testSoal->deskripsi_tugas) }}</p>
                     <p><strong>Tanggal Mulai:</strong>
-                        {{ \Carbon\Carbon::parse($testSoal->tanggal_mulai)->format('d F Y H:i:s') }}</p>
+                        {{ \Carbon\Carbon::parse($testSoal->tanggal_mulai)->translatedformat('d F Y H:i') }}</p>
                     <p><strong>Tanggal Akhir:</strong>
-                        {{ \Carbon\Carbon::parse($testSoal->tanggal_akhir)->format('d F Y H:i:s') }}</p>
+                        {{ \Carbon\Carbon::parse($testSoal->tanggal_akhir)->translatedformat('d F Y H:i') }}</p>
                     <ul>
                         @foreach ($fileData as $file)
                             <li><a href="{{ $file['url'] }}" target="_blank">{{ $file['name'] }}</a></li>

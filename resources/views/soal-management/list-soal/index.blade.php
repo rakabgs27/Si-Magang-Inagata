@@ -100,7 +100,7 @@
                                                         <td>{{ $listItem->name }}</td>
                                                         <td>{{ $listItem->nama_divisi }}</td>
                                                         <td>{{ $listItem->judul_soal }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->translatedformat('d F Y H:i:s') }}
+                                                        <td>{{ \Carbon\Carbon::parse($listItem->tanggal_upload)->translatedformat('d F Y H:i') }}
                                                         </td>
                                                         @role('mentor')
                                                             <td class="text-right">

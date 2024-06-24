@@ -62,9 +62,9 @@
                                                     <td>{{ $listSoalPendaftar->firstItem() + $key }}</td>
                                                     <td>{{ $listItem->pendaftar->user->name }}</td>
                                                     <td>{{ $listItem->soal->judul_soal }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->translatedformat('d F Y H:i:s') }}
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_mulai)->translatedformat('d F Y H:i') }}
                                                     </td>
-                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->translatedformat('d F Y H:i:s') }}
+                                                    <td>{{ \Carbon\Carbon::parse($listItem->tanggal_akhir)->translatedformat('d F Y H:i') }}
                                                     </td>
                                                     <td
                                                         class="status {{ $listItem->status === 'Sedang Dikerjakan' ? 'text-danger font-weight-bold' : 'text-success font-weight-bold' }}">

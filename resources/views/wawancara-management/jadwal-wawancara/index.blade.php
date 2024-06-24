@@ -29,7 +29,7 @@
                                                 <strong style="font-size: 16px;">
                                                     <i class="fas fa-calendar-week"></i> Tanggal Wawancara:
                                                 </strong>
-                                                <span style="font-size: 16px;">{{ $listItem->tanggal_wawancara }}</span>
+                                                <span style="font-size: 16px;">{{ \Carbon\Carbon::parse($listItem->tanggal_wawancara)->translatedFormat('d F Y \J\a\m H:i') }}</span>
                                             </div>
                                             <div>
                                                 <strong style="font-size: 16px;">Deskripsi:</strong>

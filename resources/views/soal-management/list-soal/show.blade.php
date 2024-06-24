@@ -16,7 +16,7 @@
                     <p><strong>Divisi :</strong> {{ $soal->divisi->nama_divisi }}</p>
                     <p><strong>Deskripsi :</strong> {{ strip_tags($soal->deskripsi_soal) }}</p>
                     <p><strong>Tanggal Upload :</strong>
-                        {{ \Carbon\Carbon::parse($soal->tanggal_upload)->format('d F Y H:i:s') }}</p>
+                        {{ \Carbon\Carbon::parse($soal->tanggal_upload)->translatedformat('d F Y H:i') }}</p>
                     @if ($fileData->isNotEmpty())
                         <p><strong>File Soal :</strong></p>
                         <ul>
