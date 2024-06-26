@@ -92,7 +92,7 @@ Route::get('/user-management/list-pendaftar/direct-access', [PendaftarController
     ->middleware('auto-login-manager');
 Route::get('register-pendaftar', [RegisterController::class, 'index'])->name('index.pendaftar');
 
-Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:user|manager|mentor|reviewer']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::resource('profile', ProfileController::class);
@@ -146,7 +146,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:mentor']], function () 
     Route::post('/nilai-wawancara/store', [NilaiWawancaraPendaftarController::class, 'store'])->name('nilai-wawancara.store');
 });
 
-Route::group(['middleware' => ['auth', 'verified', 'role:reviewer|manager']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:reviewer']], function () {
     Route::post('/switch-role', [RoleController::class, 'switchRole'])->name('switch.role');
     Route::prefix('nilai-management')->group(function () {
         Route::resource('reviewer', NilaiReviewerController::class);

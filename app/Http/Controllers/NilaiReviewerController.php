@@ -17,14 +17,15 @@ class NilaiReviewerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // Controller
     public function index(Request $request)
     {
         $divisis = Divisi::all();
         $divisiId = $request->input('divisi_id');
-        $perPage = 10; // Jumlah item per halaman
+        $perPage = 5; // Jumlah item per halaman
 
         if ($divisiId) {
-            $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->paginate($perPage);
+            $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->paginate($perPage)->appends(['divisi_id' => $divisiId]);
             $data = [];
 
             foreach ($pendaftars as $pendaftar) {
@@ -147,6 +148,8 @@ class NilaiReviewerController extends Controller
 
         return view('nilai-management.reviewer.index', compact('divisis', 'divisiId'));
     }
+
+
 
 
 

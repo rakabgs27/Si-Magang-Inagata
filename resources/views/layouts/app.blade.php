@@ -46,7 +46,7 @@
                             <a href="{{ route('profile.index') }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
-                            <div class="dropdown-divider"></div>
+                            {{-- <div class="dropdown-divider"></div>
                             @if (auth()->user()->hasRole('manager'))
                                 <form action="{{ route('switch.role') }}" method="POST" id="switch-role-form-reviewer"
                                     style="display: none;">
@@ -70,7 +70,7 @@
                                     <i class="fas fa-user-tag"></i> Switch to Manager
                                 </a>
                             @else
-                            @endif
+                            @endif --}}
 
 
 

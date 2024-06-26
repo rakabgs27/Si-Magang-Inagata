@@ -1,3 +1,4 @@
+<!-- Blade view -->
 @extends('layouts.app')
 
 @section('content')
@@ -69,7 +70,8 @@
                                                 </tr>
                                                 @foreach ($data as $key => $item)
                                                     <tr>
-                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ ($pendaftars->currentPage() - 1) * $pendaftars->perPage() + $loop->iteration }}
+                                                        </td>
                                                         <td>{{ $item['pendaftar']->user->name }}</td>
                                                         <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                         <td
@@ -604,7 +606,7 @@
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-center">
-                                        {{ $pendaftars->links() }}
+                                        {{ $pendaftars->appends(['divisi_id' => $divisiId])->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -614,130 +616,4 @@
             @endif
         </div>
     </section>
-
 @endsection
-
-@push('customScript')
-    <script src="/assets/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-            $('.import').click(function(event) {
-                event.stopPropagation();
-                $(".show-import").slideToggle("fast");
-                $(".show-search").hide();
-            });
-            $('.search').click(function(event) {
-                event.stopPropagation();
-                $(".show-search").slideToggle("fast");
-                $(".show-import").hide();
-            });
-            //ganti label berdasarkan nama file
-            $('#file-upload').change(function() {
-                var i = $(this).prev('label').clone();
-                var file = $('#file-upload')[0].files[0].name;
-                $(this).prev('label').text(file);
-            });
-
-            $('.modal').on('hidden.bs.modal', function() {
-                $(this).find('form')[0].reset(); // Reset form input values
-            });
-        });
-
-        function submitDel(id) {
-            $('#del-' + id).submit()
-        }
-    </script>
-
-    <script>
-        function changeStatus(id, status) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: `You are about to change the status to ${status}.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, change it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('reviewer.changeStatus') }}",
-                        type: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            id: id,
-                            status: status
-                        },
-                        success: function(response) {
-                            iziToast.success({
-                                title: 'Success',
-                                message: response.message,
-                                position: 'topRight'
-                            });
-                            setTimeout(function() {
-                                location.reload();
-                            }, 1000);
-                        },
-                        error: function(response) {
-                            iziToast.error({
-                                title: 'Error',
-                                message: response.responseJSON.message,
-                                position: 'topRight'
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    </script>
-@endpush
-
-@push('customStyle')
-    <link rel="stylesheet" href="/assets/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-
-    <style>
-        .radio-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .radio-container input[type="radio"] {
-            display: none;
-        }
-
-        .radio-container label {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            border: 2px solid #007bff;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-            height: 40px;
-            min-width: 100px;
-        }
-
-        .radio-container input[type="radio"]:checked+label {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .radio-container label:hover {
-            background-color: #0056b3;
-            color: white;
-            border-color: #0056b3;
-        }
-    </style>
-@endpush
