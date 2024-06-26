@@ -40,19 +40,17 @@ class NilaiWawancaraPendaftarController extends Controller
     {
         $validated = $request->validated();
 
-        $nilaiNumeric = $this->convertToNumeric($validated['nilai_wawancara']);
-
         $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $validated['pendaftar_id'])->first();
         $nilaiPendaftar = NilaiPendaftar::where('pendaftar_id', $validated['pendaftar_id'])->first();
 
         if ($nilaiWawancara) {
-            $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+            $nilaiWawancara->nilai_wawancara = $validated['nilai_wawancara'];
             $nilaiWawancara->status = 'Sudah Dinilai';
             $nilaiWawancara->save();
         } else {
             $nilaiWawancara = new NilaiWawancaraPendaftar();
             $nilaiWawancara->pendaftar_id = $validated['pendaftar_id'];
-            $nilaiWawancara->nilai_wawancara = $nilaiNumeric;
+            $nilaiWawancara->nilai_wawancara = $validated['nilai_wawancara'];
             $nilaiWawancara->status = 'Sudah Dinilai';
             $nilaiWawancara->save();
         }
@@ -66,6 +64,7 @@ class NilaiWawancaraPendaftarController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Nilai wawancara berhasil disimpan.');
     }
+
 
     private function convertToNumeric($value)
     {

@@ -142,7 +142,7 @@ class NilaiPendaftarController extends Controller
                     'status' => $nilai->status,
                     'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
                     'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
-                    'nilai_wawancara_label' => $nilaiWawancara ? $this->convertNilaiToLabel($nilaiWawancara->nilai_wawancara) : null,
+                    'nilai_wawancara_label' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
                     'status_wawancara_label' => $status_wawancara_label,
                     'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
                     'status_verifikasi_reviewer' => $nilaiReviewer ? $nilaiReviewer->status : 'Belum Diverifikasi',
@@ -152,6 +152,7 @@ class NilaiPendaftarController extends Controller
 
         return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId', 'mentorDivisiId'));
     }
+
 
 
     private function convertNilaiToLabel($nilai)

@@ -25,7 +25,7 @@ class StoreNilaiWawancaraPendaftarRequest extends FormRequest
     {
         return [
             'pendaftar_id' => 'required|exists:pendaftars,id',
-            'nilai_wawancara' => 'required|in:Kurang,Cukup,Memuaskan,Baik Sekali,Luar Biasa',
+            'nilai_wawancara' => 'required|numeric|min:60|max:100',
         ];
     }
 
@@ -35,7 +35,9 @@ class StoreNilaiWawancaraPendaftarRequest extends FormRequest
             'pendaftar_id.required' => 'Pendaftar ID wajib diisi.',
             'pendaftar_id.exists' => 'Pendaftar ID tidak valid.',
             'nilai_wawancara.required' => 'Nilai wawancara wajib diisi.',
-            'nilai_wawancara.in' => 'Nilai wawancara harus diantara: Kurang, Cukup, Memuaskan, Baik Sekali, Luar Biasa.',
+            'nilai_wawancara.numeric' => 'Nilai wawancara harus berupa angka.',
+            'nilai_wawancara.min' => 'Nilai wawancara harus minimal 60.',
+            'nilai_wawancara.max' => 'Nilai wawancara harus maksimal 100.',
         ];
     }
 }

@@ -560,10 +560,10 @@
                 aria-labelledby="nilaiWawancaraModalLabel-{{ $key }}" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header bg-primary text-white">
                             <h5 class="modal-title" id="nilaiWawancaraModalLabel-{{ $key }}">Masukkan Nilai
                                 Wawancara</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -572,24 +572,16 @@
                                 @csrf
                                 <input type="hidden" name="pendaftar_id" value="{{ $item['pendaftar']->id }}">
                                 <div class="form-group">
-                                    <label for="nilai_wawancara" style="margin-bottom: 20px; font-size: 14px;">Nilai
-                                        Wawancara</label>
-                                    <div class="radio-container">
-                                        @foreach (['Kurang', 'Cukup', 'Memuaskan', 'Baik Sekali', 'Luar Biasa'] as $nilai)
-                                            @php
-                                                $isChecked = $item['nilai_wawancara_label'] == $nilai ? 'checked' : '';
-                                            @endphp
-                                            <input type="radio"
-                                                id="nilai_wawancara_{{ $item['pendaftar']->id }}_{{ $loop->index + 1 }}"
-                                                name="nilai_wawancara" value="{{ $nilai }}" {{ $isChecked }}
-                                                onchange="updateCheckedState(this)">
-                                            <label
-                                                for="nilai_wawancara_{{ $item['pendaftar']->id }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                        @endforeach
-                                    </div>
+                                    <label for="nilai_wawancara" class="font-weight-bold" style="font-size: 16px;">
+                                        Nilai Wawancara
+                                    </label>
+                                    <input type="number" class="form-control" name="nilai_wawancara"
+                                        id="nilai_wawancara" min="60" max="100" required
+                                        value="{{ $item['nilai_wawancara'] }}" placeholder="Masukkan nilai (60-100)">
                                 </div>
-                                <div class="form-group text-right" style="margin-top: 50px;">
-                                    <button type="submit" class="btn btn-primary-modal">Submit</button>
+                                <div class="form-group text-right" style="margin-top: 30px;">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -687,10 +679,56 @@
 
         .btn-primary-modal {
             color: #fff;
-            box-shadow: 0 2px 6px #acb5f6;
-            background-color: #6777ef;
-            border-color: #6777ef;
+            box-shadow: 0 2px 6px #007bff !important;
+            background-color: #007bff !important;
+            border-color: #007bff !important;
             margin-right: 19px;
+        }
+
+        .modal-header.bg-primary {
+            background-color: #007bff !important;
+        }
+
+        .modal-header .modal-title {
+            font-size: 20px;
+        }
+
+        .modal-header .close {
+            color: #fff;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-primary-modal {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .btn-success {
+            background-color: #007bff !important;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .modal-body {
+            padding: 20px;
         }
     </style>
 @endpush
