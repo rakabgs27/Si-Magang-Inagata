@@ -74,7 +74,7 @@
                                             </tr>
                                             @foreach ($data as $key => $item)
                                                 <tr>
-                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $item['no']}}</td>
                                                     <td>{{ $item['pendaftar']->user->name }}</td>
                                                     <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                     <td
@@ -546,6 +546,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="pagination justify-content-center">
+                                    {{ $nilaiPendaftars->appends(['divisi_id' => $divisiId])->links() }}
                                 </div>
                             </div>
                         </div>

@@ -22,7 +22,6 @@
                             <form method="GET" action="{{ route('hasil-akhir.index') }}" class="mb-4">
                                 <div class="form-group">
                                     <label for="divisi_id">Divisi</label>
-
                                     <select class="form-control select2" id="divisi_id" name="divisi_id"
                                         onchange="this.form.submit()">
                                         <option value="" selected>Pilih Divisi</option>
@@ -72,7 +71,7 @@
                                                 </tr>
                                                 @foreach ($data as $key => $item)
                                                     <tr>
-                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ ($pendaftars->currentPage()-1) * $pendaftars->perPage() + $key + 1 }}</td>
                                                         <td>{{ $item['pendaftar']->user->name }}</td>
                                                         <td>{{ $item['pendaftar']->divisi->nama_divisi }}</td>
                                                         <td
@@ -106,7 +105,7 @@
                                                         </td>
                                                         <td class="text-right">
                                                             <div class="d-flex justify-content-end">
-                                                                @role('reviiewer')
+                                                                @role('reviewer')
                                                                 @if ($item['status_reviewer'] === 'Belum Diverifikasi')
                                                                     <button
                                                                         class="btn btn-sm btn-success btn-icon mb-2 mb-md-0"
@@ -140,7 +139,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="5" class="hiddenRow">
+                                                        <td colspan="9" class="hiddenRow">
                                                             <div id="collapse-{{ $key }}" class="collapse p-3">
                                                                 <div class="card border-primary">
                                                                     <div class="card-body">
@@ -612,9 +611,10 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    {{-- <div class="d-flex justify-content-center">
-                                    {{ $data->links() }}
-                                </div> --}}
+                                    <!-- Pagination Links -->
+                                    <div class="d-flex justify-content-center">
+                                        {{ $pendaftars->appends(['divisi_id' => $divisiId])->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -623,7 +623,6 @@
             @endif
         </div>
     </section>
-
 @endsection
 
 @push('customScript')

@@ -26,7 +26,7 @@ class DivisiController extends Controller
     public function index(Request $request)
     {
         $namaDivisiSearch = $request->input('nama_divisi');
-        
+
         $listDivisi = Divisi::when($request->input('nama_divisi'), function ($query, $namaDivisi) {
             return $query->where('nama_divisi', 'like', '%' . $namaDivisi . '%');
         })->paginate(10);

@@ -22,6 +22,7 @@ class HasilAkhirController extends Controller
     {
         $divisis = Divisi::all();
         $divisiId = $request->input('divisi_id');
+        $perPage = 10; // Jumlah item per halaman
 
         if ($divisiId) {
             $nilaiReviewers = NilaiReviewer::where('status', '=', 'Terverifikasi')
@@ -36,7 +37,7 @@ class HasilAkhirController extends Controller
                 $pendaftars = Pendaftar::with('user', 'divisi')
                     ->where('divisi_id', $divisiId)
                     ->whereIn('id', $nilaiPendaftarIds)
-                    ->get();
+                    ->paginate($perPage);
             } else {
                 $pendaftarIds = SimpanHasilAkhir::select('hasil')
                     ->where('status', '=', 'Sudah Selesai')->get()->flatMap(function ($item) {
@@ -60,7 +61,7 @@ class HasilAkhirController extends Controller
                 $pendaftars = Pendaftar::with('user', 'divisi')
                     ->where('divisi_id', $divisiId)
                     ->whereIn('id', $differentPendaftarIds)
-                    ->get();
+                    ->paginate($perPage);
             }
 
             $data = [];
@@ -363,12 +364,14 @@ class HasilAkhirController extends Controller
                 }
             }
 
-            return view('nilai-management.hasil-akhir.index', compact('data', 'divisis', 'divisiId'));
+            return view('nilai-management.hasil-akhir.index', compact('data', 'divisis', 'divisiId', 'pendaftars'));
         } else {
             return view('nilai-management.hasil-akhir.index', compact('divisis', 'divisiId'))
                 ->with('message', 'Silahkan pilih divisi terlebih dahulu.');
         }
     }
+
+
 
 
     private function convertNilaiToLabel($nilai)

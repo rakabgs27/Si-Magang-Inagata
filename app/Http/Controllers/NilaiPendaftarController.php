@@ -25,8 +25,6 @@ class NilaiPendaftarController extends Controller
     {
         $userId = Auth::id();
         $divisiMentors = DivisiMentor::where('user_id', $userId)->with('divisi')->get();
-
-        // Retrieve the division ID associated with the authenticated mentor
         $mentorDivisiId = DivisiMentor::where('user_id', $userId)->first()->divisi_id ?? null;
 
         if (!$mentorDivisiId) {
@@ -37,120 +35,123 @@ class NilaiPendaftarController extends Controller
         }
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
+        $perPage = 5; // Number of items per page
+        $page = $request->input('page', 1); // Current page
+        $startIndex = ($page - 1) * $perPage; // Start index for numbering
 
-        $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->get();
+        $nilaiPendaftars = NilaiPendaftar::with('pendaftar.user', 'pendaftar.divisi')
+            ->whereHas('pendaftar', function ($query) use ($divisiId) {
+                $query->where('divisi_id', $divisiId);
+            })->paginate($perPage);
 
         $data = [];
-
-        foreach ($pendaftars as $pendaftar) {
-            $nilai = NilaiPendaftar::where('pendaftar_id', $pendaftar->id)->first();
+        foreach ($nilaiPendaftars as $index => $nilai) {
+            $pendaftar = $nilai->pendaftar;
             $listWawancara = ListWawancara::where('pendaftar_id', $pendaftar->id)->first();
             $nilaiWawancara = NilaiWawancaraPendaftar::where('pendaftar_id', $pendaftar->id)->first();
             $nilaiReviewer = NilaiReviewer::where('nilai_wawancara_pendaftars_id', $nilaiWawancara->id ?? null)
                 ->where('nilai_pendaftars_id', $nilai->id ?? null)
                 ->first();
 
-            if ($nilai) {
-                switch ($divisiId) {
-                    case 1: // Backend
-                        $kriteria = [
-                            'kriteria_1' => $nilai->kriteria_1,
-                            'kriteria_2' => $nilai->kriteria_2,
-                            'kriteria_3' => $nilai->kriteria_3,
-                            'kriteria_4' => $nilai->kriteria_4,
-                            'kriteria_5' => $nilai->kriteria_5,
-                            'kriteria_6' => $nilai->kriteria_6,
-                        ];
-                        break;
-                    case 2: // Frontend
-                        $kriteria = [
-                            'kriteria_7' => $nilai->kriteria_7,
-                            'kriteria_8' => $nilai->kriteria_8,
-                            'kriteria_9' => $nilai->kriteria_9,
-                            'kriteria_10' => $nilai->kriteria_10,
-                            'kriteria_11' => $nilai->kriteria_11,
-                        ];
-                        break;
-                    case 3: // Mobile Development
-                        $kriteria = [
-                            'kriteria_12' => $nilai->kriteria_12,
-                            'kriteria_13' => $nilai->kriteria_13,
-                            'kriteria_14' => $nilai->kriteria_14,
-                            'kriteria_15' => $nilai->kriteria_15,
-                        ];
-                        break;
-                    case 4: // UI/UX
-                        $kriteria = [
-                            'kriteria_16' => $nilai->kriteria_16,
-                            'kriteria_17' => $nilai->kriteria_17,
-                            'kriteria_18' => $nilai->kriteria_18,
-                            'kriteria_19' => $nilai->kriteria_19,
-                            'kriteria_20' => $nilai->kriteria_20,
-                            'kriteria_21' => $nilai->kriteria_21,
-                        ];
-                        break;
-                    case 5: // System Analyst
-                        $kriteria = [
-                            'kriteria_22' => $nilai->kriteria_22,
-                            'kriteria_23' => $nilai->kriteria_23,
-                            'kriteria_24' => $nilai->kriteria_24,
-                            'kriteria_25' => $nilai->kriteria_25,
-                            'kriteria_26' => $nilai->kriteria_26,
-                            'kriteria_27' => $nilai->kriteria_27,
-                        ];
-                        break;
-                    case 6: // Management
-                        $kriteria = [
-                            'kriteria_28' => $nilai->kriteria_28,
-                            'kriteria_29' => $nilai->kriteria_29,
-                            'kriteria_30' => $nilai->kriteria_30,
-                            'kriteria_31' => $nilai->kriteria_31,
-                            'kriteria_32' => $nilai->kriteria_32,
-                            'kriteria_33' => $nilai->kriteria_33,
-                            'kriteria_34' => $nilai->kriteria_34,
-                        ];
-                        break;
-                    case 7: // Media & Advertising
-                        $kriteria = [
-                            'kriteria_35' => $nilai->kriteria_35,
-                            'kriteria_36' => $nilai->kriteria_36,
-                            'kriteria_37' => $nilai->kriteria_37,
-                            'kriteria_38' => $nilai->kriteria_38,
-                            'kriteria_39' => $nilai->kriteria_39,
-                            'kriteria_40' => $nilai->kriteria_40,
-                        ];
-                        break;
-                    case 8: // Icon and Illustration
-                        $kriteria = [
-                            'kriteria_41' => $nilai->kriteria_41,
-                            'kriteria_42' => $nilai->kriteria_42,
-                            'kriteria_43' => $nilai->kriteria_43,
-                            'kriteria_44' => $nilai->kriteria_44,
-                        ];
-                        break;
-                    default:
-                        $kriteria = [];
-                        break;
-                }
-
-                $status_wawancara_label = ($nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai') ? $nilaiWawancara->status : 'Menunggu';
-
-                $data[] = [
-                    'pendaftar' => $pendaftar,
-                    'kriteria' => $kriteria,
-                    'idNilaiPendaftar' => $nilai->id,
-                    'status' => $nilai->status,
-                    'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
-                    'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
-                    'nilai_wawancara_label' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
-                    'status_wawancara_label' => $status_wawancara_label,
-                    'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
-                    'status_verifikasi_reviewer' => $nilaiReviewer ? $nilaiReviewer->status : 'Belum Diverifikasi',
-                ];
+            switch ($divisiId) {
+                case 1: // Backend
+                    $kriteria = [
+                        'kriteria_1' => $nilai->kriteria_1,
+                        'kriteria_2' => $nilai->kriteria_2,
+                        'kriteria_3' => $nilai->kriteria_3,
+                        'kriteria_4' => $nilai->kriteria_4,
+                        'kriteria_5' => $nilai->kriteria_5,
+                        'kriteria_6' => $nilai->kriteria_6,
+                    ];
+                    break;
+                case 2: // Frontend
+                    $kriteria = [
+                        'kriteria_7' => $nilai->kriteria_7,
+                        'kriteria_8' => $nilai->kriteria_8,
+                        'kriteria_9' => $nilai->kriteria_9,
+                        'kriteria_10' => $nilai->kriteria_10,
+                        'kriteria_11' => $nilai->kriteria_11,
+                    ];
+                    break;
+                case 3: // Mobile Development
+                    $kriteria = [
+                        'kriteria_12' => $nilai->kriteria_12,
+                        'kriteria_13' => $nilai->kriteria_13,
+                        'kriteria_14' => $nilai->kriteria_14,
+                        'kriteria_15' => $nilai->kriteria_15,
+                    ];
+                    break;
+                case 4: // UI/UX
+                    $kriteria = [
+                        'kriteria_16' => $nilai->kriteria_16,
+                        'kriteria_17' => $nilai->kriteria_17,
+                        'kriteria_18' => $nilai->kriteria_18,
+                        'kriteria_19' => $nilai->kriteria_19,
+                        'kriteria_20' => $nilai->kriteria_20,
+                        'kriteria_21' => $nilai->kriteria_21,
+                    ];
+                    break;
+                case 5: // System Analyst
+                    $kriteria = [
+                        'kriteria_22' => $nilai->kriteria_22,
+                        'kriteria_23' => $nilai->kriteria_23,
+                        'kriteria_24' => $nilai->kriteria_24,
+                        'kriteria_25' => $nilai->kriteria_25,
+                        'kriteria_26' => $nilai->kriteria_26,
+                        'kriteria_27' => $nilai->kriteria_27,
+                    ];
+                    break;
+                case 6: // Management
+                    $kriteria = [
+                        'kriteria_28' => $nilai->kriteria_28,
+                        'kriteria_29' => $nilai->kriteria_29,
+                        'kriteria_30' => $nilai->kriteria_30,
+                        'kriteria_31' => $nilai->kriteria_31,
+                        'kriteria_32' => $nilai->kriteria_32,
+                        'kriteria_33' => $nilai->kriteria_33,
+                        'kriteria_34' => $nilai->kriteria_34,
+                    ];
+                    break;
+                case 7: // Media & Advertising
+                    $kriteria = [
+                        'kriteria_35' => $nilai->kriteria_35,
+                        'kriteria_36' => $nilai->kriteria_36,
+                        'kriteria_37' => $nilai->kriteria_37,
+                        'kriteria_38' => $nilai->kriteria_38,
+                        'kriteria_39' => $nilai->kriteria_39,
+                        'kriteria_40' => $nilai->kriteria_40,
+                    ];
+                    break;
+                case 8: // Icon and Illustration
+                    $kriteria = [
+                        'kriteria_41' => $nilai->kriteria_41,
+                        'kriteria_42' => $nilai->kriteria_42,
+                        'kriteria_43' => $nilai->kriteria_43,
+                        'kriteria_44' => $nilai->kriteria_44,
+                    ];
+                    break;
+                default:
+                    $kriteria = [];
+                    break;
             }
+
+            $status_wawancara_label = ($nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai') ? $nilaiWawancara->status : 'Menunggu';
+            $data[] = [
+                'no' => $startIndex + $index + 1, // Calculate the ongoing numbering
+                'pendaftar' => $pendaftar,
+                'kriteria' => $kriteria,
+                'idNilaiPendaftar' => $nilai->id,
+                'status' => $nilai->status,
+                'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
+                'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
+                'nilai_wawancara_label' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
+                'status_wawancara_label' => $status_wawancara_label,
+                'status_wawancara' => $nilaiWawancara && $nilaiWawancara->status === 'Sudah Dinilai',
+                'status_verifikasi_reviewer' => $nilaiReviewer ? $nilaiReviewer->status : 'Belum Diverifikasi',
+            ];
         }
 
-        return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId', 'mentorDivisiId'));
+        return view('nilai-management.list-nilai.index', compact('data', 'divisiMentors', 'divisiId', 'mentorDivisiId', 'nilaiPendaftars', 'startIndex'));
     }
 
 
