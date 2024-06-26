@@ -35,7 +35,7 @@ class NilaiPendaftarController extends Controller
         }
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
-        $perPage = 5; // Number of items per page
+        $perPage = 10; // Number of items per page
         $page = $request->input('page', 1); // Current page
         $startIndex = ($page - 1) * $perPage; // Start index for numbering
 
