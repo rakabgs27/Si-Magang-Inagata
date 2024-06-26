@@ -138,6 +138,7 @@ class NilaiPendaftarController extends Controller
                 $data[] = [
                     'pendaftar' => $pendaftar,
                     'kriteria' => $kriteria,
+                    'idNilaiPendaftar' => $nilai->id,
                     'status' => $nilai->status,
                     'wawancara_selesai' => $listWawancara && $listWawancara->status === 'Selesai',
                     'nilai_wawancara' => $nilaiWawancara ? $nilaiWawancara->nilai_wawancara : null,
@@ -310,6 +311,8 @@ class NilaiPendaftarController extends Controller
      */
     public function edit(NilaiPendaftar $listNilai, Request $request)
     {
+
+        // dd($listNilai);
         $userId = Auth::id();
         $divisiMentors = DivisiMentor::where('user_id', $userId)->with('divisi')->get();
 

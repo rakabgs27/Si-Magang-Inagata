@@ -95,7 +95,7 @@
                                                                 data-toggle="collapse"
                                                                 data-target="#collapse-{{ $key }}"><i
                                                                     class="fas fa-eye"></i> View Detail</a>
-                                                            <a href="{{ route('list-nilai.edit', $item['pendaftar']->id) }}"
+                                                            <a href="{{ route('list-nilai.edit', $item['idNilaiPendaftar']) }}"
                                                                 class="btn btn-sm btn-warning btn-icon ml-2"><i
                                                                     class="fas fa-edit"></i> Edit</a>
                                                             @if ($item['wawancara_selesai'])
