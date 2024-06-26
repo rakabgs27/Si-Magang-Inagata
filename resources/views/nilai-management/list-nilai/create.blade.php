@@ -18,13 +18,18 @@
                             <label for="pendaftar_id">Pendaftar</label>
                             <select name="pendaftar_id" id="pendaftar_id" class="form-control select2" required>
                                 <option value="">Pilih Pendaftar</option>
-                                @foreach ($pendaftars as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}"
-                                        {{ old('pendaftar_id') == $pendaftar->id ? 'selected' : '' }}>
-                                        {{ $pendaftar->user->name }}
-                                    </option>
-                                @endforeach
+                                @if ($pendaftars->isEmpty())
+                                    <option value="" disabled>Tidak ada pendaftar tersedia</option>
+                                @else
+                                    @foreach ($pendaftars as $pendaftar)
+                                        <option value="{{ $pendaftar->id }}"
+                                            {{ old('pendaftar_id') == $pendaftar->id ? 'selected' : '' }}>
+                                            {{ $pendaftar->user->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
+
                         </div>
 
 
@@ -107,16 +112,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}" value="{{ $nilai }}"
-                                                                    @if (old("kriteria_$indexCounter") == $nilai) checked @endif>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                         @if ($errors->has("kriteria_$indexCounter"))
                                                             <div class="invalid-feedback" style="display: block;">
                                                                 {{ $errors->first("kriteria_$indexCounter") }}
@@ -125,7 +124,6 @@
                                                     </div>
                                                 </section>
                                             @endforeach
-
                                         </div>
                                         <div class="col-md-4 grading-scale">
                                             <div class="form-group" style="font-size: 14px;">
@@ -165,16 +163,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -215,16 +207,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -265,16 +251,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -315,16 +295,11 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -365,16 +340,11 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -415,16 +385,11 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -465,16 +430,11 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}">
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" class="form-control"
+                                                            id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -529,43 +489,6 @@
 
 @push('customStyle')
     <style>
-        .radio-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .radio-container input[type="radio"] {
-            display: none;
-        }
-
-        .radio-container label {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            border: 2px solid #007bff;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-            height: 40px;
-            width: 150px;
-        }
-
-        .radio-container input[type="radio"]:checked+label {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .radio-container label:hover {
-            background-color: #0056b3;
-            color: white;
-            border-color: #0056b3;
-        }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -586,11 +509,6 @@
 
         .kriteria-section:hover {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .kriteria-section .radio-container {
-            justify-content: space-around;
-            margin-top: 10px;
         }
 
         .grading-scale {

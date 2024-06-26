@@ -6,19 +6,18 @@ class ConversionHelper
 {
     public static function convertToDescription($value)
     {
-        switch ($value) {
-            case 60:
-                return 'Kurang';
-            case 70:
-                return 'Cukup';
-            case 80:
-                return 'Memuaskan';
-            case 90:
-                return 'Baik Sekali';
-            case 100:
-                return 'Luar Biasa';
-            default:
-                return 'N/A';
+        if ($value <=60 ) {
+            return 'Kurang';
+        } elseif ($value >= 61 && $value <= 70) {
+            return 'Cukup';
+        } elseif ($value >= 71 && $value <= 80) {
+            return 'Memuaskan';
+        } elseif ($value >= 81 && $value <= 90) {
+            return 'Baik Sekali';
+        } elseif ($value >= 91 && $value <= 100) {
+            return 'Luar Biasa';
+        } else {
+            return 'N/A';
         }
     }
 }

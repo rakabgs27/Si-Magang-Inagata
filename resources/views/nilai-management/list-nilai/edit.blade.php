@@ -17,17 +17,13 @@
                         <input type="hidden" name="divisi_id" value="{{ $divisiId }}">
                         <div class="form-group">
                             <label for="pendaftar_id">Pendaftar</label>
-                            <select name="pendaftar_id" id="pendaftar_id" class="form-control select2" required>
-                                <option value="">Pilih Pendaftar</option>
-                                @foreach ($pendaftars as $pendaftar)
-                                    <option value="{{ $pendaftar->id }}"
-                                        {{ $listNilai->pendaftar_id == $pendaftar->id ? 'selected' : '' }}>
-                                        {{ $pendaftar->user->name }}
-                                    </option>
-                                @endforeach
+                            <select name="pendaftar_id_disabled" id="pendaftar_id" class="form-control select2" required
+                                disabled>
+                                <option value="{{ $pendaftar->id }}" selected>{{ $pendaftar->user->name }}</option>
                             </select>
-                        </div>
+                            <input type="hidden" name="pendaftar_id" value="{{ $pendaftar->id }}">
 
+                        </div>
                         @php
                             $kriteria = [
                                 1 => [
@@ -107,16 +103,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}" value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -129,7 +119,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -154,17 +145,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -177,7 +161,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -202,17 +187,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -225,7 +203,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -250,17 +229,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -273,7 +245,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -298,17 +271,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control"
+                                                            min="60" max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -321,7 +287,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -346,17 +313,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control"
+                                                            min="60" max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -369,7 +329,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -394,17 +355,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control"
+                                                            min="60" max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -417,7 +371,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -442,17 +397,10 @@
                                                     <div class="form-group">
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
-                                                        <div class="radio-container">
-                                                            @foreach (['kurang', 'cukup', 'memuaskan', 'baik sekali', 'luar biasa'] as $nilai)
-                                                                <input type="radio"
-                                                                    id="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}"
-                                                                    name="kriteria_{{ $indexCounter }}"
-                                                                    value="{{ $nilai }}"
-                                                                    {{ $listNilai->{'kriteria_' . $indexCounter} == $nilai ? 'checked' : '' }}>
-                                                                <label
-                                                                    for="kriteria_{{ $indexCounter }}_{{ $loop->index + 1 }}">{{ ucfirst($nilai) }}</label>
-                                                            @endforeach
-                                                        </div>
+                                                        <input type="number" id="kriteria_{{ $indexCounter }}"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control"
+                                                            min="60" max="100" required
+                                                            value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
                                             @endforeach
@@ -465,7 +413,8 @@
                                                         Nilai:</label>
                                                     <div>
                                                         <ul>
-                                                            <li><strong>> 60:</strong> Kurang</li>
+                                                            <li><strong>
+                                                                    < 60:</strong> Kurang</li>
                                                             <li><strong>61-70:</strong> Cukup</li>
                                                             <li><strong>71-80:</strong> Memuaskan</li>
                                                             <li><strong>81-90:</strong> Baik Sekali</li>
@@ -506,43 +455,6 @@
 
 @push('customStyle')
     <style>
-        .radio-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .radio-container input[type="radio"] {
-            display: none;
-        }
-
-        .radio-container label {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            border: 2px solid #007bff;
-            border-radius: 4px;
-            background-color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s, color 0.3s;
-            height: 40px;
-            width: 150px;
-        }
-
-        .radio-container input[type="radio"]:checked+label {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .radio-container label:hover {
-            background-color: #0056b3;
-            color: white;
-            border-color: #0056b3;
-        }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -563,21 +475,6 @@
 
         .kriteria-section:hover {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .kriteria-section .radio-container {
-            justify-content: space-around;
-            margin-top: 10px;
-        }
-
-        .grading-scale {
-            order: 2;
-        }
-
-        @media (max-width: 767px) {
-            .grading-scale {
-                order: 2;
-            }
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

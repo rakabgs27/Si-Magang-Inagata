@@ -186,6 +186,12 @@ class NilaiPendaftarController extends Controller
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
 
+        // Get IDs of pendaftars who have been evaluated
+        $evaluatedPendaftarIds = NilaiPendaftar::where('status', 'Sudah Dinilai')
+            ->pluck('pendaftar_id')
+            ->toArray();
+
+        // Get IDs of pendaftars who have submitted their answers based on the divisi ID
         $pendaftarIds = JawabanPendaftar::with('soalPendaftar.pendaftar')
             ->whereHas('soalPendaftar', function ($query) use ($divisiId) {
                 $query->whereHas('pendaftar', function ($subQuery) use ($divisiId) {
@@ -194,14 +200,19 @@ class NilaiPendaftarController extends Controller
             })
             ->pluck('soal_pendaftar_id');
 
-        $pendaftars = Pendaftar::with('user')->whereIn('id', function ($query) use ($pendaftarIds) {
-            $query->select('pendaftar_id')
-                ->from('soal_pendaftars')
-                ->whereIn('id', $pendaftarIds);
-        })->get();
+        // Retrieve Pendaftars based on the IDs and filter out the ones already evaluated
+        $pendaftars = Pendaftar::with('user')
+            ->whereIn('id', function ($query) use ($pendaftarIds) {
+                $query->select('pendaftar_id')
+                    ->from('soal_pendaftars')
+                    ->whereIn('id', $pendaftarIds);
+            })
+            ->whereNotIn('id', $evaluatedPendaftarIds)
+            ->get();
 
         return view('nilai-management.list-nilai.create', compact('divisiMentors', 'pendaftars', 'divisiId'));
     }
+
 
 
     /**
@@ -252,44 +263,28 @@ class NilaiPendaftarController extends Controller
 
         foreach ($criteriaFields as $field) {
             $messages["$field.required"] = 'Field ini wajib diisi untuk divisi ini.';
-            $messages["$field.string"] = 'Field ini harus berupa string.';
+            $messages["$field.numeric"] = 'Field ini harus berupa angka.';
+            $messages["$field.min"] = 'Nilai minimal adalah 0.';
+            $messages["$field.max"] = 'Nilai maksimal adalah 100.';
         }
 
         $request->validate(array_merge([
             'pendaftar_id' => 'required|exists:pendaftars,id',
             'divisi_id' => 'required|exists:divisis,id',
-        ], array_fill_keys($criteriaFields, 'required|string')), $messages);
+        ], array_fill_keys($criteriaFields, 'required|numeric|min:0|max:100')), $messages);
 
         $nilai = new NilaiPendaftar();
         $nilai->pendaftar_id = $request->pendaftar_id;
         $nilai->status = 'Sudah Dinilai';
 
         foreach ($criteriaFields as $field) {
-            $nilai->{$field} = $this->convertToNumeric($request->input($field));
+            $nilai->{$field} = $request->input($field);
         }
 
         $nilai->save();
 
         return redirect()->route('list-nilai.index', ['divisi_id' => $request->divisi_id])
             ->with('success', 'Nilai pendaftar berhasil ditambahkan.');
-    }
-
-    private function convertToNumeric($value)
-    {
-        switch ($value) {
-            case 'kurang':
-                return 60;
-            case 'cukup':
-                return 70;
-            case 'memuaskan':
-                return 80;
-            case 'baik sekali':
-                return 90;
-            case 'luar biasa':
-                return 100;
-            default:
-                return null;
-        }
     }
 
     /**
@@ -311,8 +306,6 @@ class NilaiPendaftarController extends Controller
      */
     public function edit(NilaiPendaftar $listNilai, Request $request)
     {
-
-        // dd($listNilai);
         $userId = Auth::id();
         $divisiMentors = DivisiMentor::where('user_id', $userId)->with('divisi')->get();
 
@@ -322,42 +315,13 @@ class NilaiPendaftarController extends Controller
 
         $divisiId = $request->input('divisi_id', $divisiMentors->first()->divisi_id);
 
-        // Mapping nilai to kriteria labels
-        $kriteriaLabels = [
-            60 => 'kurang',
-            70 => 'cukup',
-            80 => 'memuaskan',
-            90 => 'baik sekali',
-            100 => 'luar biasa'
-        ];
+        // Retrieve only the selected Pendaftar based on the current NilaiPendaftar
+        $pendaftar = Pendaftar::with('user')->find($listNilai->pendaftar_id);
 
-        // Convert numeric values to kriteria labels
-        foreach ($listNilai->getAttributes() as $key => $value) {
-            if (strpos($key, 'kriteria_') !== false) {
-                if (array_key_exists($value, $kriteriaLabels)) {
-                    $listNilai->{$key} = $kriteriaLabels[$value];
-                }
-            }
-        }
-
-        // Retrieve Pendaftar IDs who have submitted their answers based on the divisi ID
-        $pendaftarIds = JawabanPendaftar::with('soalPendaftar.pendaftar')
-            ->whereHas('soalPendaftar', function ($query) use ($divisiId) {
-                $query->whereHas('pendaftar', function ($subQuery) use ($divisiId) {
-                    $subQuery->where('divisi_id', $divisiId);
-                });
-            })
-            ->pluck('soal_pendaftar_id');
-
-        // Retrieve Pendaftars based on the IDs
-        $pendaftars = Pendaftar::whereIn('id', function ($query) use ($pendaftarIds) {
-            $query->select('pendaftar_id')
-                ->from('soal_pendaftars')
-                ->whereIn('id', $pendaftarIds);
-        })->with('user')->get();
-
-        return view('nilai-management.list-nilai.edit', compact('listNilai', 'pendaftars', 'divisiId'));
+        return view('nilai-management.list-nilai.edit', compact('listNilai', 'pendaftar', 'divisiId'));
     }
+
+
 
 
     /**
@@ -379,78 +343,78 @@ class NilaiPendaftarController extends Controller
         switch ($request->divisi_id) {
             case 1: // Backend
                 $criteriaFields = [
-                    'kriteria_1' => 'nullable|string',
-                    'kriteria_2' => 'nullable|string',
-                    'kriteria_3' => 'nullable|string',
-                    'kriteria_4' => 'nullable|string',
-                    'kriteria_5' => 'nullable|string',
-                    'kriteria_6' => 'nullable|string',
+                    'kriteria_1' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_2' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_3' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_4' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_5' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_6' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 2: // Frontend
                 $criteriaFields = [
-                    'kriteria_7' => 'nullable|string',
-                    'kriteria_8' => 'nullable|string',
-                    'kriteria_9' => 'nullable|string',
-                    'kriteria_10' => 'nullable|string',
-                    'kriteria_11' => 'nullable|string',
+                    'kriteria_7' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_8' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_9' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_10' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_11' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 3: // Mobile Development
                 $criteriaFields = [
-                    'kriteria_12' => 'nullable|string',
-                    'kriteria_13' => 'nullable|string',
-                    'kriteria_14' => 'nullable|string',
-                    'kriteria_15' => 'nullable|string',
+                    'kriteria_12' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_13' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_14' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_15' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 4: // UI/UX
                 $criteriaFields = [
-                    'kriteria_16' => 'nullable|string',
-                    'kriteria_17' => 'nullable|string',
-                    'kriteria_18' => 'nullable|string',
-                    'kriteria_19' => 'nullable|string',
-                    'kriteria_20' => 'nullable|string',
-                    'kriteria_21' => 'nullable|string',
+                    'kriteria_16' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_17' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_18' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_19' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_20' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_21' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 5: // System Analyst
                 $criteriaFields = [
-                    'kriteria_22' => 'nullable|string',
-                    'kriteria_23' => 'nullable|string',
-                    'kriteria_24' => 'nullable|string',
-                    'kriteria_25' => 'nullable|string',
-                    'kriteria_26' => 'nullable|string',
-                    'kriteria_27' => 'nullable|string',
+                    'kriteria_22' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_23' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_24' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_25' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_26' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_27' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 6: // Management
                 $criteriaFields = [
-                    'kriteria_28' => 'nullable|string',
-                    'kriteria_29' => 'nullable|string',
-                    'kriteria_30' => 'nullable|string',
-                    'kriteria_31' => 'nullable|string',
-                    'kriteria_32' => 'nullable|string',
-                    'kriteria_33' => 'nullable|string',
-                    'kriteria_34' => 'nullable|string',
+                    'kriteria_28' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_29' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_30' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_31' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_32' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_33' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_34' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 7: // Media & Advertising
                 $criteriaFields = [
-                    'kriteria_35' => 'nullable|string',
-                    'kriteria_36' => 'nullable|string',
-                    'kriteria_37' => 'nullable|string',
-                    'kriteria_38' => 'nullable|string',
-                    'kriteria_39' => 'nullable|string',
-                    'kriteria_40' => 'nullable|string',
+                    'kriteria_35' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_36' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_37' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_38' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_39' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_40' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             case 8: // Icon and Illustration
                 $criteriaFields = [
-                    'kriteria_41' => 'nullable|string',
-                    'kriteria_42' => 'nullable|string',
-                    'kriteria_43' => 'nullable|string',
-                    'kriteria_44' => 'nullable|string',
+                    'kriteria_41' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_42' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_43' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_44' => 'nullable|numeric|min:60|max:100',
                 ];
                 break;
             default:
@@ -464,9 +428,9 @@ class NilaiPendaftarController extends Controller
         $nilai->pendaftar_id = $request->pendaftar_id;
         $nilai->status = 'Sudah Dinilai';
 
-        // Assign criteria values dynamically with condition
+        // Assign criteria values dynamically
         foreach ($criteriaFields as $field => $rules) {
-            $nilai->{$field} = $this->convertToNumeric($request->input($field));
+            $nilai->{$field} = $request->input($field);
         }
 
         $nilai->save();
@@ -474,6 +438,7 @@ class NilaiPendaftarController extends Controller
         return redirect()->route('list-nilai.index', ['divisi_id' => $request->divisi_id])
             ->with('success', 'Nilai pendaftar berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

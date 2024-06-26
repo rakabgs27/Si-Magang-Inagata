@@ -16,7 +16,7 @@ class SoalPendaftarSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 9; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             SoalPendaftar::create([
                 'soal_id' => 1,
                 'pendaftar_id' => $i,
