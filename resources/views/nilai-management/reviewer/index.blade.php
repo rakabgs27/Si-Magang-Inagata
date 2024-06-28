@@ -617,3 +617,11 @@
         </div>
     </section>
 @endsection
+
+@push('customScript')
+    <script src="/assets/js/select2.min.js"></script>
+@endpush
+
+@push('customStyle')
+    <link rel="stylesheet" href="/assets/css/select2.min.css">
+@endpush
