@@ -22,7 +22,7 @@ class NilaiReviewerController extends Controller
     {
         $divisis = Divisi::all();
         $divisiId = $request->input('divisi_id');
-        $perPage = 5; // Jumlah item per halaman
+        $perPage = 10; // Jumlah item per halaman
 
         if ($divisiId) {
             $pendaftars = Pendaftar::with('user', 'divisi')->where('divisi_id', $divisiId)->paginate($perPage)->appends(['divisi_id' => $divisiId]);
