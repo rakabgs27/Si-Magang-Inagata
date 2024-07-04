@@ -114,7 +114,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" class="form-control" id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                         @if ($errors->has("kriteria_$indexCounter"))
                                                             <div class="invalid-feedback" style="display: block;">
@@ -165,7 +165,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -209,7 +209,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -253,7 +253,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}" name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -298,7 +298,7 @@
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -343,7 +343,7 @@
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -388,7 +388,7 @@
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>
@@ -433,7 +433,7 @@
                                                         <input type="number" class="form-control"
                                                             id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}"
-                                                            value="{{ old("kriteria_$indexCounter") }}" min="60"
+                                                            value="{{ old("kriteria_$indexCounter") }}" min="0"
                                                             max="100" required placeholder="Masukkan nilai (0-100)">
                                                     </div>
                                                 </section>

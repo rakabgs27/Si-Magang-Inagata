@@ -345,78 +345,78 @@ class NilaiPendaftarController extends Controller
         switch ($request->divisi_id) {
             case 1: // Backend
                 $criteriaFields = [
-                    'kriteria_1' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_2' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_3' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_4' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_5' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_6' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_1' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_2' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_3' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_4' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_5' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_6' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 2: // Frontend
                 $criteriaFields = [
-                    'kriteria_7' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_8' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_9' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_10' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_11' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_7' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_8' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_9' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_10' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_11' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 3: // Mobile Development
                 $criteriaFields = [
-                    'kriteria_12' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_13' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_14' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_15' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_12' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_13' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_14' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_15' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 4: // UI/UX
                 $criteriaFields = [
-                    'kriteria_16' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_17' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_18' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_19' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_20' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_21' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_16' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_17' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_18' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_19' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_20' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_21' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 5: // System Analyst
                 $criteriaFields = [
-                    'kriteria_22' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_23' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_24' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_25' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_26' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_27' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_22' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_23' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_24' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_25' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_26' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_27' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 6: // Management
                 $criteriaFields = [
-                    'kriteria_28' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_29' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_30' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_31' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_32' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_33' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_34' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_28' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_29' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_30' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_31' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_32' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_33' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_34' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 7: // Media & Advertising
                 $criteriaFields = [
-                    'kriteria_35' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_36' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_37' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_38' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_39' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_40' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_35' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_36' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_37' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_38' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_39' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_40' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             case 8: // Icon and Illustration
                 $criteriaFields = [
-                    'kriteria_41' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_42' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_43' => 'nullable|numeric|min:60|max:100',
-                    'kriteria_44' => 'nullable|numeric|min:60|max:100',
+                    'kriteria_41' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_42' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_43' => 'nullable|numeric|min:0|max:100',
+                    'kriteria_44' => 'nullable|numeric|min:0|max:100',
                 ];
                 break;
             default:
