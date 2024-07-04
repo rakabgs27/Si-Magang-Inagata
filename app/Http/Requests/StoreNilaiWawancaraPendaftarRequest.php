@@ -25,7 +25,7 @@ class StoreNilaiWawancaraPendaftarRequest extends FormRequest
     {
         return [
             'pendaftar_id' => 'required|exists:pendaftars,id',
-            'nilai_wawancara' => 'required|numeric|min:60|max:100',
+            'nilai_wawancara' => 'required|numeric|min:0|max:100',
         ];
     }
 

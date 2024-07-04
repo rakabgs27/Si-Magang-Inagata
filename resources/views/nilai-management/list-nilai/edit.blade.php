@@ -104,7 +104,7 @@
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
-                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="0"
                                                             max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
@@ -146,7 +146,7 @@
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
-                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="0"
                                                             max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
@@ -188,7 +188,7 @@
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
-                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="0"
                                                             max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
@@ -230,7 +230,7 @@
                                                         <label for="kriteria_{{ $indexCounter }}"
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
-                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="60"
+                                                            name="kriteria_{{ $indexCounter }}" class="form-control" min="0"
                                                             max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
@@ -273,7 +273,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}" class="form-control"
-                                                            min="60" max="100" required
+                                                            min="0" max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
@@ -315,7 +315,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}" class="form-control"
-                                                            min="60" max="100" required
+                                                            min="0" max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
@@ -357,7 +357,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}" class="form-control"
-                                                            min="60" max="100" required
+                                                            min="0" max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>
@@ -399,7 +399,7 @@
                                                             style="font-size: 14px">{{ $kriteriaLabel }}</label>
                                                         <input type="number" id="kriteria_{{ $indexCounter }}"
                                                             name="kriteria_{{ $indexCounter }}" class="form-control"
-                                                            min="60" max="100" required
+                                                            min="0" max="100" required
                                                             value="{{ $listNilai->{'kriteria_' . $indexCounter} }}">
                                                     </div>
                                                 </section>

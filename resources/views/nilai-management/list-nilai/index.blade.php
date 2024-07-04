@@ -579,8 +579,8 @@
                                         Nilai Wawancara
                                     </label>
                                     <input type="number" class="form-control" name="nilai_wawancara"
-                                        id="nilai_wawancara" min="60" max="100" required
-                                        value="{{ $item['nilai_wawancara'] }}" placeholder="Masukkan nilai (60-100)">
+                                        id="nilai_wawancara" min="0" max="100" required
+                                        value="{{ $item['nilai_wawancara'] }}" placeholder="Masukkan nilai (0-100)">
                                 </div>
                                 <div class="form-group text-right" style="margin-top: 30px;">
                                     <button type="submit" class="btn btn-success">Submit</button>
